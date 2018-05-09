@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SmartPhone Shop</title>
+	    <meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="icon" type="image/png" href="/images/favicon.png" />
+        <!--[if IE]><link rel="SHORTCUT ICON" href="/favicon.ico"/><![endif]-->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/bootstrap-xl.css">
+        <link rel="stylesheet" href="/stylesheets/pushy.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/codemirror.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="/stylesheets/codemirror-style.min.css">        
+        {{#if admin}}
+        <link rel="stylesheet" href="/stylesheets/admin.css">
+        {{else}}
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        {{/if}}
+	</head>
+    {{#if admin}}
+	<body class="admin">
+    {{else}}
+    <body>
+    {{/if}}
+		<!-- Static navbar -->
+	    <nav class="navbar navbar-default navbar-static-top">
+			<div class="container-fluid mainNavBar">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed offcanvas-trigger" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+                    <a class="navbar-brand navbar-brand-image" href="/"><img class="img-responsive" src="/images/Logo.png"></a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="/shopping-cart/">
+								<i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+								<span class="badge">{{session.cart.total}}</span>
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i> Account <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+								{{# if login }}
+									<li><a href="/user/profile">Profile</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="/user/logout">Logout</a></li>
+								{{ else }}
+									<li><a href="/user/signup">Signup</a></li>
+									<li><a href="/user/signin">Signin</a></li>
+								{{/if}}
+
+								</ul>
+						</li>
+					</ul>
+				</div>
+	        </div>
+	    </nav>
+        <div class="site-overlay"></div>
+		<div class="container-fluid content-body" id="container">
+            <div class="row">
+                {{#if admin}}
+                <div class="col-xs-12 col s12">
+                    {{{body}}}
+                </div>
+                {{else}}
+                {{{body}}}
+                {{/if}}
+            </div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/mode/css/css.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/mode/xml/xml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+        <script src="/javascripts/jquery.bootpag.min.js"></script>
+        <script src="/javascripts/cssbeautify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="/javascripts/jquery.dotdotdot.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
+        <script src="/javascripts/pushy.min.js"></script>
+		<script src="/javascripts/SmartPhoneShoppingCart.js"></script>
+	</body>
+</html>
