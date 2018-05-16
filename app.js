@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let handlebars = require('express-handlebars');
 var mongoose = require('mongoose');
+var Brand = require('./models/brand');
+var Product = require('./models/product');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -30,6 +32,17 @@ handlebars = handlebars.create({
 				amountString = insertString(amountString,i,',');
 				i -= 3;
 			}
+            return amountString;
+        },
+		formatAmountTitle: function(start, end){
+			var amountString = '';
+			if (start != 0 && end != 0)
+				amountString = 'Từ ' + start/1000000 + ' - ' + end/1000000 + ' triệu';
+			else
+				if (start == 0)
+					amountString = 'Dưới ' + end/1000000 + ' triệu';
+				else
+					amountString = 'Trên ' + start/1000000 + ' triệu';
             return amountString;
         },
         ifCond: function (v1, operator, v2, options){
@@ -73,6 +86,60 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+Brand.find(function(err,results){
+	if (err)
+		return null;
+	app.locals.menuBrand = results;
+});
+
+Product.find({},'Price',function(err,results){
+	var i = 0;
+	var count = 0;
+	var arrayResults = [];
+	var object = {};
+	
+	while (i<results.length && 0 <= results[i].Price && results[i].Price < 5000000){
+		count += 1;
+		i += 1;
+	}
+	object = {'start':0, 'end':5000000, 'count': count};
+	arrayResults.push(object);
+	
+	count = 0;
+	while (i<results.length && 5000000 <= results[i].Price && results[i].Price < 10000000){
+		count += 1;
+		i += 1;
+	}
+	object = {'start':5000000, 'end':10000000, 'count': count};
+	arrayResults.push(object);
+	
+	count = 0;
+	while (i<results.length && 10000000 <= results[i].Price && results[i].Price < 20000000){
+		count += 1;
+		i += 1;
+	}
+	object = {'start':10000000, 'end':20000000, 'count': count};
+	arrayResults.push(object);
+	
+	count = 0;
+	while (i<results.length && 20000000 <= results[i].Price && results[i].Price < 30000000){
+		count += 1;
+		i += 1;
+	}
+	object = {'start':20000000, 'end':30000000, 'count': count};
+	arrayResults.push(object);
+	
+	count = 0;
+	while (i<results.length && 30000000 <= results[i].Price){
+		count += 1;
+		i += 1;
+	}
+	object = {'start':30000000, 'end':0, 'count': count};
+	arrayResults.push(object);
+	
+	app.locals.priceRange = arrayResults;
+}).sort({Price: 1});
 
 app.use((req, res, next) => {
     req.handlebars = handlebars;

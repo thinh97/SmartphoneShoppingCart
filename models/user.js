@@ -1,80 +1,90 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
+var Cart = require('../models/cart');
 
 var userSchema = new Schema({
-    name: {
+	_id: {
+		type: String
+	},
+    Name: {
 		type: String, 
 		required: [true,'Please enter your name'],
 		maxlength: [200, 'Your name is to long']
 	},
-	username: {
+	UserName: {
 		type: String, 
 		required: [true,'Please enter user name'],
 		maxlength: [50, 'Your user name is to long'],
 		unique: true
 	},
-    email: {
+    Email: {
 		type: String, 
 		required: [true,'Please enter your email'],
 		unique: true,
 		lowercase: true,
 		match: [/\S+@\S+\.\S+/,'Please enter a valid email address']
 	},
-	gender: {
+	Gender: {
 		type: String,
 		enum: ['Male','Female']
 	},
-	birthday: {
+	Birthday: {
 		type: Date,
 		required: [true,'Please enter your bithday']
 	},
-    address: {
+    Address: {
 		type: String, 
 		required: [true,'Please enter your address']
 	},
-	phone: {
+	Phone: {
 		type: String,
 	},
-    password: {
+    Password: {
 		type: String, 
 		required: true
 	},
-	role: {
+	Role: {
 		type: String,
 		enum: ['admin','user']
+	},
+	Cart: {
+		type: Schema.Types.ObjectId,
+		ref: 'Cart'
 	}
 });
 
 userSchema.validPassword = function(password) {
-  bcrypt.compare(password, this.password, function(err, isMatch) {
+  bcrypt.compare(password, this.Password, function(err, isMatch) {
         return isMatch;
     });
 };
 
 userSchema.pre('save', function(next) {
     var user = this;
-	mongoose.models["User"].findOne({username : user.username},function(err, results) {
+	mongoose.models["User"].findOne({UserName : user.UserName},function(err, results) {
 		if(err) {
             next(err);
         } else if(results) {
-            user.invalidate("username","Username is already in use. Please choose another one");
-            next(new Error("Username is already in use"));
+            user.invalidate("UserName","Username is already in use. Please choose another one");
+            next(new Error("UserName is already in use"));
         } else {
-			mongoose.models["User"].findOne({email : user.email},function(err, results) {
+			mongoose.models["User"].findOne({email : user.Email},function(err, results) {
 				if(err) {
 					next(err);
 				} else if(results) {
-					user.invalidate("email","Email is already in use. Please choose another one");
+					user.invalidate("Email","Email is already in use. Please choose another one");
 					next(new Error("Email is already in use"));
 				} else {
 					bcrypt.genSalt(4, function(err, salt) {
 						if (err) 
 							return next(err);
-						bcrypt.hash(user.password, salt, null, function(err, hashed) {
+						bcrypt.hash(user.Password, salt, null, function(err, hashed) {
 							if (err) 
 								return next(err);
-							user.password = hashed;
+							user.Password = hashed;
+							user._id = user.UserName.toLowerCase();
+							user.Cart = null;
 							next();
 						});
 					});

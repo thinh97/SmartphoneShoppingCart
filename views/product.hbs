@@ -1,64 +1,64 @@
-<div class="product-layout col-md-8 col-md-offset-2">
+<div class="product-layout col-md-8 col-md-offset-1">
     <div class="row">
         <div class="col-xs-12 col-md-6 pull-right">
             <div class="row">
-				<h1 class="col-md-12 product-title">{{result.title}}</h1>
-				<h4 class="col-md-12 product-price">{{formatAmount result.price}} VNĐ</h4>
+				<h1 class="col-md-12 product-title">{{result.Title}}</h1>
+				<h4 class="col-md-12 product-price">{{formatAmount result.Price}} VNĐ</h4>
 			</div>
 			<table class="table">
 				<tbody>
-				{{#if result.details.screen}}	
+				{{#if result.Details.Screen}}	
 				  <tr class="border-bottom">
 					<td>Màn hình:</td>
-					<td>{{result.details.screen}}</td>
+					<td>{{result.Details.Screen}}</td>
 				  </tr>
 				{{/if}}
-				{{#if result.details.os}}
+				{{#if result.Details.OS}}
 				  <tr class="border-bottom">
 					<td>Hệ điều hành:</td>
-					<td>{{result.details.os}}</td>
+					<td>{{result.Details.OS}}</td>
 				  </tr>
 				{{/if}}
-				{{#if result.details.primaryCamera}}
+				{{#if result.Details.PrimaryCamera}}
 				  <tr class="border-bottom">
 					<td>Camera sau:</td>
-					<td>{{result.details.primaryCamera}} MP</td>
+					<td>{{result.Details.PrimaryCamera}} MP</td>
 				  </tr>
 				{{/if}}
-				{{#if result.details.secondaryCamera}} 
+				{{#if result.Details.SecondaryCamera}} 
 				  <tr class="border-bottom">
 					<td>Camera trước:</td>
-					<td>{{result.details.secondaryCamera}} MP</td>
+					<td>{{result.Details.SecondaryCamera}} MP</td>
 				  </tr>
-				{{#if result.details.cpu}}  
+				{{#if result.Details.CPU}}  
 				{{/if}}  
 				  <tr class="border-bottom">
 					<td>CPU:</td>
-					<td>{{result.details.cpu}}</td>
+					<td>{{result.Details.CPU}}</td>
 				  </tr>
-				{{#if result.details.ram}}  
+				{{#if result.Details.RAM}}  
 				{{/if}}  
 				  <tr class="border-bottom">
 					<td>RAM:</td>
-					<td>{{result.details.ram}} GB</td>
+					<td>{{result.Details.RAM}} GB</td>
 				  </tr>
 				{{/if}}  
-				{{#if result.details.memory}}  
+				{{#if result.Details.Memory}}  
 				  <tr class="border-bottom">
 					<td>Bộ nhớ:</td>
-					<td>{{result.details.memory}} GB</td>
+					<td>{{result.Details.Memory}} GB</td>
 				  </tr>
 				{{/if}}  
-				{{#if result.details.sim}}  
+				{{#if result.Details.Sim}}  
 				  <tr class="border-bottom">
 					<td>Thẻ sim:</td>
-					<td>{{result.details.sim}}</td>
+					<td>{{result.Details.Sim}}</td>
 				  </tr>
 				{{/if}}  
-				{{#if result.details.battery}}  
+				{{#if result.Details.Battery}}  
 				  <tr>
 					<td>Dung lượng Pin:</td>
-					<td>{{result.details.battery}} mAh</td>
+					<td>{{result.Details.Battery}} mAh</td>
 				  </tr>
 				{{/if}}  
 				</tbody>
@@ -70,7 +70,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-primary qty-btn-minus" type="button">-</button>
                     </span>
-                    <input type="text" class="form-control add-color text-center" id="product_quantity" maxlength="3" value="1">
+                    <input type="text" class="form-control add-color text-center" id="product_quantity" maxlength="2" value="1">
                     <span class="input-group-btn">
                         <button class="btn btn-primary qty-btn-plus" type="button">+</button>
                     </span>
@@ -82,15 +82,15 @@
 					<button class="btn btn-primary btn-block product-add-to-cart" type="button">Add to cart</button>
 				</div>
 				<div class="col-md-12 body_text">
-					{{{result.description}}}
+					{{{result.Description}}}
 				</div>
             </div>
         </div>
         <div class="col-xs-12 col-md-6 pull-left">
-            {{#if result.imagePath.[0]}}
+            {{#if result.ImagePath.[0]}}
                 <div class="title-image-container">
                     <div class="image-prev image-button"> <i class="fa fa-chevron-left" aria-hidden="true"></i></div>
-                    <img src="{{result.imagePath.[0]}}" id="product-title-image" class="product-title-image img-responsive" alt="...">
+                    <img src="{{result.ImagePath.[0]}}" id="product-title-image" class="product-title-image img-responsive" alt="...">
                     <div class="image-next image-button"> <i class="fa fa-chevron-right" aria-hidden="true"></i></div>
                 </div>
             {{else}}
@@ -98,8 +98,8 @@
                     <img src="/uploads/placeholder.png" id="product-title-image" class="product-title-image img-responsive" alt="...">
                 </div>
             {{/if}}
-            {{#ifCond result.imagePath.length '>' 1}}
-                {{#each result.imagePath}}
+            {{#ifCond result.ImagePath.length '>' 1}}
+                {{#each result.ImagePath}}
                     <div class="vertical-center top-pad-20 col-xs-6 col-lg-6 col-xl-6">
                         <img src="{{this}}" class="thumbnail-image img-responsive">
                     </div>

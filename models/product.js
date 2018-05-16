@@ -6,76 +6,70 @@ var productSchema = new Schema({
 		type: String,
 		required: [true,'Please enter id']
 	},
-    imagePath: [{
+    ImagePath: [{
 		type: String, 
 		required: [true,'Please enter image path']
 	}],
-    title: {
+    Title: {
 		type: String, 
 		required: [true,'Please enter title name']
 	},
-	details: {
-		screen: String,
-		os: String,
-		primaryCamera: {
+	Details: {
+		Screen: String,
+		OS: String,
+		PrimaryCamera: {
 			type: Number,
 			min: 1
 		},
-		secondaryCamera: {
+		SecondaryCamera: {
 			type: Number,
 			min: 1
 		},
-		cpu: String,
-		ram:  {
+		CPU: String,
+		RAM:  {
 			type: Number,
 			min: 1
 		},
-		memory:  {
+		Memory:  {
 			type: Number,
 			min: 1
 		},
-		sim: String,
-		battery:  {
+		Sim: String,
+		Battery:  {
 			type: Number,
 			min: 1
 		}
 	},
-    description: {
+    Description: {
 		type: String, 
 		required: [true,'Please enter description']
 	},
-    price: {
+    Price: {
 		type: Number, 
 		min:1,
 		required: [true,'Please enter a price']
 	},
-	producer: {
+	Brand: {
 		type: String, 
-		required: [true,'Please enter a producer']
+		required: [true,'Please enter a brand'],
+		ref: 'Brand'
 	},
-	views: {
+	Views: {
 		type: Number
 	},
-	comments: [{
-		name: {
-			type: String,
-			required: [true,'Please enter user name'],
-			maxlength: [200, 'Your name is to long']
-		},
-		comment: {
-			type: String,
-			required: [true,'Please enter user name']
-		}
+	Comments: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Comment'
 	}],
 });
 productSchema.pre('save', function(next) {
-    var user = this;
-	mongoose.models["Product"].findOne({username : user.username},function(err, results) {
+    var product = this;
+	mongoose.models["Product"].findOne({_id : product._id},function(err, results) {
 		if(err) {
             next(err);
         } else if(results) {
-            user.invalidate("username","Id is already in use. Please choose another one");
-            next(new Error("Id is already in use"));
+            product.invalidate("ID","ID is already in use. Please choose another one");
+            next(new Error("ID is already in use"));
         } else {
 			next();
         }
