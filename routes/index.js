@@ -3,6 +3,7 @@ var router = express.Router();
 
 var product_controller = require('../controllers/ProductController');
 var brand_controller = require('../controllers/BrandController');
+
 /* GET home page. */
 router.get('/', product_controller.index);
 

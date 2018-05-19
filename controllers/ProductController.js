@@ -20,6 +20,8 @@ exports.index = function(req, res, next) {
 			res.render('index', { 
 				session: req.session,
 				results: arrayResult,
+                menuBrand: req.menuBrand,
+                priceRange: req.priceRange,
 				helpers: req.handlebars.helpers
 			});
 		}
@@ -54,6 +56,8 @@ exports.list_price = function(req, res, next) {
 			res.render('index', { 
 				session: req.session,
 				results: arrayResult,
+                menuBrand: req.menuBrand,
+                priceRange: req.priceRange,
 				helpers: req.handlebars.helpers
 			});
 		}
@@ -67,10 +71,11 @@ exports.product_detail = function(req, res) {
 			return res.redirect('/');
 		}
 		else{
-			console.log(product.details);
 			res.render('product', { 
 				session: req.session,
 				result: product,
+                menuBrand: req.menuBrand,
+                priceRange: req.priceRange,
 				helpers: req.handlebars.helpers
 			});
 		}

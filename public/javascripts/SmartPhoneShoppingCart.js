@@ -45,3 +45,38 @@ $('.qty-btn-minus').on('click', function(){
 $('.qty-btn-plus').on('click', function(){
     $('#product_quantity').val(parseInt($('#product_quantity').val()) + 1);
 });
+$('#loginForm').on('click', function(e){
+    if(!e.isDefaultPrevented()){
+        e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: '/users/signin',
+            data: {
+                username: $('#username').val(),
+                password: $('#password').val()
+            }
+        })
+            .done(function(msg){
+                showNotification(msg.message, 'success');
+                if (msg.url)
+                    window.location = msg.url;
+            })
+            .fail(function(msg){
+                showNotification(msg.responseJSON.message, 'danger');
+            });
+    }
+    e.preventDefault();
+});
+function showNotification(msg, type, reloadPage){
+    // defaults to false
+    reloadPage = reloadPage || false;
+
+    $('#notify_message').removeClass();
+    $('#notify_message').addClass('alert-' + type);
+    $('#notify_message').html(msg);
+    $('#notify_message').slideDown(600).delay(2500).slideUp(600, function(){
+        if(reloadPage === true){
+            location.reload();
+        }
+    });
+}

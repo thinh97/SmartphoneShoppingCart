@@ -21,6 +21,8 @@ exports.list_brand = function(req, res, next) {
 			res.render('index', { 
 				session: req.session,
 				results: arrayResult,
+				menuBrand: req.menuBrand,
+				priceRange: req.priceRange,
 				helpers: req.handlebars.helpers
 			});
 		}

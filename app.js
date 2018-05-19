@@ -9,7 +9,8 @@ var Brand = require('./models/brand');
 var Product = require('./models/product');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/user');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -87,68 +88,69 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-Brand.find(function(err,results){
-	if (err)
-		return null;
-	app.locals.menuBrand = results;
-});
+function getPriceRange(){
+    var arrayResults = [];
+	Product.find({},'Price',function(err,results){
+		var i = 0;
+		var count = 0;
+		var object = {};
 
-Product.find({},'Price',function(err,results){
-	var i = 0;
-	var count = 0;
-	var arrayResults = [];
-	var object = {};
-	
-	while (i<results.length && 0 <= results[i].Price && results[i].Price < 5000000){
-		count += 1;
-		i += 1;
-	}
-	object = {'start':0, 'end':5000000, 'count': count};
-	arrayResults.push(object);
-	
-	count = 0;
-	while (i<results.length && 5000000 <= results[i].Price && results[i].Price < 10000000){
-		count += 1;
-		i += 1;
-	}
-	object = {'start':5000000, 'end':10000000, 'count': count};
-	arrayResults.push(object);
-	
-	count = 0;
-	while (i<results.length && 10000000 <= results[i].Price && results[i].Price < 20000000){
-		count += 1;
-		i += 1;
-	}
-	object = {'start':10000000, 'end':20000000, 'count': count};
-	arrayResults.push(object);
-	
-	count = 0;
-	while (i<results.length && 20000000 <= results[i].Price && results[i].Price < 30000000){
-		count += 1;
-		i += 1;
-	}
-	object = {'start':20000000, 'end':30000000, 'count': count};
-	arrayResults.push(object);
-	
-	count = 0;
-	while (i<results.length && 30000000 <= results[i].Price){
-		count += 1;
-		i += 1;
-	}
-	object = {'start':30000000, 'end':0, 'count': count};
-	arrayResults.push(object);
-	
-	app.locals.priceRange = arrayResults;
-}).sort({Price: 1});
+		while (i<results.length && 0 <= results[i].Price && results[i].Price < 5000000){
+			count += 1;
+			i += 1;
+		}
+		object = {'start':0, 'end':5000000, 'count': count};
+		arrayResults.push(object);
+
+		count = 0;
+		while (i<results.length && 5000000 <= results[i].Price && results[i].Price < 10000000){
+			count += 1;
+			i += 1;
+		}
+		object = {'start':5000000, 'end':10000000, 'count': count};
+		arrayResults.push(object);
+
+		count = 0;
+		while (i<results.length && 10000000 <= results[i].Price && results[i].Price < 20000000){
+			count += 1;
+			i += 1;
+		}
+		object = {'start':10000000, 'end':20000000, 'count': count};
+		arrayResults.push(object);
+
+		count = 0;
+		while (i<results.length && 20000000 <= results[i].Price && results[i].Price < 30000000){
+			count += 1;
+			i += 1;
+		}
+		object = {'start':20000000, 'end':30000000, 'count': count};
+		arrayResults.push(object);
+
+		count = 0;
+		while (i<results.length && 30000000 <= results[i].Price){
+			count += 1;
+			i += 1;
+		}
+		object = {'start':30000000, 'end':0, 'count': count};
+		arrayResults.push(object);
+	}).sort({Price: 1});
+	return arrayResults;
+}
 
 app.use((req, res, next) => {
     req.handlebars = handlebars;
+    Brand.find(function (err, results) {
+        if (err)
+            return null;
+        req.menuBrand = results;
+    });
+    req.priceRange = getPriceRange();
     next();
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use('/', userRouter);
+app.use('/', adminRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not Found');

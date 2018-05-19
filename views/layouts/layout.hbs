@@ -50,12 +50,12 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i> Tài khoản <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 								{{# if login }}
-									<li><a href="/user/profile">Thông tin tài khoản</a></li>
+									<li><a href="/users/profile">Thông tin tài khoản</a></li>
 									<li role="separator" class="divider"></li>
-									<li><a href="/user/logout">Đăng xuất</a></li>
+									<li><a href="/users/logout">Đăng xuất</a></li>
 								{{ else }}
-									<li><a href="/user/signup">Đăng ký</a></li>
-									<li><a href="/user/signin">Đăng nhập</a></li>
+									<li><a href="/users/signup">Đăng ký</a></li>
+									<li><a href="/users/signin">Đăng nhập</a></li>
 								{{/if}}
 
 								</ul>
@@ -72,24 +72,33 @@
                     {{{body}}}
                 </div>
                 {{else}}
+                {{#ifCond menuBrand "||" priceRange}}
 				<div class="col col-md-2 col-xl-2 menuLeft">
+                {{#if menuBrand}}
 					<h4><b>Thương Hiệu</b></h4>
 					<div class="list-group">
 						{{#each menuBrand}}							
 							<a href="/filter/brand/{{this._id}}" class="list-group-item">{{this.Name}}<span class="badge">{{this.Products.length}}</span></a>						
 						{{/each}}
 					</div>
+                {{/if}}
+                {{#if priceRange}}
 					<h4><b>Giá Tiền</b></h4>
 					<div class="list-group">
 						{{#each priceRange}}
 							<a href="/filter/price/{{this.start}}/{{this.end}}" class="list-group-item">{{formatAmountTitle this.start this.end}}<span class="badge">{{this.count}}</span></a>											
 						{{/each}}
 					</div>
+                {{/if}}
 				</div>
+                {{/ifCond}}
                 {{{body}}}
                 {{/if}}
             </div>
 		</div>
+        <input type="hidden" id="input_notify_message" value="{{message}}">
+        <input type="hidden" id="input_notify_messageType" value="{{messageType}}">
+        <div id="notify_message"></div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/codemirror.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.20.2/mode/css/css.min.js"></script>

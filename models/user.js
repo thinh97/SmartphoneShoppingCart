@@ -75,19 +75,10 @@ userSchema.pre('save', function(next) {
 				} else if(results) {
 					user.invalidate("Email","Email is already in use. Please choose another one");
 					next(new Error("Email is already in use"));
-				} else {
-					bcrypt.genSalt(4, function(err, salt) {
-						if (err) 
-							return next(err);
-						bcrypt.hash(user.Password, salt, null, function(err, hashed) {
-							if (err) 
-								return next(err);
-							user.Password = hashed;
-							user._id = user.UserName.toLowerCase();
-							user.Cart = null;
-							next();
-						});
-					});
+				} else {	
+                    user.Password = bcrypt.hashSync(user.Password);		
+                    user._id = user.UserName.toLowerCase();
+					next();
 				}
 			});
         }
