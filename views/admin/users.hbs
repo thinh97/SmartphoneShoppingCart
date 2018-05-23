@@ -20,9 +20,9 @@
                 {{/ifCond}}
 				 {{#each users}}
                     <li class="list-group-item">
-                        <strong>Tên tài khoản:</strong> <a href="/admin/users/edit/{{this._id}}">{{this.UserName}}</a> - <b>Email:</b> {{this.Email}}
+                        <strong>Tên tài khoản:</strong> <a href="/admin/user/edit/{{this._id}}">{{this.UserName}}</a> - <b>Email:</b> {{this.Email}}
                         <span class="pull-right">
-                            <b>Quyền:</b>{{this.Role}}
+                            <b>Quyền: </b>{{this.Role}}
                                 <a href="/admin/user/delete/{{this._id}}" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')"><span class="glyphicon glyphicon-trash" aria-hidden="true"/></a>
                         </span>
                     </li>

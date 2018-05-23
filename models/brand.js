@@ -18,11 +18,14 @@ var brandSchema = new Schema({
 });
 brandSchema.pre('save', function(next) {
     var brand = this;
-	mongoose.models["Brand"].findOne({_id : brand._id},function(err, results) {
+	mongoose.models["Brand"].findOne({_id : brand._id},function(err, result) {
 		if(err) {
             next(err);
-        } else if(results) {
-            next(new Error("ID đã được sử dụng"));
+        } else if(result) {
+			if (brand === result)
+            	next(new Error("ID đã được sử dụng"));
+			else
+				next();
         } else {
 			next();
         }

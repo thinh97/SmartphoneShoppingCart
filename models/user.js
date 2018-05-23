@@ -62,24 +62,25 @@ userSchema.validPassword = function(password) {
 
 userSchema.pre('save', function(next) {
     var user = this;
-	mongoose.models["User"].findOne({UserName : user.UserName},function(err, results) {
+	mongoose.models["User"].findOne({UserName : user.UserName},function(err, result) {
 		if(err) {
             next(err);
-        } else if(results) {
-            next(new Error('Tên tài khoản đã được sử dụng'));
+        } else if(result) {
+			if (user === result)
+            	next(new Error('Tên tài khoản đã được sử dụng'));
         } else {
-			mongoose.models['User'].findOne({email : user.Email},function(err, results) {
+			mongoose.models['User'].findOne({email : user.Email},function(err, result) {
 				if(err) {
 					next(err);
-				} else if(results) {
-					next(new Error('Email đã được sử dụng'));
-				} else {	
-                    user.Password = bcrypt.hashSync(user.Password);		
-                    user._id = user.UserName.toLowerCase();
-					next();
+				} else if(result) {
+					if (user === result)
+						next(new Error('Email đã được sử dụng'));
 				}
 			});
         }
+        user.Password = bcrypt.hashSync(user.Password);
+        user._id = user.UserName.toLowerCase();
+        next();
 	});
 });
 

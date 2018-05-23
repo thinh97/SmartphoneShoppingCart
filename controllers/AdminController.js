@@ -55,29 +55,81 @@ exports.get_brand = function(req, res, next) {
 }
 
 exports.edit_brand = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin') {
+            Brand.findOne({_id: req.params.id},function (err, brand) {
+                if (err) {
+                    res.render('admin/brand_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    res.render('admin/brand_edit', {
+                        brand: brand,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.update_brand = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin'){
+            Brand.findById(req.body.id, function (err, brand) {
+                if (err) {
+                    console.log(err);
+                    res.render('admin/brand_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    brand.Name = req.body.name;
+                    brand.save(function (err, updatedBrand) {
+                        if (err){
+                            console.log(err);
+                            res.render('admin/brand_edit', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            res.render('admin/brand_edit', {
+                                brand: updatedBrand,
+                                message: 'Đã lưu',
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.delete_brand = function(req, res, next) {
@@ -199,7 +251,7 @@ exports.edit_product = function(req, res, next) {
 exports.update_product = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
-            Product.findOne({_id: req.body.id},function (err, product) {
+            Product.findById(req.body.id, function (err, product) {
                 if (err) {
                     console.log(err);
                     res.render('admin/product_edit', {
@@ -242,7 +294,6 @@ exports.update_product = function(req, res, next) {
                             });
                         }
                     });
-
                 }
             });
         }
@@ -310,29 +361,11 @@ exports.get_orders = function(req, res, next) {
 }
 
 exports.edit_order = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    res.redirect('/admin/orders');
 }
 
 exports.update_order = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    res.redirect('/admin/orders');
 }
 
 exports.delete_order = function(req, res, next) {
@@ -403,29 +436,81 @@ exports.get_users = function(req, res, next) {
 }
 
 exports.edit_user = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin') {
+            User.findById(req.params.id, function (err, result) {
+                if (err) {
+                    res.render('admin/user_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    res.render('admin/user_edit', {
+                        result: result,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.update_user = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin'){
+            User.findById(req.body.id,function (err, user) {
+                if (err) {
+                    console.log(err);
+                    res.render('admin/product_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    user.Role = req.body.role;
+                    user.save(function (err, updatedUser) {
+                        if (err){
+                            console.log(err);
+                            res.render('admin/user_edit', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            res.render('admin/user_edit', {
+                                result: updatedUser,
+                                message: 'Đã lưu',
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.delete_user = function(req, res, next) {

@@ -1,40 +1,74 @@
-{{> partials/menu}}
 <div class="col-lg-9">
 	<div class="row">
-		<div class="col-md-8">
-			<h2>User edit</h2>
-			<form method="post" id="edit_form" action="/admin/user/update" data-toggle="validator">
-			<input type="hidden" name="userId" value="{{user._id}}" />
+		<div class="col-md-12">
+			<h2 class="text-center">Chỉnh sửa quyền truy cập</h2>
+			<form method="post" id="edit_form" action="/admin/user/edit/{{result._id}}" data-toggle="validator">
+			<input type="hidden" name="id" value="{{result._id}}" />
+                {{#if message}}
+                    <div class="message-success">{{message}}</div>
+                {{/if}}
+                {{#if errormessage}}
+                    <div class="message-error">{{errormessage}}</div>
+                {{/if}}
             <div class="form-group">
-		    	<label>Users name</label>
-		    	<input type="text" class="form-control" name="usersName" value="{{user.usersName}}" required>
+		    	<label>Quyền truy cập</label>
+                <div class="form-group">
+                    <input type="radio" name="role" value="admin" {{#ifCond result.Role '==' 'admin'}}checked{{/ifCond}}> Admin &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="role" value="user" {{#ifCond result.Role '==' 'user'}}checked{{/ifCond}}> User
+                </div>
 		  	</div>
-			<div class="form-group">
-		    	<label>User email</label>
-		    	<input type="text" class="form-control" name="userEmail" value="{{user.userEmail}}" readonly>
-		  	</div>
-		  	<div class="form-group">
-			    <label>User password {{#ifCond session.user '==' user.userEmail}}*{{/ifCond}}</label>
-			    <input type="password" class="form-control" name="userPassword" {{#ifCond session.user '==' user.userEmail}}required{{/ifCond}}>
-		  	</div>
-		  	<div class="form-group">
-			    <label>Password confirm {{#ifCond session.user '==' user.userEmail}}*{{/ifCond}}</label>
-			    <input type="password" data-validation-match-match="userPassword" data-validation-match-message="Password values to not match" class="form-control" name="frm_userPassword_confirm" {{#ifCond session.user '==' user.userEmail}}required{{/ifCond}}>
-		  	</div>
-            {{#isAnAdmin session.isAdmin}}
-                {{#ifCond session.user '!=' user.userEmail}}
-                    <div class="checkbox">
-                        <label>
-                            <input name="user_admin" {{#checkedState user.isAdmin}}{{/checkedState}} type="checkbox"> User is admin?
-                        </label>
-                    </div>
-                {{/ifCond}}
-            {{/isAnAdmin}}
 		  	<div class="form-group">
     			<div class="pull-right">
-      				<button type="submit" class="btn btn-success">Update</button>
+      				<button type="submit" class="btn btn-success">Cập nhật</button>
     			</div>
   			</div>
+            </form>
+            <table class="table">
+                <tbody>
+                {{#if result.UserName}}
+                    <tr class="border-bottom">
+                        <td>Tên tài khoản:</td>
+                        <td>{{result.UserName}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Name}}
+                    <tr class="border-bottom">
+                        <td>Họ tên:</td>
+                        <td>{{result.Name}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Email}}
+                    <tr class="border-bottom">
+                        <td>Email:</td>
+                        <td>{{result.Email}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Gender}}
+                    <tr class="border-bottom">
+                        <td>Giới tính:</td>
+                        <td>{{result.Gender}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Birthday}}
+                    <tr class="border-bottom">
+                        <td>Ngày sinh:</td>
+                        <td>{{formatDate result.Birthday "DD/MM/YYYY"}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Address}}
+                    <tr class="border-bottom">
+                        <td>Địa chỉ:</td>
+                        <td>{{result.Address}}</td>
+                    </tr>
+                {{/if}}
+                {{#if result.Phone}}
+                    <tr class="border-bottom">
+                        <td>SĐT:</td>
+                        <td>{{result.Phone}}</td>
+                    </tr>
+                {{/if}}
+                </tbody>
+            </table>
 		</div>
 	</div>
 </div>

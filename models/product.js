@@ -64,11 +64,14 @@ var productSchema = new Schema({
 });
 productSchema.pre('save', function(next) {
     var product = this;
-	mongoose.models['Product'].findOne({_id : product._id},function(err, results) {
+	mongoose.models['Product'].findOne({_id : product._id},function(err, result) {
 		if(err) {
             next(err);
-        } else if(results) {
-            next(new Error('ID đã được sử dụng'));
+        } else if(result) {
+			if (result === product)
+            	next(new Error('ID đã được sử dụng'));
+			else
+				next();
         } else {
 			next();
         }

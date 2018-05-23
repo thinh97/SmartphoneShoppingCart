@@ -22,7 +22,7 @@ var Order =  new Schema({
     Status:{
         type: String,
         enum: ['Completed','Pending','Failed'],
-        required:[ true, 'Vui lòng chọn kiểu tình trạng đơn hàng']
+        required:[ true, 'Vui lòng chọn tình trạng đơn hàng']
     }
 });
 

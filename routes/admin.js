@@ -36,7 +36,7 @@ router.get('/admin/user/new', admin_controller.new_user);
 
 router.get('/admin/users', admin_controller.get_users);
 
-router.post('/admin/user/update', admin_controller.update_user);
+router.post('/admin/user/edit/:id', admin_controller.update_user);
 
 router.get('/admin/user/edit/:id', admin_controller.edit_user);
 
