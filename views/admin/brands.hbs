@@ -1,0 +1,30 @@
+<div class="col-lg-9 top-margin-35">
+    <div class="col-lg-12">
+        <h2 class="text-center">Danh sách nhãn hiệu</h2>
+    </div>
+    <div class="col-lg-12">
+        <ul class="list-group">
+           {{#if errormessage}}
+               <li class="list-group-item">
+                   <h1 class="message">Đã có lỗi xảy ra! Không lấy được danh sách nhãn hiệu</h1>
+                   <div class="message">{{errormessage}}</div>
+               </li>
+           {{else}}
+               {{#if message}}
+                   <div class="message-error">Lỗi: {{message}}</div>
+               {{/if}}
+               {{#ifCond brands.length '==' 0}}
+                   <div class="col-md-12">
+                       <p class="text-danger text-center">Không có nhãn hiệu nào</p>
+                   </div>
+               {{/ifCond}}
+               {{#each brands}}
+                   <li class="list-group-item">
+                       <h4 class="pull-right text-danger" style="padding-left: 10px;"><a class="text-danger" href="/admin/brand/delete/{{this._id}}" onclick="return confirm('Bạn có chắc chắn muốn xóa nhãn hiệu này?');"> <i class="fa fa-trash-o"></i></a></h4>
+                       <h5><a href="/admin/brand/edit/{{this._id}}"><b>{{this.Name}}</b></a></h5>
+                   </li>
+               {{/each}}
+           {{/if}}
+        </ul>
+    </div>
+</div>

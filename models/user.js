@@ -9,21 +9,21 @@ var userSchema = new Schema({
 	},
     Name: {
 		type: String, 
-		required: [true,'Please enter your name'],
-		maxlength: [200, 'Your name is to long']
+		required: [true,'Vui lòng điền tên'],
+		maxlength: [200, 'Tên quả dài']
 	},
 	UserName: {
 		type: String, 
-		required: [true,'Please enter user name'],
-		maxlength: [50, 'Your user name is to long'],
+		required: [true,'Vui lòng điền tên đăng nhập'],
+		maxlength: [50, 'Tên đăng nhập quá dài'],
 		unique: true
 	},
     Email: {
 		type: String, 
-		required: [true,'Please enter your email'],
+		required: [true,'Vui lòng điền email'],
 		unique: true,
 		lowercase: true,
-		match: [/\S+@\S+\.\S+/,'Please enter a valid email address']
+		match: [/\S+@\S+\.\S+/,'Vui lòng điền đúng định dạng email']
 	},
 	Gender: {
 		type: String,
@@ -31,18 +31,18 @@ var userSchema = new Schema({
 	},
 	Birthday: {
 		type: Date,
-		required: [true,'Please enter your bithday']
+		required: [true,'Vui lòng điền ngày tháng năm sinh']
 	},
     Address: {
 		type: String, 
-		required: [true,'Please enter your address']
+		required: [true,'Vui lòng điền địa chỉ']
 	},
 	Phone: {
 		type: String,
 	},
     Password: {
 		type: String, 
-		required: true
+		required: [true,'Vui lòng điền mật khẩu']
 	},
 	Role: {
 		type: String,
@@ -66,15 +66,13 @@ userSchema.pre('save', function(next) {
 		if(err) {
             next(err);
         } else if(results) {
-            user.invalidate("UserName","Username is already in use. Please choose another one");
-            next(new Error("UserName is already in use"));
+            next(new Error('Tên tài khoản đã được sử dụng'));
         } else {
-			mongoose.models["User"].findOne({email : user.Email},function(err, results) {
+			mongoose.models['User'].findOne({email : user.Email},function(err, results) {
 				if(err) {
 					next(err);
 				} else if(results) {
-					user.invalidate("Email","Email is already in use. Please choose another one");
-					next(new Error("Email is already in use"));
+					next(new Error('Email đã được sử dụng'));
 				} else {	
                     user.Password = bcrypt.hashSync(user.Password);		
                     user._id = user.UserName.toLowerCase();

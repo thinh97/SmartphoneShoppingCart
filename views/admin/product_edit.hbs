@@ -1,0 +1,149 @@
+<div class="col-lg-9 top-margin-35">
+    <form method="post" class="form-horizontal" id="insert_form" action="/admin/product/edit/{{product._id}}" data-toggle="validator">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Upload image</button>
+                    <button id="frm_edit_product_save" class="btn btn-success">Lưu sản phẩm <i class="fa fa-floppy-o"></i></button>
+                </div>
+                <h2>Chỉnh sửa thông tin sản phẩm</h2>
+            </div>
+            {{#if message}}
+                <div class="message-success">{{message}}</div>
+            {{/if}}
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Tên sản phẩm *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="title" class="form-control" minlength="5" maxlength="200" value="{{product.Title}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Price" class="col-sm-2 control-label">Giá sản phẩm *</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">VNĐ</span>
+                        <input type="number" name="price" class="form-control" min="1000" value="{{product.Price}}" step="1000" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editor" class="col-sm-2 control-label">Mô tả sản phẩm *</label>
+                <div class="col-sm-10">
+                    <textarea id="editor" minlength="5" rows="5" name="description" class="form-control" required>{{product.Description}}</textarea>
+                </div>
+            </div>
+            <h4>Cấu hình chi tiết</h4>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label"> Màn hình *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="detailScreen" class="form-control" minlength="5" maxlength="200" value="{{product.Details.Screen}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Hệ điều hành *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="detailOS" class="form-control" minlength="5" maxlength="200" value="{{product.Details.OS}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Camera chính *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">MP</span>
+                        <input type="number" name="detailPrimaryCamera" class="form-control" min="1" value="{{product.Details.PrimaryCamera}}" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Camera phụ *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">MP</span>
+                        <input type="number" name="detailSecondaryCamera" class="form-control" min="" value="{{product.Details.SecondaryCamera}}" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">CPU *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="detailCPU" class="form-control" minlength="5" maxlength="200" value="{{product.Details.CPU}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">RAM *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">GB</span>
+                        <input type="number" name="detailRAM" class="form-control" min="1" value="{{product.Details.RAM}}" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Bộ nhớ *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">GB</span>
+                        <input type="number" name="detailMemory" class="form-control" min="1" value="{{product.Details.Memory}}" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Sim *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="detailSim" class="form-control" minlength="5" maxlength="200" value="{{product.Details.Sim}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Pin *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">mAh</span>
+                        <input type="number" name="detailBattery" class="form-control" min="100" value="{{product.Details.Battery}}" required/>
+                    </div>
+                </div>
+            </div>
+            <div id="product-images">
+                <h2>Hình ảnh sản phẩm</h2>
+                {{#if product.ImagePath}}
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-2">
+                    {{#each product.ImagePath}}
+                        <div class="col-md-3">
+                            <img src="{{this}}" class="product-main-image img-responsive">
+                        </div>
+                    {{/each}}
+                    </div>
+                </div>
+                {{else}}
+                    <h4 class="text-warning">No images have been uploaded for this product</h4>
+                {{/if}}
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{{product._id}}" />
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="upload_form" name="upload_form" action="/admin/file/upload" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Product image upload</h4>
+                </div>
+                <div class="modal-body">
+                    <span class="btn btn-info btn-file">
+                        Select file<input type="file" name="upload_file" id="upload_file">
+                    </span>
+                    <input type="hidden" id="productId" name="productId" value="{{product._id}}"/>
+                    <input type="hidden" id="directory" name="directory" value="{{product.productPermalink}}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="saveButton" name="saveButton" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -4,15 +4,15 @@ var Schema = mongoose.Schema;
 var productSchema = new Schema({
 	_id: {
 		type: String,
-		required: [true,'Please enter id']
+		required: [true,'Vui lòng điền id']
 	},
     ImagePath: [{
 		type: String, 
-		required: [true,'Please enter image path']
+		required: [true,'Vui lòng thêm hình ảnh']
 	}],
     Title: {
 		type: String, 
-		required: [true,'Please enter title name']
+		required: [true,'Vui lòng điền tiêu đề']
 	},
 	Details: {
 		Screen: String,
@@ -42,16 +42,16 @@ var productSchema = new Schema({
 	},
     Description: {
 		type: String, 
-		required: [true,'Please enter description']
+		required: [true,'Vui lòng điền mô tả']
 	},
     Price: {
 		type: Number, 
 		min:1,
-		required: [true,'Please enter a price']
+		required: [true,'Vui lòng điền giá sản phẩm']
 	},
 	Brand: {
 		type: String, 
-		required: [true,'Please enter a brand'],
+		required: [true,'Vui lòng điền mã nhãn hiệu'],
 		ref: 'Brand'
 	},
 	Views: {
@@ -64,12 +64,11 @@ var productSchema = new Schema({
 });
 productSchema.pre('save', function(next) {
     var product = this;
-	mongoose.models["Product"].findOne({_id : product._id},function(err, results) {
+	mongoose.models['Product'].findOne({_id : product._id},function(err, results) {
 		if(err) {
             next(err);
         } else if(results) {
-            product.invalidate("ID","ID is already in use. Please choose another one");
-            next(new Error("ID is already in use"));
+            next(new Error('ID đã được sử dụng'));
         } else {
 			next();
         }

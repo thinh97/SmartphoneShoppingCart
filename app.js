@@ -5,12 +5,55 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let handlebars = require('express-handlebars');
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+var passport = require('passport');
+var session = require('express-session');
+let moment = require('moment');
+var LocalStrategy = require('passport-local').Strategy;
+
 var Brand = require('./models/brand');
 var Product = require('./models/product');
+var User = require('./models/user');
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id).then(function (user) {
+        done(null, user);
+    }).catch(function (err) {
+        console.log(err);
+    })
+});
+
+passport.use(new LocalStrategy(
+    function (username,password,done) {
+        User.findOne({
+            UserName: username
+        }, function (err, user) {
+            if (err) {
+                console.log(err);
+                return done(err);
+            }
+            else if (user != null) {
+                if (bcrypt.compareSync(password, user.Password)) {
+                    return done(null, user);
+                }
+                else {
+                    return done(null, false, { message: 'Sai tên tài khoản hoặc mật khẩu. Vui lòng hãy thử lại' });
+                }
+            }
+            else {
+                return done(null, false, { message: 'Đã có lỗi xảy ra. Vui lòng thử lại sau' });
+            }
+        });
+    }
+));
 
 var app = express();
 
@@ -69,6 +112,19 @@ handlebars = handlebars.create({
             default:
                 return options.inverse(this);
             }
+        },
+        formatDate: function (date, format){
+            return moment(date).format(format);
+        },
+        getStatusColor: function (status){
+            switch(status){
+                case'Failed':
+                    return'danger';
+                case'Completed':
+                    return'success';
+                case'Pending':
+                    return'warning';
+            }
         }
     }
 });
@@ -88,54 +144,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-function getPriceRange(){
-    var arrayResults = [];
-	Product.find({},'Price',function(err,results){
-		var i = 0;
-		var count = 0;
-		var object = {};
+app.use(session({
+    secret : "secret",
+    saveUninitialized: true,
+    resave: true
+}))
 
-		while (i<results.length && 0 <= results[i].Price && results[i].Price < 5000000){
-			count += 1;
-			i += 1;
-		}
-		object = {'start':0, 'end':5000000, 'count': count};
-		arrayResults.push(object);
-
-		count = 0;
-		while (i<results.length && 5000000 <= results[i].Price && results[i].Price < 10000000){
-			count += 1;
-			i += 1;
-		}
-		object = {'start':5000000, 'end':10000000, 'count': count};
-		arrayResults.push(object);
-
-		count = 0;
-		while (i<results.length && 10000000 <= results[i].Price && results[i].Price < 20000000){
-			count += 1;
-			i += 1;
-		}
-		object = {'start':10000000, 'end':20000000, 'count': count};
-		arrayResults.push(object);
-
-		count = 0;
-		while (i<results.length && 20000000 <= results[i].Price && results[i].Price < 30000000){
-			count += 1;
-			i += 1;
-		}
-		object = {'start':20000000, 'end':30000000, 'count': count};
-		arrayResults.push(object);
-
-		count = 0;
-		while (i<results.length && 30000000 <= results[i].Price){
-			count += 1;
-			i += 1;
-		}
-		object = {'start':30000000, 'end':0, 'count': count};
-		arrayResults.push(object);
-	}).sort({Price: 1});
-	return arrayResults;
-}
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
     req.handlebars = handlebars;
@@ -143,9 +159,56 @@ app.use((req, res, next) => {
         if (err)
             return null;
         req.menuBrand = results;
+        Product.find({},'Price',function(err,results){
+            var i = 0;
+            var count = 0;
+            var object = {};
+            var arrayResults = [];
+
+            while (i<results.length && 0 <= results[i].Price && results[i].Price < 5000000){
+                count += 1;
+                i += 1;
+            }
+            object = {'start':0, 'end':5000000, 'count': count};
+            arrayResults.push(object);
+
+            count = 0;
+            while (i<results.length && 5000000 <= results[i].Price && results[i].Price < 10000000){
+                count += 1;
+                i += 1;
+            }
+            object = {'start':5000000, 'end':10000000, 'count': count};
+            arrayResults.push(object);
+
+            count = 0;
+            while (i<results.length && 10000000 <= results[i].Price && results[i].Price < 20000000){
+                count += 1;
+                i += 1;
+            }
+            object = {'start':10000000, 'end':20000000, 'count': count};
+            arrayResults.push(object);
+
+            count = 0;
+            while (i<results.length && 20000000 <= results[i].Price && results[i].Price < 30000000){
+                count += 1;
+                i += 1;
+            }
+            object = {'start':20000000, 'end':30000000, 'count': count};
+            arrayResults.push(object);
+
+            count = 0;
+            while (i<results.length && 30000000 <= results[i].Price){
+                count += 1;
+                i += 1;
+            }
+            object = {'start':30000000, 'end':0, 'count': count};
+            arrayResults.push(object);
+
+            req.priceRange = arrayResults;
+
+            next();
+        }).sort({Price: 1});
     });
-    req.priceRange = getPriceRange();
-    next();
 });
 
 app.use('/', indexRouter);
@@ -160,8 +223,12 @@ app.use((req, res, next) => {
 
 if(app.get('env') === 'development'){
     app.use((err, req, res, next) => {
+        var user = null;
+        if (req.session.passport)
+            user = req.session.passport.user;
         res.status(err.status || 500);
         res.render('error', {
+            user: user,
             message: err.message,
             error: err,
             helpers: handlebars.helpers
@@ -172,8 +239,12 @@ if(app.get('env') === 'development'){
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
+    var user = null;
+    if (req.session.passport)
+        user = req.session.passport.user;
     res.status(err.status || 500);
     res.render('error', {
+        user: user,
         message: err.message,
         error: {},
         helpers: handlebars.helpers

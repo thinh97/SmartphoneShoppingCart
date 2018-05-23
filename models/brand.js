@@ -4,12 +4,12 @@ var Schema = mongoose.Schema;
 var brandSchema = new Schema({
 	_id: {
 		type: String,
-		required: [true,'Please enter id'],
+		required: [true,'Vui lòng điền id'],
 	},
     Name: {
 		type: String, 
-		required: [true,'Please enter brand name'],
-		maxlength: [200, 'Your name is to long']
+		required: [true,'Vui lòng điền tên nhãn hiệu'],
+		maxlength: [200, 'Tên nhãn hiệu quá dài']
 	},
 	Products: [{
 		ref: 'Product',
@@ -22,8 +22,7 @@ brandSchema.pre('save', function(next) {
 		if(err) {
             next(err);
         } else if(results) {
-            brand.invalidate("ID","ID is already in use. Please choose another one");
-            next(new Error("ID is already in use"));
+            next(new Error("ID đã được sử dụng"));
         } else {
 			next();
         }

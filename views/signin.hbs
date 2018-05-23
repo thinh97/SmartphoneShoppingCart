@@ -1,13 +1,15 @@
-<div class="col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4" style="padding-top: 100px" >
+<div class="col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4" style="padding-top: 50px" >
     <form class="form-signin"  method="post" role="form" data-toggle="validator">
         <input type="hidden" name="frm_referringUrl" value="{{referringUrl}}">
-        <h2 class="form-signin-heading">Vui lòng đăng nhập</h2>
+        <h2 class="form-heading text-center">Vui lòng đăng nhập</h2>
+        <span class="col-md-12 message" id="signup-message">{{message}}</span>
         <div class="form-group">
-            <input type="text" id="username" name="username" class="form-control" placeholder="tên tài khoản" required autofocus>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Tên tài khoản" required autofocus>
         </div>
         <div class="form-group">
             <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" id="loginForm" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" id="loginForm" type="submit">Đăng nhập</button>
+        <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/users/signup">Bạn chưa có tài khoản? Click vào đây để đăng ký</a>
     </form>
 </div>

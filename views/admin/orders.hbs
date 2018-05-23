@@ -1,0 +1,35 @@
+<div class="col-lg-9 top-margin-35">
+    <div class="col-lg-12">
+        <h2 class="text-center">Danh sách đơn hàng</h2>
+    </div>
+    <div class="col-lg-12">
+        <ul class="list-group">
+            {{#if errormessage}}
+                <li class="list-group-item">
+                    <h1 class="message">Đã có lỗi xảy ra! Không lấy được danh sách sản phẩm</h1>
+                    <div>{{errormessage}}</div>
+                </li>
+            {{else}}
+                {{#if message}}
+                    <div class="message-error">Lỗi: {{message}}</div>
+                {{/if}}
+                {{#ifCond orders.length '==' 0}}
+                    <div class="col-md-12">
+                        <p class="text-danger text-center">Không có đơn hàng nào</p>
+                    </div>
+                {{/ifCond}}
+                {{#each orders}}
+                    <li class="list-group-item">
+                        <h4 class="pull-right" style="padding-left: 10px;">
+                            Status: <span class="text-{{getStatusColor this.Status}}">{{this.Status}}</span>
+                            <a class="text-danger" href="/admin/order/delete/{{this._id}}" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');"> <i class="fa fa-trash-o"></i></a>
+                        </h4>
+                        <h5>
+                            <a href="/admin/order/edit/{{this._id}}">Đơn hàng của <b>{{this.Name}}</b></a> - <span class="text-info">Ngày tạo: </span>{{formatDate this.CreateDate "DD/MM/YYYY"}} | {{#if this.DeliveryDate}}<span class="text-info">Ngày gửi:</span> {{formatDate this.DeliveryDate "DD/MM/YYYY"}}{{/if}} | <span class="text-info">SĐT:</span> {{this.MobilePhone}}
+                        </h5>
+                    </li>
+                {{/each}}
+            {{/if}}
+        </ul>
+    </div>
+</div>

@@ -14,18 +14,10 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="/stylesheets/codemirror-style.min.css">        
-        {{#if admin}}
-        <link rel="stylesheet" href="/stylesheets/admin.css">
-        {{else}}
+        <link rel="stylesheet" href="/stylesheets/codemirror-style.min.css">
         <link rel="stylesheet" href="/stylesheets/style.css">
-        {{/if}}
 	</head>
-    {{#if admin}}
-	<body class="admin">
-    {{else}}
     <body>
-    {{/if}}
 		<!-- Static navbar -->
 	    <nav class="navbar navbar-default navbar-static-top">
 			<div class="container-fluid mainNavBar">
@@ -47,17 +39,20 @@
 							</a>
 						</li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i> Tài khoản <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{#if user.UserName}}Xin chào <b>{{user.UserName}}</b>{{else}}Tài khoản{{/if}}<span class="caret"></span></a>
 								<ul class="dropdown-menu">
-								{{# if login }}
-									<li><a href="/users/profile">Thông tin tài khoản</a></li>
+								{{#if user}}
+                                    {{#ifCond user.Role '==' 'admin'}}
+                                        <li><a href="/admin">Bảng điều khiển</a></li>
+                                    {{else}}
+									    <li><a href="/users/profile">Thông tin tài khoản</a></li>
+                                    {{/ifCond}}
 									<li role="separator" class="divider"></li>
-									<li><a href="/users/logout">Đăng xuất</a></li>
-								{{ else }}
+									<li><a href="/users/signout">Đăng xuất</a></li>
+								{{else}}
 									<li><a href="/users/signup">Đăng ký</a></li>
 									<li><a href="/users/signin">Đăng nhập</a></li>
 								{{/if}}
-
 								</ul>
 						</li>
 					</ul>
@@ -67,11 +62,6 @@
         <div class="site-overlay"></div>
 		<div class="container-fluid content-body center-align" id="container">
             <div class="row">
-                {{#if admin}}
-                <div class="col-xs-12 col s12">					
-                    {{{body}}}
-                </div>
-                {{else}}
                 {{#ifCond menuBrand "||" priceRange}}
 				<div class="col col-md-2 col-xl-2 menuLeft">
                 {{#if menuBrand}}
@@ -93,7 +83,6 @@
 				</div>
                 {{/ifCond}}
                 {{{body}}}
-                {{/if}}
             </div>
 		</div>
         <input type="hidden" id="input_notify_message" value="{{message}}">

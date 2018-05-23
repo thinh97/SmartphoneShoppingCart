@@ -17,8 +17,11 @@ exports.index = function(req, res, next) {
 					threeItem = [];
 				}
 			}
+			var user = null;
+			if (req.session.passport)
+				user = req.session.passport.user;
 			res.render('index', { 
-				session: req.session,
+				user: user,
 				results: arrayResult,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -53,8 +56,11 @@ exports.list_price = function(req, res, next) {
 				}
 			}
 			arrayResult.push(threeItem);
-			res.render('index', { 
-				session: req.session,
+            var user = null;
+            if (req.session.passport)
+                user = req.session.passport.user;
+			res.render('index', {
+                user: user,
 				results: arrayResult,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -71,8 +77,11 @@ exports.product_detail = function(req, res) {
 			return res.redirect('/');
 		}
 		else{
-			res.render('product', { 
-				session: req.session,
+            var user = null;
+            if (req.session.passport)
+                user = req.session.passport.user;
+			res.render('product', {
+                user: user,
 				result: product,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,

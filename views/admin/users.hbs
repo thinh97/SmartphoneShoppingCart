@@ -1,0 +1,33 @@
+<div class="col-lg-9 top-margin-35">
+    <div class="col-lg-12">
+        <h2 class="text-center">Danh sách tài khoản</h2>
+    </div>
+	<div class="col-lg-12">
+        <ul class="list-group">
+            {{#if errormessage}}
+                <li class="list-group-item">
+                    <h1 class="message">Đã có lỗi xảy ra! Không lấy được danh sách tài khoản</h1>
+                    <div>{{errormessage}}</div>
+                </li>
+            {{else}}
+                {{#if message}}
+                    <div class="message">Lỗi: {{message}}</div>
+                {{/if}}
+                {{#ifCond users.length '==' 0}}
+                    <div class="col-md-12">
+                        <p class="text-danger text-center">Không có tài khoản nào</p>
+                    </div>
+                {{/ifCond}}
+				 {{#each users}}
+                    <li class="list-group-item">
+                        <strong>Tên tài khoản:</strong> <a href="/admin/users/edit/{{this._id}}">{{this.UserName}}</a> - <b>Email:</b> {{this.Email}}
+                        <span class="pull-right">
+                            <b>Quyền:</b>{{this.Role}}
+                                <a href="/admin/user/delete/{{this._id}}" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')"><span class="glyphicon glyphicon-trash" aria-hidden="true"/></a>
+                        </span>
+                    </li>
+				 {{/each}}
+            {{/if}}
+			</ul>
+	</div>
+</div>
