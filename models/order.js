@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var Order =  new Schema({
     UserId: {type: String, ref: 'User', required: true, maxlength:50},
+    ProductId: {type: String, ref: 'Product', required: true, maxlength:50},
     Name: {
         type: String,
         required: [true,'Vui lòng điền tên người nhận'],
@@ -10,10 +11,9 @@ var Order =  new Schema({
     },
 	MobilePhone: {type: String, required: true, minlength:10, maxlength:11},
     BillAddress: {type: String, required: [true, 'Vui lòng điền địa chỉ nhận hàng']},
-    Coupon: String,
     PaymentMethod:{
         type:String, 
-        enum: ['Payment on delivery' , 'Online payment'],
+        enum: ['Thanh toán khi nhận hàng' , 'Thanh toán online'],
         required:[ true, 'Vui lòng chọn kiểu thanh toán']
 	},
     CreateDate: Date,
@@ -21,7 +21,7 @@ var Order =  new Schema({
 	Amount:{type:Number,min:0, max:99, required: [true, 'Bạn mua quá nhiều']},
     Status:{
         type: String,
-        enum: ['Completed','Pending','Failed'],
+        enum: ['Hoàn thành','Đang xử lý','Thất bại', 'Đã hủy'],
         required:[ true, 'Vui lòng chọn tình trạng đơn hàng']
     }
 });

@@ -4,7 +4,9 @@ var admin_controller = require('../controllers/AdminController');
 
 router.get('/admin', admin_controller.index);
 
-router.get('/admin/brand/new', admin_controller.new_brand);
+router.get('/admin/brand/new', admin_controller.new_brand_get);
+
+router.post('/admin/brand/new', admin_controller.new_brand_post);
 
 router.get('/admin/brands', admin_controller.get_brand);
 

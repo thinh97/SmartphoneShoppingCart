@@ -18,7 +18,11 @@ exports.index = function(req, res, next) {
     }
 }
 
-exports.new_brand = function(req, res, next) {
+exports.new_brand_get = function(req, res, next) {
+
+}
+
+exports.new_brand_post = function(req, res, next) {
 
 }
 
@@ -99,7 +103,7 @@ exports.update_brand = function(req, res, next) {
                     });
                 }
                 else {
-                    brand.Name = req.body.name;
+                    brand.Name = req.body.nameBr;
                     brand.save(function (err, updatedBrand) {
                         if (err){
                             console.log(err);
@@ -361,11 +365,105 @@ exports.get_orders = function(req, res, next) {
 }
 
 exports.edit_order = function(req, res, next) {
-    res.redirect('/admin/orders');
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin') {
+            Order.findById({_id: req.params.id}).
+            populate('ProductId','Title Price _id').
+            populate('UserId','UserName _id').
+            exec(function (err, order) {
+                if (err) {
+                    res.render('admin/order_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    res.render('admin/order_edit', {
+                        order: order,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.update_order = function(req, res, next) {
-    res.redirect('/admin/orders');
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin'){
+            Order.findById(req.body.id, function (err, order) {
+                if (err) {
+                    console.log(err);
+                    res.render('admin/order_edit', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    order.Name = req.body.billerName;
+                    order.Amount = req.body.amount;
+                    order.BillAddress = req.body.billAddress;
+                    order.MobilePhone = req.body.mobilePhone;
+                    order.PaymentMethod = req.body.paymentMethod;
+                    order.DeliveryDate = req.body.deliveryDate;
+                    order.Status = req.body.status;
+                    order.save(function (err, updatedOrder) {
+                        if (err){
+                            console.log(err);
+                            res.render('admin/order_edit', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            Order.findById({_id: req.params.id}).
+                            populate('ProductId','Title Price _id').
+                            populate('UserId','UserName _id').
+                            exec(function (err, order) {
+                                if (err) {
+                                    res.render('admin/order_edit', {
+                                        errormessage: err.message,
+                                        layout: 'layout_admin.hbs',
+                                        user: req.session.passport.user,
+                                        helpers: req.handlebars.helpers
+                                    });
+                                }
+                                else {
+                                    res.render('admin/order_edit', {
+                                        order: order,
+                                        message: 'Đã lưu',
+                                        layout: 'layout_admin.hbs',
+                                        user: req.session.passport.user,
+                                        helpers: req.handlebars.helpers
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.delete_order = function(req, res, next) {

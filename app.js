@@ -118,12 +118,25 @@ handlebars = handlebars.create({
         },
         getStatusColor: function (status){
             switch(status){
-                case'Failed':
+                case'Thất bại':
+                case'Đã hủy':
                     return'danger';
-                case'Completed':
+                case'Hoàn thành':
                     return'success';
-                case'Pending':
+                case'Đang xử lý':
                     return'warning';
+            }
+        },
+        calculate: function (a, operator, b){
+            switch(operator){
+                case'+':
+                    return a + b;
+                case'-':
+                    return a - b;
+                case'*':
+                    return a * b;
+                case'<':
+                    return a / b;
             }
         }
     }

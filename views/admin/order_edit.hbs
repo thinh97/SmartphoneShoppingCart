@@ -1,65 +1,99 @@
-<div class="col-lg-9">
-    <div class="col-lg-12">
-        <h2>Chi tiết đơn hàng</h2>
-    </div>
-    <div class="order-layout col-md-12">
-        <div class="row">
-            <div class="col-md-12 bottom-pad-20">
-                <a id="orderStatusUpdate" class="btn btn-sm btn-success pull-left">Update status</a>
-                <a href="/admin/orders" class="btn btn-sm btn-info pull-right">Go Back</a>
+<div class="col-lg-9 top-margin-35">
+    <form method="post" class="form-horizontal" id="insert_form" action="/admin/order/edit/{{order._id}}" data-toggle="validator">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h2>Chỉnh sửa thông tin đơn hàng</h2>
             </div>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item list-group-input-pad">
-                <strong> Order status: </strong><span class="text-{{getStatusColor result.orderStatus}} pull-right">{{result.orderStatus}}</span>
-                <div class="pull-right col-md-2">
-                    <select class="form-control input-sm" id="orderStatus">
-                        <option>Completed</option>
-                        <option>Pending</option>
-                        <option>Cancelled</option>
-                        <option>Declined</option>
-                        <option>Shipped</option>
-                        <option>Pending</option>
+            {{#if message}}
+                <div class="message-success">{{message}}</div>
+            {{/if}}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Tài khoản tạo đơn hàng</label>
+                <div class="col-sm-10">
+                    <input type="text" name="userName" class="form-control" value="{{order.UserId.UserName}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Tên người nhận *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="billerName" class="form-control" minlength="5" maxlength="200" value="{{order.Name}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Tên sản phẩm</label>
+                <div class="col-sm-10">
+                    <input type="text" name="productTitle" class="form-control" value="{{order.ProductId.Title}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Đơn giá</label>
+                <div class="col-sm-10">
+                    <input type="number" name="productPrice" id="price" class="form-control" value="{{order.ProductId.Price}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Số lượng *</label>
+                <div class="col-sm-10">
+                    <input id="amount" type="number" name="amount" class="form-control" min="1" value="{{order.Amount}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Price" class="col-sm-2 control-label">Thành tiền *</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon">VNĐ</span>
+                        <input id="totalPrice" type="number" class="form-control" value="{{calculate order.ProductId.Price '*' order.Amount}}" readonly/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label"> Địa chỉ *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="billAddress" class="form-control" minlength="5" maxlength="200" value="{{order.BillAddress}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Số điện thoại *</label>
+                <div class="col-sm-10">
+                    <input type="text" name="mobilePhone" pattern="\d+" class="form-control" minlength="5" maxlength="200" value="{{order.MobilePhone}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Phương thức thanh toán *</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="paymentMethod">
+                        <option {{#ifCond order.PaymentMethod '==' 'Hoàn thành'}}selected{{/ifCond}}>Thanh toán khi nhận hàng</option>
+                        <option {{#ifCond order.PaymentMethod '==' 'Đang xử lý'}}selected{{/ifCond}}>Thanh toán online</option>
                     </select>
                 </div>
-            </li>
-            <li class="list-group-item"><strong> Order date: </strong><span class="pull-right">{{formatDate result.orderDate "DD/MM/YYYY hh:mmA"}}</span></li>
-            <li class="list-group-item"><strong> Order ID: </strong><span class="pull-right">{{result._id}}</span></li>
-            <li class="list-group-item"><strong> Payment Gateway ref: </strong><span class="pull-right">{{result.orderPaymentId}}</span></li>
-            <li class="list-group-item"><strong> Payment Gateway: </strong><span class="pull-right">{{result.orderPaymentGateway}}</span></li>
-            <li class="list-group-item"><strong> Order total amount: </strong><span class="pull-right">{{currencySymbol config.currencySymbol}}{{formatAmount result.orderTotal}}</span></li>
-            <li class="list-group-item"><strong> Email address: </strong><span class="pull-right">{{result.orderEmail}}</span></li>
-            <li class="list-group-item"><strong> First name: </strong><span class="pull-right">{{result.orderFirstname}}</span></li>
-            <li class="list-group-item"><strong> Last name: </strong><span class="pull-right">{{result.orderLastname}}</span></li>
-            <li class="list-group-item"><strong> Address 1: </strong><span class="pull-right">{{result.orderAddr1}}</span></li>
-            <li class="list-group-item"><strong> Address 2: </strong><span class="pull-right">{{result.orderAddr2}}</span></li>
-            <li class="list-group-item"><strong> Country: </strong><span class="pull-right">{{result.orderCountry}}</span></li>
-            <li class="list-group-item"><strong> State: </strong><span class="pull-right">{{result.orderState}}</span></li>
-            <li class="list-group-item"><strong> Postcode/Zipcode: </strong><span class="pull-right">{{result.orderPostcode}}</span></li>
-            <li class="list-group-item"><strong> Phone number: </strong><span class="pull-right">{{result.orderPhoneNumber}}</span></li>
-
-            <li class="list-group-item">&nbsp;</li>
-            <li class="list-group-item"><strong class="text-info">Products ordered</strong></li>
-            {{#each result.orderProducts}}
-                <li class="list-group-item">
-                    {{this.quantity}} x {{this.title}}
-                    {{#if productOptions}}
-                        &nbsp; > &nbsp;
-                        <span class="text-warning"> Options: </span>
-                        (
-                        {{#each productOptions}}
-                            {{#if @last}}
-                                {{this}}
-                            {{else}}
-                                {{this}} /
-                            {{/if}}
-                        {{/each}}
-                        )
-                    {{/if}}
-                    <div class="pull-right">{{currencySymbol config.currencySymbol}}{{formatAmount this.totalItemPrice}}</div>
-                </li>
-            {{/each}}
-        </ul>
-        <input type="hidden" id="order_id" value="{{result._id}}">
-    </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Ngày tạo</label>
+                <div class="col-sm-10">
+                    <input type="text" name="createDate" class="form-control" value="{{formatDate order.CreateDate 'DD/MM/YYYY'}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Ngày giao hàng *</label>
+                <div class="col-sm-10">
+                    <input type="date" name="deliveryDate" class="form-control" value="{{formatDate order.DeliveryDate "YYYY-MM-DD"}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Trạng thái *</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="status">
+                        <option {{#ifCond order.Status '==' 'Hoàn thành'}}selected{{/ifCond}}>Hoàn thành</option>
+                        <option {{#ifCond order.Status '==' 'Đang xử lý'}}selected{{/ifCond}}>Đang xử lý</option>
+                        <option {{#ifCond order.Status '==' 'Thất bại'}}selected{{/ifCond}}>Thất bại</option>
+                        <option {{#ifCond order.Status '==' 'Đã hủy'}}selected{{/ifCond}}>Đã hủy</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-10 col-sm-offset-5">
+                <button id="frm_edit_order_save" class="btn btn-success">Lưu  <i class="fa fa-floppy-o"></i></button>
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{{order._id}}" />
+    </form>
 </div>
