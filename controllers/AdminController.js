@@ -18,12 +18,75 @@ exports.index = function(req, res, next) {
     }
 }
 
-exports.new_brand_get = function(req, res, next) {
-
+exports.create_brand_get = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin') {
+                    res.render('admin/brand_new', {
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
-exports.new_brand_post = function(req, res, next) {
+exports.create_brand_post = function(req, res, next) {
 
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin'){
+            Brand.findOne({Name: req.body.nameBr}, function (err, brand) {
+                if (err) {
+                    console.log(err);
+                    res.render('admin/brand_new', {
+                        errormessage: err.message,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else {
+                    var brand= new Brand(
+                        {Name: req.body.nameBr ,
+                        _id: req.body.id
+                        }
+                    )
+                   
+                    brand.save(function (err, createBrand) {
+                        if (err){
+                            console.log(err);
+                            res.render('admin/brand_new', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            res.render('admin/brand_new', {
+                                brand: createBrand,
+                                message: 'Đã lưu',
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
 }
 
 exports.get_brand = function(req, res, next) {
@@ -158,12 +221,31 @@ exports.delete_brand = function(req, res, next) {
     }
 }
 
-exports.new_product = function(req, res, next) {
+exports.create_new_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
-            Product.findOne({_id: req.params.id},function (err, product) {
+                    res.render('admin/product_new', {
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+        }
+        else {
+            res.redirect('/users/signin');
+        }
+    }
+    else{
+        res.redirect('/users/signin');
+    }
+}
+
+exports.create_new_product_post = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.session.passport.user.Role === 'admin'){
+            Product.findById(req.body.id, function (err, product) {
                 if (err) {
-                    res.render('admin/product', {
+                    console.log(err);
+                    res.render('admin/product_new', {
                         errormessage: err.message,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
@@ -171,11 +253,45 @@ exports.new_product = function(req, res, next) {
                     });
                 }
                 else {
-                    res.render('admin/product', {
-                        product: product,
-                        layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
-                        helpers: req.handlebars.helpers
+                    var product = new Product(
+                        {
+                            _id:req.body.id,
+                            Title: req.body.title,
+                            Price: req.body.price,
+                            Description: req.body.description,
+                        }
+                    )                  
+                    product.Title = req.body.title;
+                    product.Price = req.body.price;
+                    product.Description = req.body.description;
+                    product.Details.Screen = req.body.detailScreen;
+                    product.Details.OS = req.body.detailOS;
+                    product.Details.PrimaryCamera = req.body.detailPrimaryCamera;
+                    product.Details.SecondaryCamera = req.body.detailSecondaryCamera;
+                    product.Details.CPU = req.body.detailCPU;
+                    product.Details.RAM = req.body.detailRAM;
+                    product.Details.Memory = req.body.detailMemory;
+                    product.Details.Sim = req.body.detailSim;
+                    product.Details.Bettery = req.body.detailBattery;
+                    product.save(function (err, updatedProduct) {
+                        if (err){
+                            console.log(err);
+                            res.render('admin/product_new', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            res.render('admin/product_new', {
+                                product: updatedProduct,
+                                message: 'Đã lưu',
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
                     });
                 }
             });
@@ -188,7 +304,6 @@ exports.new_product = function(req, res, next) {
         res.redirect('/users/signin');
     }
 }
-
 exports.get_products = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {

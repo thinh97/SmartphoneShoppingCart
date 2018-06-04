@@ -4,9 +4,9 @@ var admin_controller = require('../controllers/AdminController');
 
 router.get('/admin', admin_controller.index);
 
-router.get('/admin/brand/new', admin_controller.new_brand_get);
+router.get('/admin/brand/new', admin_controller.create_brand_get);
 
-router.post('/admin/brand/new', admin_controller.new_brand_post);
+router.post('/admin/brand/new', admin_controller.create_brand_post);
 
 router.get('/admin/brands', admin_controller.get_brand);
 
@@ -16,7 +16,10 @@ router.post('/admin/brand/edit/:id', admin_controller.update_brand);
 
 router.get('/admin/brand/delete/:id', admin_controller.delete_brand);
 
-router.get('/admin/product/new', admin_controller.new_product);
+router.get('/admin/product/new', admin_controller.create_new_product_get);
+
+router.post('/admin/product/new', admin_controller.create_new_product_post);
+
 
 router.get('/admin/products', admin_controller.get_products);
 
