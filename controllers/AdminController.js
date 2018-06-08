@@ -89,7 +89,7 @@ exports.create_brand_post = function(req, res, next) {
     }
 }
 
-exports.get_brand = function(req, res, next) {
+exports.list_brands_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Brand.find(function (err, brands) {
@@ -121,7 +121,7 @@ exports.get_brand = function(req, res, next) {
     }
 }
 
-exports.edit_brand = function(req, res, next) {
+exports.edit_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Brand.findOne({_id: req.params.id},function (err, brand) {
@@ -152,7 +152,7 @@ exports.edit_brand = function(req, res, next) {
     }
 }
 
-exports.update_brand = function(req, res, next) {
+exports.edit_brand_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
             var updateBrand = new Brand({
@@ -189,7 +189,7 @@ exports.update_brand = function(req, res, next) {
     }
 }
 
-exports.delete_brand = function(req, res, next) {
+exports.delete_brand_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Brand.deleteOne({_id: req.params.id}, function (err) {
@@ -320,7 +320,8 @@ exports.create_new_product_post = function(req, res, next) {
         res.redirect('/users/signin');
     }
 }
-exports.get_products = function(req, res, next) {
+
+exports.list_products_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Product.find(function (err, results) {
@@ -352,7 +353,7 @@ exports.get_products = function(req, res, next) {
     }
 }
 
-exports.edit_product = function(req, res, next) {
+exports.edit_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Product.findOne({_id: req.params.id},function (err, product) {
@@ -396,7 +397,7 @@ exports.edit_product = function(req, res, next) {
     }
 }
 
-exports.update_product = function(req, res, next) {
+exports.edit_product_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
             var updateProduct = new Product({
@@ -461,7 +462,7 @@ exports.update_product = function(req, res, next) {
     }
 }
 
-exports.delete_product = function(req, res, next) {
+exports.delete_product_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Product.deleteOne({_id: req.params.id}, function (err) {
@@ -483,7 +484,7 @@ exports.delete_product = function(req, res, next) {
     }
 }
 
-exports.get_orders = function(req, res, next) {
+exports.list_orders_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Order.find(function (err, orders) {
@@ -515,7 +516,7 @@ exports.get_orders = function(req, res, next) {
     }
 }
 
-exports.edit_order = function(req, res, next) {
+exports.edit_order_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Order.findById({_id: req.params.id}).
@@ -549,7 +550,7 @@ exports.edit_order = function(req, res, next) {
     }
 }
 
-exports.update_order = function(req, res, next) {
+exports.edit_order_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
             var updateOrder = new Order({
@@ -608,7 +609,7 @@ exports.update_order = function(req, res, next) {
     }
 }
 
-exports.delete_order = function(req, res, next) {
+exports.delete_order_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Order.deleteOne({_id: req.params.id}, function (err) {
@@ -630,20 +631,7 @@ exports.delete_order = function(req, res, next) {
     }
 }
 
-exports.new_user = function(req, res, next) {
-    //if
-
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
-    res.render('admin', {
-        layout: 'layout_admin.hbs',
-        user: user,
-        helpers: req.handlebars.helpers
-    });
-}
-
-exports.get_users = function(req, res, next) {
+exports.list_users_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             User.find(function (err, users) {
@@ -675,7 +663,7 @@ exports.get_users = function(req, res, next) {
     }
 }
 
-exports.edit_user = function(req, res, next) {
+exports.edit_user_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             User.findById(req.params.id, function (err, result) {
@@ -706,7 +694,7 @@ exports.edit_user = function(req, res, next) {
     }
 }
 
-exports.update_user = function(req, res, next) {
+exports.edit_user_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
             User.findByIdAndUpdate(req.body.id, {Role: req.body.role}, {new: true, runValidators: true}, function (err,updatedUser) {
@@ -739,7 +727,7 @@ exports.update_user = function(req, res, next) {
     }
 }
 
-exports.delete_user = function(req, res, next) {
+exports.delete_user_post = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             User.deleteOne({_id: req.params.id}, function (err) {
