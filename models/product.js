@@ -68,7 +68,7 @@ productSchema.pre('save', function(next) {
 		if(err) {
             next(err);
         } else if(result) {
-			if (result === product)
+			if (result._id === product._id)
             	next(new Error('ID đã được sử dụng'));
 			else
 				next();

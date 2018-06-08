@@ -66,14 +66,14 @@ userSchema.pre('save', function(next) {
 		if(err) {
             next(err);
         } else if(result) {
-			if (user === result)
+			if (user.UserName === result.UserName)
             	next(new Error('Tên tài khoản đã được sử dụng'));
         } else {
 			mongoose.models['User'].findOne({email : user.Email},function(err, result) {
 				if(err) {
 					next(err);
 				} else if(result) {
-					if (user === result)
+					if (user.Email === result.Email)
 						next(new Error('Email đã được sử dụng'));
 				}
 			});

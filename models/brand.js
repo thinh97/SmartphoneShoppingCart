@@ -22,7 +22,7 @@ brandSchema.pre('save', function(next) {
 		if(err) {
             next(err);
         } else if(result) {
-			if (brand === result)
+			if (brand._id === result._id)
             	next(new Error("ID đã được sử dụng"));
 			else
 				next();

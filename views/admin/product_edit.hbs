@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label for="Price" class="col-sm-2 control-label">Giá sản phẩm *</label>
-                <div class="col-sm-6">
+                <div class="col-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon">VNĐ</span>
                         <input type="number" name="price" class="form-control" min="1000" value="{{product.Price}}" step="1000" required/>
@@ -30,6 +30,16 @@
                 <label for="editor" class="col-sm-2 control-label">Mô tả sản phẩm *</label>
                 <div class="col-sm-10">
                     <textarea id="editor" minlength="5" rows="5" name="description" class="form-control" required>{{product.Description}}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Thương hiệu *</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="brand">
+                    {{#each brands}}
+                        <option value="{{this._id}}" {{#ifCond ../product.Brand '==' this._id}}selected{{/ifCond}}>{{this.Name}}</option>
+                    {{/each}}
+                    </select>
                 </div>
             </div>
             <h4>Cấu hình chi tiết</h4>
@@ -115,11 +125,12 @@
                     </div>
                 </div>
                 {{else}}
-                    <h4 class="text-warning">No images have been uploaded for this product</h4>
+                    <h4 class="text-warning">Chưa có hình ảnh</h4>
                 {{/if}}
             </div>
         </div>
         <input type="hidden" name="id" value="{{product._id}}" />
+        <input type="hidden" name="imagepath" value="{{product.ImagePath}}" />
     </form>
 </div>
 

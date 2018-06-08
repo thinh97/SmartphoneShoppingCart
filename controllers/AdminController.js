@@ -21,11 +21,11 @@ exports.index = function(req, res, next) {
 exports.create_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
-                    res.render('admin/brand_new', {
-                        layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
-                        helpers: req.handlebars.helpers
-                    });
+            res.render('admin/brand_new', {
+                layout: 'layout_admin.hbs',
+                user: req.session.passport.user,
+                helpers: req.handlebars.helpers
+            });
         }
         else {
             res.redirect('/users/signin');
@@ -155,7 +155,11 @@ exports.edit_brand = function(req, res, next) {
 exports.update_brand = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
-            Brand.findById(req.body.id, function (err, brand) {
+            var updateBrand = new Brand({
+                _id: req.body.id,
+                Name: req.body.nameBr
+            });
+            Brand.findByIdAndUpdate(req.body.id, updateBrand, {new: true, runValidators: true}, function (err,updatedBrand) {
                 if (err) {
                     console.log(err);
                     res.render('admin/brand_edit', {
@@ -166,26 +170,12 @@ exports.update_brand = function(req, res, next) {
                     });
                 }
                 else {
-                    brand.Name = req.body.nameBr;
-                    brand.save(function (err, updatedBrand) {
-                        if (err){
-                            console.log(err);
-                            res.render('admin/brand_edit', {
-                                errormessage: err.message,
-                                layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
-                                helpers: req.handlebars.helpers
-                            });
-                        }
-                        else{
-                            res.render('admin/brand_edit', {
-                                brand: updatedBrand,
-                                message: 'Đã lưu',
-                                layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
-                                helpers: req.handlebars.helpers
-                            });
-                        }
+                    res.render('admin/brand_edit', {
+                        brand: updatedBrand,
+                        message: 'Đã lưu',
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
                     });
                 }
             });
@@ -224,11 +214,24 @@ exports.delete_brand = function(req, res, next) {
 exports.create_new_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
-                    res.render('admin/product_new', {
+            Brand.find(function (error, brands) {
+                if (error){
+                    res.render('admin/product_edit', {
+                        errormessage: err.message,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
                         helpers: req.handlebars.helpers
                     });
+                }
+                else{
+                    res.render('admin/product_new', {
+                        brands: brands,
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
         }
         else {
             res.redirect('/users/signin');
@@ -255,7 +258,7 @@ exports.create_new_product_post = function(req, res, next) {
                 else {
                     var product = new Product(
                         {
-                            _id:req.body.id,
+                            _id: req.body.id,
                             Title: req.body.title,
                             Price: req.body.price,
                             Description: req.body.description,
@@ -272,7 +275,7 @@ exports.create_new_product_post = function(req, res, next) {
                     product.Details.RAM = req.body.detailRAM;
                     product.Details.Memory = req.body.detailMemory;
                     product.Details.Sim = req.body.detailSim;
-                    product.Details.Bettery = req.body.detailBattery;
+                    product.Details.Battery = req.body.detailBattery;
                     product.save(function (err, updatedProduct) {
                         if (err){
                             console.log(err);
@@ -284,12 +287,25 @@ exports.create_new_product_post = function(req, res, next) {
                             });
                         }
                         else{
-                            res.render('admin/product_new', {
-                                product: updatedProduct,
-                                message: 'Đã lưu',
-                                layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
-                                helpers: req.handlebars.helpers
+                            Brand.find(function (error, brands) {
+                                if (error){
+                                    res.render('admin/product_edit', {
+                                        errormessage: err.message,
+                                        layout: 'layout_admin.hbs',
+                                        user: req.session.passport.user,
+                                        helpers: req.handlebars.helpers
+                                    });
+                                }
+                                else{
+                                    res.render('admin/product_new', {
+                                        product: updatedProduct,
+                                        brands: brands,
+                                        message: 'Đã lưu',
+                                        layout: 'layout_admin.hbs',
+                                        user: req.session.passport.user,
+                                        helpers: req.handlebars.helpers
+                                    });
+                                }
                             });
                         }
                     });
@@ -349,11 +365,24 @@ exports.edit_product = function(req, res, next) {
                     });
                 }
                 else {
-                    res.render('admin/product_edit', {
-                        product: product,
-                        layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
-                        helpers: req.handlebars.helpers
+                    Brand.find(function (error, brands) {
+                        if (error){
+                            res.render('admin/product_edit', {
+                                errormessage: err.message,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
+                        else{
+                            res.render('admin/product_edit', {
+                                product: product,
+                                brands: brands,
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
+                            });
+                        }
                     });
                 }
             });
@@ -370,7 +399,25 @@ exports.edit_product = function(req, res, next) {
 exports.update_product = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
-            Product.findById(req.body.id, function (err, product) {
+            var updateProduct = new Product({
+                _id: req.body.id,
+                ImagePath: req.body.imagepath.split(","),
+                Title: req.body.title,
+                Price: req.body.price,
+                Description: req.body.description,
+                Brand: req.body.brand,
+            });
+            updateProduct.Details.Screen = req.body.detailScreen;
+            updateProduct.Details.OS = req.body.detailOS;
+            updateProduct.Details.PrimaryCamera = req.body.detailPrimaryCamera;
+            updateProduct.Details.SecondaryCamera = req.body.detailSecondaryCamera;
+            updateProduct.Details.CPU = req.body.detailCPU;
+            updateProduct.Details.RAM = req.body.detailRAM;
+            updateProduct.Details.Memory = req.body.detailMemory;
+            updateProduct.Details.Sim = req.body.detailSim;
+            updateProduct.Details.Battery = req.body.detailBattery;
+
+            Product.findByIdAndUpdate(req.body.id, updateProduct, {new: true, runValidators: true}, function (err,updatedProduct) {
                 if (err) {
                     console.log(err);
                     res.render('admin/product_edit', {
@@ -381,20 +428,8 @@ exports.update_product = function(req, res, next) {
                     });
                 }
                 else {
-                    product.Title = req.body.title;
-                    product.Price = req.body.price;
-                    product.Description = req.body.description;
-                    product.Details.Screen = req.body.detailScreen;
-                    product.Details.OS = req.body.detailOS;
-                    product.Details.PrimaryCamera = req.body.detailPrimaryCamera;
-                    product.Details.SecondaryCamera = req.body.detailSecondaryCamera;
-                    product.Details.CPU = req.body.detailCPU;
-                    product.Details.RAM = req.body.detailRAM;
-                    product.Details.Memory = req.body.detailMemory;
-                    product.Details.Sim = req.body.detailSim;
-                    product.Details.Bettery = req.body.detailBattery;
-                    product.save(function (err, updatedProduct) {
-                        if (err){
+                    Brand.find(function (error, brands) {
+                        if (error){
                             console.log(err);
                             res.render('admin/product_edit', {
                                 errormessage: err.message,
@@ -406,6 +441,7 @@ exports.update_product = function(req, res, next) {
                         else{
                             res.render('admin/product_edit', {
                                 product: updatedProduct,
+                                brands: brands,
                                 message: 'Đã lưu',
                                 layout: 'layout_admin.hbs',
                                 user: req.session.passport.user,
@@ -516,7 +552,18 @@ exports.edit_order = function(req, res, next) {
 exports.update_order = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
-            Order.findById(req.body.id, function (err, order) {
+            var updateOrder = new Order({
+                _id: req.body.id,
+                Name: req.body.billerName,
+                Amount: req.body.amount,
+                BillAddress: req.body.billAddress,
+                MobilePhone: req.body.mobilePhone,
+                PaymentMethod: req.body.paymentMethod,
+                CreateDate: req.body.createDate,
+                DeliveryDate: req.body.deliveryDate,
+                Status: req.body.status,
+            });
+            Order.findByIdAndUpdate(req.body.id, updateOrder, {new: true, runValidators: true}, function (err,updatedOrder) {
                 if (err) {
                     console.log(err);
                     res.render('admin/order_edit', {
@@ -527,16 +574,11 @@ exports.update_order = function(req, res, next) {
                     });
                 }
                 else {
-                    order.Name = req.body.billerName;
-                    order.Amount = req.body.amount;
-                    order.BillAddress = req.body.billAddress;
-                    order.MobilePhone = req.body.mobilePhone;
-                    order.PaymentMethod = req.body.paymentMethod;
-                    order.DeliveryDate = req.body.deliveryDate;
-                    order.Status = req.body.status;
-                    order.save(function (err, updatedOrder) {
-                        if (err){
-                            console.log(err);
+                    Order.findById({_id: req.body.id}).
+                    populate('ProductId','Title Price _id').
+                    populate('UserId','UserName _id').
+                    exec(function (err, order) {
+                        if (err) {
                             res.render('admin/order_edit', {
                                 errormessage: err.message,
                                 layout: 'layout_admin.hbs',
@@ -544,28 +586,13 @@ exports.update_order = function(req, res, next) {
                                 helpers: req.handlebars.helpers
                             });
                         }
-                        else{
-                            Order.findById({_id: req.params.id}).
-                            populate('ProductId','Title Price _id').
-                            populate('UserId','UserName _id').
-                            exec(function (err, order) {
-                                if (err) {
-                                    res.render('admin/order_edit', {
-                                        errormessage: err.message,
-                                        layout: 'layout_admin.hbs',
-                                        user: req.session.passport.user,
-                                        helpers: req.handlebars.helpers
-                                    });
-                                }
-                                else {
-                                    res.render('admin/order_edit', {
-                                        order: order,
-                                        message: 'Đã lưu',
-                                        layout: 'layout_admin.hbs',
-                                        user: req.session.passport.user,
-                                        helpers: req.handlebars.helpers
-                                    });
-                                }
+                        else {
+                            res.render('admin/order_edit', {
+                                order: order,
+                                message: 'Đã lưu',
+                                layout: 'layout_admin.hbs',
+                                user: req.session.passport.user,
+                                helpers: req.handlebars.helpers
                             });
                         }
                     });
@@ -682,7 +709,7 @@ exports.edit_user = function(req, res, next) {
 exports.update_user = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin'){
-            User.findById(req.body.id,function (err, user) {
+            User.findByIdAndUpdate(req.body.id, {Role: req.body.role}, {new: true, runValidators: true}, function (err,updatedUser) {
                 if (err) {
                     console.log(err);
                     res.render('admin/product_edit', {
@@ -693,26 +720,12 @@ exports.update_user = function(req, res, next) {
                     });
                 }
                 else {
-                    user.Role = req.body.role;
-                    user.save(function (err, updatedUser) {
-                        if (err){
-                            console.log(err);
-                            res.render('admin/user_edit', {
-                                errormessage: err.message,
-                                layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
-                                helpers: req.handlebars.helpers
-                            });
-                        }
-                        else{
-                            res.render('admin/user_edit', {
-                                result: updatedUser,
-                                message: 'Đã lưu',
-                                layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
-                                helpers: req.handlebars.helpers
-                            });
-                        }
+                    res.render('admin/user_edit', {
+                        result: updatedUser,
+                        message: 'Đã lưu',
+                        layout: 'layout_admin.hbs',
+                        user: req.session.passport.user,
+                        helpers: req.handlebars.helpers
                     });
                 }
             });

@@ -62,8 +62,8 @@
                 <label for="title" class="col-sm-2 control-label">Phương thức thanh toán *</label>
                 <div class="col-sm-10">
                     <select class="form-control" name="paymentMethod">
-                        <option {{#ifCond order.PaymentMethod '==' 'Hoàn thành'}}selected{{/ifCond}}>Thanh toán khi nhận hàng</option>
-                        <option {{#ifCond order.PaymentMethod '==' 'Đang xử lý'}}selected{{/ifCond}}>Thanh toán online</option>
+                        <option {{#ifCond order.PaymentMethod '==' 'Thanh toán khi nhận hàng'}}selected{{/ifCond}}>Thanh toán khi nhận hàng</option>
+                        <option {{#ifCond order.PaymentMethod '==' 'Thanh toán online'}}selected{{/ifCond}}>Thanh toán online</option>
                     </select>
                 </div>
             </div>
