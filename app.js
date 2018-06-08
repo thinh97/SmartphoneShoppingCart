@@ -49,7 +49,7 @@ passport.use(new LocalStrategy(
                 }
             }
             else {
-                return done(null, false, { message: 'Đã có lỗi xảy ra. Vui lòng thử lại sau' });
+                return done(null, false, { message: 'Sai tên tài khoản hoặc mật khẩu. Vui lòng hãy thử lại' });
             }
         });
     }

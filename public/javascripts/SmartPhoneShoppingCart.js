@@ -45,10 +45,12 @@ $('.qty-btn-minus').on('click', function(){
 $('.qty-btn-plus').on('click', function(){
     $('#product_quantity').val(parseInt($('#product_quantity').val()) + 1);
 });
-
-$('#password-confirm').blur(function () {
-    if ($('#password-confirm').val() !== $('#password').val())
-        $('#signup-message').text('Mật khẩu không khớp');
-    else
-        $('#signup-message').text('');
-});
+$('input[type=date]').on('change', function() {
+    if (this.value !== '') {
+        this.setAttribute(
+            'data-date',
+            moment(this.value, 'YYYY-MM-DD')
+                .format(this.getAttribute('data-date-format'))
+        )
+    }
+}).trigger('change');

@@ -9,8 +9,8 @@
             {{/if}}
             {{#if errormessage}}
                 <li class="list-group-item">
-                    <h1 class="message">Đã có lỗi xảy ra!</h1>
-                    <div class="message">{{errormessage}}</div>
+                    <h1 class="message-error">Đã có lỗi xảy ra!</h1>
+                    <div class="message-error">{{errormessage}}</div>
                 </li>
             {{/if}}
             <div class="form-group">
@@ -82,7 +82,7 @@
             <div class="form-group">
                 <label for="title" class="col-sm-2 control-label">Ngày giao hàng *</label>
                 <div class="col-sm-10">
-                    <input type="date" name="deliveryDate" class="form-control" value="{{formatDate order.DeliveryDate "YYYY-MM-DD"}}" required/>
+                    <input type="date" name="deliveryDate" class="form-control" data-date="DD/MM/YYYY" data-date-format="DD/MM/YYYY" value="{{formatDate order.DeliveryDate "YYYY-MM-DD"}}" required/>
                 </div>
             </div>
             <div class="form-group">

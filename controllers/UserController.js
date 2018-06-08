@@ -47,31 +47,40 @@ exports.signup_get = function(req, res, next) {
 }
 
 exports.signup_post = function(req, res, next) {
-    var newUser = new User({
-        Name: req.body.name,
-        UserName: req.body.username,
-        Email: req.body.email,
-        Gender: req.body.gender,
-        Birthday: req.body.dob,
-        Address: req.body.address,
-        Password: req.body.password,
-        Role: "user",
-        Cart: null
-    });
-    newUser.save(function (err) {
-        var message = null;
-        var flag = null;
-        if (err){
-            message = err.message;
-            flag = true;
-            console.log(flag);
-        }
-        res.render('signup',{
+    if (req.body.password === req.body.passwordConfirm) {
+        var newUser = new User({
+            Name: req.body.name,
+            UserName: req.body.username,
+            Email: req.body.email,
+            Gender: req.body.gender,
+            Birthday: req.body.dob,
+            Address: req.body.address,
+            Password: req.body.password,
+            Role: "user",
+            Cart: null
+        });
+        newUser.save(function (err) {
+            var message = null;
+            var flag = true;
+            if (err) {
+                errormessage = err.message;
+                flag = null;
+                console.log(flag);
+            }
+            res.render('signup', {
+                New: flag,
+                message: message,
+                helpers: req.handlebars.helpers
+            });
+        });
+    }
+    else{
+        res.render('signup', {
             New: flag,
-            message: message,
+            errormessage: "Mật khẩu không khớp",
             helpers: req.handlebars.helpers
         });
-    });
+    }
 }
 
 exports.signout_get = function(req, res, next) {
@@ -98,7 +107,7 @@ exports.profile_get = function(req, res, next) {
         res.redirect('/users/signin');
 }
 
-exports.profile_post = function(req, res, next) {
+exports.profile_changeinfo_post = function(req, res, next) {
     if (req.isAuthenticated()){
         var user = req.session.passport.user;
         user.Name = req.body.name;
@@ -108,7 +117,6 @@ exports.profile_post = function(req, res, next) {
         user.Birthday = req.body.dob;
         user.Address = req.body.address;
         user.Phone = req.body.phone;
-        //user.Password = req.body.password,
         User.findByIdAndUpdate(user._id, user, {new: true, runValidators: true}, function (err,updatedUser) {
             if (err) {
                 console.log(err);
@@ -126,6 +134,42 @@ exports.profile_post = function(req, res, next) {
                 });
             }
         });
+    }
+    else
+        res.redirect('/users/signin');
+}
+
+exports.profile_changepassword_post = function(req, res, next) {
+    if (req.isAuthenticated()){
+        var user = req.session.passport.user;
+        if (bcrypt.compareSync(req.body.oldPassword, user.Password)){
+            if (req.body.newPassword === req.body.newPasswordConfirm){
+                User.findByIdAndUpdate(user._id, {Password: bcrypt.hashSync(req.body.newPassword)}, {new: true, runValidators: true}, function (err,updatedUser) {
+                    if (err) {
+                        console.log(err);
+                        res.render('profile', {
+                            errormessage: err.message,
+                            user: req.session.passport.user,
+                            helpers: req.handlebars.helpers
+                        });
+                    }
+                    else {
+                        res.render('profile', {
+                            message: 'Thay đổi mật khẩu thành công',
+                            user: updatedUser,
+                            helpers: req.handlebars.helpers
+                        });
+                    }
+                });
+            }
+            else{
+                res.render('profile', {
+                    errormessage: 'Mật khẩu không khớp',
+                    user: updatedUser,
+                    helpers: req.handlebars.helpers
+                });
+            }
+        }
     }
     else
         res.redirect('/users/signin');

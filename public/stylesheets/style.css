@@ -646,3 +646,16 @@ a {
 .list-group-item strong{
     font-size: 20px;
 }
+input:before {
+    content: attr(data-date);
+    display: inline-block;
+}
+input::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
+    display: none;
+}
+input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 20px;
+    color: black;
+    opacity: 1;
+}

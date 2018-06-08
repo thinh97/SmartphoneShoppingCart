@@ -1,38 +1,76 @@
 {{#if New}}
-    <div class="col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4">
-        <form class="form-signup"  method="post" role="form" data-toggle="validator">
+    <div class="col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+        <form class="form-horizontal" method="post" role="form" data-toggle="validator">
             <h2 class="form-heading text-center">Đăng ký tài khoản</h2>
-            <span class="col-md-12 message" id="signup-message">{{message}}</span>
+            <div class="message-success">{{message}}</div>
+            <div class="message-error" id="signup-message">{{errormessage}}</div>
             <div class="form-group">
-                <input type="text" id="username" name="username" class="form-control" placeholder="Tên tài khoản" required autofocus>
+                <label for="title" class="col-sm-3 control-label">Tên tài khoản</label>
+                <div class="col-sm-9">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Tên tài khoản" required data-error="Vui lòng điền tên đăng nhập">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                <label for="password" class="col-sm-3 control-label">Mật khẩu</label>
+                <div class="col-sm-9">
+                    <input type="password" id="password" name="password" class="form-control" data-minlength="6" data-minlength-error="Mật khẩu phải dài từ 6 ký tự trở lên" placeholder="Mật khẩu" required data-error="Vui lòng điền mật khẩu">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="password" id="password-confirm" name="password-confirm" class="form-control" placeholder="Xác nhận mật khẩu" required>
+                <label for="passwordConfirm" class="col-sm-3 control-label">Xác nhận mật khẩu</label>
+                <div class="col-sm-9">
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control" data-match="#password" data-match-error="Mật khẩu không khớp" placeholder="Xác nhận mật khẩu" required data-error="Vui lòng xác nhận mật khẩu">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" required data-error="Vui lòng điền email">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="text" id="name" name="name" class="form-control" placeholder="Họ tên" required>
+                <label for="name" class="col-sm-3 control-label">Họ và tên</label>
+                <div class="col-sm-9">
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Họ và tên" required data-error="Vui lòng điền họ và tên">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="radio" name="gender" value="Male" checked> Nam &nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="gender" value="Female"> Nữ
+                <label for="gender" class="col-sm-3 control-label">Giới tính</label>
+                <div class="col-sm-9">
+                    <input type="radio" name="gender" value="Male" checked> Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="gender" value="Female"> Nữ
+                </div>
             </div>
             <div class="form-group">
-                <input type="date" id="dob" name="dob" class="form-control" min="1980-01-01" max="{{CurentDate}}" placeholder="Ngày-Tháng-Năm" required>
+                <label for="dob" class="col-sm-3 control-label">Ngày sinh</label>
+                <div class="col-sm-9">
+                    <input type="date" id="dob" name="dob" data-date="DD/MM/YYYY" data-date-format="DD/MM/YYYY" class="form-control" min="1980-01-01" max="{{CurentDate}}" required data-error="Vui lòng chọn ngày sinh">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="text" id="address" name="address" class="form-control" placeholder="Địa chỉ" required>
+                <label for="address" class="col-sm-3 control-label">Địa chỉ</label>
+                <div class="col-sm-9">
+                    <input type="text" id="address" name="address" class="form-control" placeholder="Địa chỉ" required data-error="Vui lòng điền địa chỉ">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="number" id="phone" name="phone" class="form-control" placeholder="Điện thoại" required>
+                <label for="phone" class="col-sm-3 control-label">Điện thoại</label>
+                <div class="col-sm-9">
+                    <input type="number" id="phone" name="phone" class="form-control" placeholder="Điện thoại" required data-error="Vui lòng điền số điện thoại">
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" id="loginForm" type="submit">Đăng ký</button>
-            <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/users/signin">Bạn đã có tài khoản? Click vào đây để đăng nhập</a>
+            <div class="col-sm-offset-3 col-sm-9">
+                <button class="btn btn-lg btn-primary btn-block" id="loginForm" type="submit">Đăng ký</button>
+                <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/users/signin">Bạn đã có tài khoản? Click vào đây để đăng nhập</a>
+            </div>
         </form>
     </div>
 {{else}}
@@ -40,7 +78,6 @@
         <div class="thumbnail">
             <img src="/images/success.jpg">
         </div>
-
         <h2 class="form-signin-heading text-center">Đăng ký tài khoản thành công. Click vào <b><a href="/users/signin">đây</a></b> để đăng nhập</h2>
     </div>
 {{/if}}

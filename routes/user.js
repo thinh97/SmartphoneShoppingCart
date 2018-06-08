@@ -16,6 +16,8 @@ router.get('/users/signout', user_controller.signout_get);
 
 router.get('/users/profile', user_controller.profile_get);
 
-router.post('/users/profile', user_controller.profile_post);
+router.post('/users/profile', user_controller.profile_changeinfo_post);
+
+router.post('/users/profile/changepassword', user_controller.profile_changepassword_post);
 
 module.exports = router;

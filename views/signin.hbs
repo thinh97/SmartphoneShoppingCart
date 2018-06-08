@@ -2,7 +2,7 @@
     <form class="form-signin"  method="post" role="form" data-toggle="validator">
         <input type="hidden" name="frm_referringUrl" value="{{referringUrl}}">
         <h2 class="form-heading text-center">Vui lòng đăng nhập</h2>
-        <span class="col-md-12 message" id="signup-message">{{message}}</span>
+        <div class="message-error">{{message}}</div>
         <div class="form-group">
             <input type="text" id="username" name="username" class="form-control" placeholder="Tên tài khoản" required autofocus>
         </div>

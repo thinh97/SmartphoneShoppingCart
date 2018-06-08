@@ -1,70 +1,86 @@
 <div class="col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
-    <form class="form-horizontal"  method="post" role="form" data-toggle="validator">
+    <form class="form-horizontal" action="/users/profile" method="post" role="form" data-toggle="validator">
         <h2 class="form-heading text-center">Thông tin tài khoản</h2>
         <div class="message-success">{{message}}</div>
-        {{#if errormessage}}
-            <li class="list-group-item">
-                <h1 class="message">Đã có lỗi xảy ra!</h1>
-                <div class="message">{{errormessage}}</div>
-            </li>
-        {{/if}}
+        <div class="message-error">{{errormessage}}</div>
+        <h4><b><i>Thông tin chi tiết</i></b></h4>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Tên tài khoản</label>
+            <label for="username" class="col-sm-3 control-label">Tên tài khoản</label>
             <div class="col-sm-9">
-                <input type="text" id="username" name="username" value="{{user.UserName}}" class="form-control" placeholder="Tên tài khoản" required>
-            </div>
-        </div>
-        <!--<div class="form-group">-->
-            <!--<label for="title" class="col-sm-3 control-label">Mật khẩu</label>-->
-            <!--<div class="col-sm-9">-->
-                <!--<input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label for="title" class="col-sm-3 control-label">Xác nhận mật khẩu</label>-->
-            <!--<div class="col-sm-9">-->
-                <!--<input type="password" id="password-confirm" name="password-confirm" class="form-control" placeholder="Xác nhận mật khẩu" required>-->
-            <!--</div>-->
-        <!--</div>-->
-        <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Email</label>
-            <div class="col-sm-9">
-                <input type="email" id="email" name="email" value="{{user.Email}}" class="form-control" placeholder="Email" required>
+                <input type="text" id="username" name="username" value="{{user.UserName}}" class="form-control" placeholder="Tên tài khoản" required data-error="Tên tài khoản không được để trống">
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Họ và tên</label>
+            <label for="email" class="col-sm-3 control-label">Email</label>
             <div class="col-sm-9">
-                <input type="text" id="name" name="name" value="{{user.Name}}" class="form-control" placeholder="Họ tên" required>
+                <input type="email" id="email" name="email" value="{{user.Email}}" class="form-control" placeholder="Email" required data-error="Email không được để trống">
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Giới tính</label>
+            <label for="name" class="col-sm-3 control-label">Họ và tên</label>
+            <div class="col-sm-9">
+                <input type="text" id="name" name="name" value="{{user.Name}}" class="form-control" placeholder="Họ tên" required data-error="Họ và tên không được để trống">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="gender" class="col-sm-3 control-label">Giới tính</label>
             <div class="col-sm-9 top-margin-12">
                 <input type="radio" name="gender" value="Male" {{#ifCond user.Gender '==' 'Male'}}checked{{/ifCond}}> Nam &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="radio" name="gender" value="Female" {{#ifCond user.Gender '==' 'Female'}}checked{{/ifCond}}> Nữ
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Ngày sinh</label>
+            <label for="dob" class="col-sm-3 control-label">Ngày sinh</label>
             <div class="col-sm-9">
-                <input type="date" id="dob" name="dob" value="{{formatDate user.Birthday "YYYY-MM-DD"}}" class="form-control" min="1980-01-01" max="{{CurentDate}}" placeholder="Ngày-Tháng-Năm" required>
+                <input type="date" id="dob" name="dob" data-date="DD/MM/YYYY" data-date-format="DD/MM/YYYY" value="{{formatDate user.Birthday "YYYY-MM-DD"}}" class="form-control" min="1980-01-01" max="{{CurentDate}}" placeholder="Ngày-Tháng-Năm" required>
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Địa chỉ</label>
+            <label for="address" class="col-sm-3 control-label">Địa chỉ</label>
             <div class="col-sm-9">
-                <input type="text" id="address" name="address" value="{{user.Address}}" class="form-control" placeholder="Địa chỉ" required>
+                <input type="text" id="address" name="address" value="{{user.Address}}" class="form-control" placeholder="Địa chỉ" required data-error="Địa chỉ không được để trống">
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="form-group">
-            <label for="title" class="col-sm-3 control-label">Số điện thoại</label>
+            <label for="phone" class="col-sm-3 control-label">Số điện thoại</label>
             <div class="col-sm-9">
-                <input type="number" id="phone" name="phone" value="{{user.Phone}}" class="form-control" placeholder="Điện thoại" required>
+                <input type="number" id="phone" name="phone" value="{{user.Phone}}" class="form-control" placeholder="Điện thoại" required data-error="Số điện thoại không được để trống">
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="text-center">
         <button class="btn btn-lg btn-primary" id="updateProfileForm" type="submit">Cập nhật</button>
+        </div>
+    </form>
+    <h4><b><i>Thay đổi mật khẩu</i></b></h4>
+    <form class="form-horizontal" action="/users/profile/changepassword" method="post" role="form" data-toggle="validator">
+        <div class="form-group">
+            <label for="oldPassword" class="col-sm-3 control-label">Mật khẩu cũ</label>
+            <div class="col-sm-9">
+                <input type="password" id="oldPassword" name="oldPassword" class="form-control" data-minlength="6" data-minlength-error="Mật khẩu phải dài từ 6 ký tự trở lên" placeholder="Mật khẩu cũ" required data-error="Vui lòng điền mật khẩu cũ">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newPassword" class="col-sm-3 control-label">Mật khẩu mới</label>
+            <div class="col-sm-9">
+                <input type="password" id="newPassword" name="newPassword" class="form-control" data-minlength="6" data-minlength-error="Mật khẩu phải dài từ 6 ký tự trở lên" placeholder="Mật khẩu mới" required data-error="Vui lòng điền mật khẩu mới">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="newPasswordConfirm" class="col-sm-3 control-label">Xác nhận mật khẩu</label>
+            <div class="col-sm-9">
+                <input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="form-control" data-match="#newPassword" data-match-error="Mật khẩu không khớp" placeholder="Xác nhận mật khẩu mới" required data-error="Vui lòng xác nhận mật khẩu mới">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-lg btn-primary" id="updatePassword" type="submit">Cập nhật</button>
         </div>
     </form>
 </div>

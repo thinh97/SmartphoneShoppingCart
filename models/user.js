@@ -41,7 +41,8 @@ var userSchema = new Schema({
 		type: String,
 	},
     Password: {
-		type: String, 
+		type: String,
+        minlength: [6, 'Mật khẩu từ 6 ký tự trở lên'],
 		required: [true,'Vui lòng điền mật khẩu']
 	},
 	Role: {
@@ -53,12 +54,6 @@ var userSchema = new Schema({
 		ref: 'Cart'
 	}
 });
-
-userSchema.validPassword = function(password) {
-  bcrypt.compare(password, this.Password, function(err, isMatch) {
-        return isMatch;
-    });
-};
 
 userSchema.pre('save', function(next) {
     var user = this;

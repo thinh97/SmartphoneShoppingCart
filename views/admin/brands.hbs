@@ -6,13 +6,10 @@
         <ul class="list-group">
            {{#if errormessage}}
                <li class="list-group-item">
-                   <h1 class="message">Đã có lỗi xảy ra! Không lấy được danh sách nhãn hiệu</h1>
-                   <div class="message">{{errormessage}}</div>
+                   <h1 class="message-error">Đã có lỗi xảy ra! Không lấy được danh sách nhãn hiệu</h1>
+                   <div class="message-error">{{errormessage}}</div>
                </li>
            {{else}}
-               {{#if message}}
-                   <div class="message-error">Lỗi: {{message}}</div>
-               {{/if}}
                {{#ifCond brands.length '==' 0}}
                    <div class="col-md-12">
                        <p class="text-danger text-center">Không có nhãn hiệu nào</p>
