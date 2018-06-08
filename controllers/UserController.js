@@ -74,7 +74,7 @@ exports.signup_post = function(req, res, next) {
     });
 }
 
-exports.signout = function(req, res, next) {
+exports.signout_get = function(req, res, next) {
     if (req.isAuthenticated()){
         req.logOut();
         res.redirect(req.session.cookie.path);
@@ -84,8 +84,51 @@ exports.signout = function(req, res, next) {
     }
 }
 
-exports.profile = function(req, res, next) {
+exports.profile_get = function(req, res, next) {
+    if (req.isAuthenticated()){
+        var nowDate = new Date();
+        var curentDate = (nowDate.getFullYear()-5) + '-' + (pad2(nowDate.getMonth()+1)) + '-' + pad2(nowDate.getDate());
+        res.render('profile',{
+            CurentDate: curentDate,
+            user: req.session.passport.user,
+            helpers: req.handlebars.helpers
+        });
+    }
+    else
+        res.redirect('/users/signin');
+}
 
+exports.profile_post = function(req, res, next) {
+    if (req.isAuthenticated()){
+        var user = req.session.passport.user;
+        user.Name = req.body.name;
+        user.UserName = req.body.username;
+        user.Email = req.body.email;
+        user.Gender = req.body.gender;
+        user.Birthday = req.body.dob;
+        user.Address = req.body.address;
+        user.Phone = req.body.phone;
+        //user.Password = req.body.password,
+        User.findByIdAndUpdate(user._id, user, {new: true, runValidators: true}, function (err,updatedUser) {
+            if (err) {
+                console.log(err);
+                res.render('profile', {
+                    errormessage: err.message,
+                    user: req.session.passport.user,
+                    helpers: req.handlebars.helpers
+                });
+            }
+            else {
+                res.render('profile', {
+                    message: 'Đã lưu',
+                    user: updatedUser,
+                    helpers: req.handlebars.helpers
+                });
+            }
+        });
+    }
+    else
+        res.redirect('/users/signin');
 }
 
 function pad2(number) {

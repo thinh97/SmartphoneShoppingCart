@@ -104,7 +104,6 @@ exports.list_brands_get = function(req, res, next) {
                 else {
                     res.render('admin/brands', {
                         brands: brands,
-                        message: req.query.error,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
                         helpers: req.handlebars.helpers
@@ -189,7 +188,7 @@ exports.edit_brand_post = function(req, res, next) {
     }
 }
 
-exports.delete_brand_post = function(req, res, next) {
+exports.delete_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Brand.deleteOne({_id: req.params.id}, function (err) {
@@ -336,7 +335,6 @@ exports.list_products_get = function(req, res, next) {
                 else {
                     res.render('admin/products', {
                         results: results,
-                        message: req.query.error,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
                         helpers: req.handlebars.helpers
@@ -462,7 +460,7 @@ exports.edit_product_post = function(req, res, next) {
     }
 }
 
-exports.delete_product_post = function(req, res, next) {
+exports.delete_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Product.deleteOne({_id: req.params.id}, function (err) {
@@ -499,7 +497,6 @@ exports.list_orders_get = function(req, res, next) {
                 else {
                     res.render('admin/orders', {
                         orders: orders,
-                        message: req.query.error,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
                         helpers: req.handlebars.helpers
@@ -609,7 +606,7 @@ exports.edit_order_post = function(req, res, next) {
     }
 }
 
-exports.delete_order_post = function(req, res, next) {
+exports.delete_order_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             Order.deleteOne({_id: req.params.id}, function (err) {
@@ -646,7 +643,6 @@ exports.list_users_get = function(req, res, next) {
                 else {
                     res.render('admin/users', {
                         users: users,
-                        message: req.query.error,
                         layout: 'layout_admin.hbs',
                         user: req.session.passport.user,
                         helpers: req.handlebars.helpers
@@ -727,7 +723,7 @@ exports.edit_user_post = function(req, res, next) {
     }
 }
 
-exports.delete_user_post = function(req, res, next) {
+exports.delete_user_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.session.passport.user.Role === 'admin') {
             User.deleteOne({_id: req.params.id}, function (err) {

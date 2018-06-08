@@ -8,7 +8,10 @@
                     <div class="message-success">{{message}}</div>
                 {{/if}}
                 {{#if errormessage}}
-                    <div class="message-error">{{errormessage}}</div>
+                    <li class="list-group-item">
+                        <h1 class="message">Đã có lỗi xảy ra!</h1>
+                        <div class="message">{{errormessage}}</div>
+                    </li>
                 {{/if}}
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Tên nhãn hiệu</label>

@@ -44,9 +44,9 @@
 								{{#if user}}
                                     {{#ifCond user.Role '==' 'admin'}}
                                         <li><a href="/admin">Bảng điều khiển</a></li>
-                                    {{else}}
-									    <li><a href="/users/profile">Thông tin tài khoản</a></li>
+                                        <li role="separator" class="divider"></li>
                                     {{/ifCond}}
+                                    <li><a href="/users/profile">Thông tin tài khoản</a></li>
 									<li role="separator" class="divider"></li>
 									<li><a href="/users/signout">Đăng xuất</a></li>
 								{{else}}

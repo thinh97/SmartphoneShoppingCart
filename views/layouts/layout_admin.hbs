@@ -32,7 +32,14 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/users/signout">Đăng xuất</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{#if user.UserName}}Xin chào <b>{{user.UserName}}</b>{{else}}Tài khoản{{/if}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/users/profile">Thông tin tài khoản</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/users/signout">Đăng xuất</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -54,7 +61,6 @@
                     <li class="list-group-item"><i class="fa fa-list fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/orders">Danh sách đơn hàng</a></li>
                     <li class="list-group-item"><strong>Tài khoản</strong></li>
                     <li class="list-group-item"><i class="fa fa-user fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/users">Danh sách tài khoản</a></li>
-                    <li class="list-group-item"><i class="fa fa-user-circle-o fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/user/edit/{{session.userId}}">Cập nhật thông tin</a></li>
                 </ul>
             </div>
             {{{body}}}

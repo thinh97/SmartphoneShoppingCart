@@ -12,8 +12,10 @@ router.get('/users/signup', user_controller.signup_get);
 
 router.post('/users/signup', user_controller.signup_post);
 
-router.get('/users/signout', user_controller.signout);
+router.get('/users/signout', user_controller.signout_get);
 
-router.get('/users/profile', user_controller.profile);
+router.get('/users/profile', user_controller.profile_get);
+
+router.post('/users/profile', user_controller.profile_post);
 
 module.exports = router;
