@@ -10,6 +10,7 @@ var passport = require('passport');
 var session = require('express-session');
 let moment = require('moment');
 var LocalStrategy = require('passport-local').Strategy;
+var mailer = require('express-mailer');
 
 var Brand = require('./models/brand');
 var Product = require('./models/product');
@@ -56,6 +57,18 @@ passport.use(new LocalStrategy(
 ));
 
 var app = express();
+
+mailer.extend(app, {
+    from: 'no-reply@smartphoneshoppingcart.herokuapp.com',
+    host:  'smtp.sendgrid.net',
+    secureConnection: true,
+    port: 465,
+    transportMethod: 'SMTP',
+    auth: {
+        user: 'app96035332@heroku.com',
+        pass: 'jofvsxwt2545'
+    }
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', handlebars({
@@ -229,35 +242,16 @@ app.use('/', userRouter);
 app.use('/', adminRouter);
 
 app.use((req, res, next) => {
-    let err = new Error('Not Found');
+    let err = new Error('Không tìm thấy URL');
     err.status = 404;
     next(err);
 });
 
-if(app.get('env') === 'development'){
-    app.use((err, req, res, next) => {
-        var user = null;
-        if (req.session.passport)
-            user = req.session.passport.user;
-        res.status(err.status || 500);
-        res.render('error', {
-            user: user,
-            message: err.message,
-            error: err,
-            helpers: handlebars.helpers
-        });
-    });
-}
-
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     res.status(err.status || 500);
     res.render('error', {
-        user: user,
         message: err.message,
         error: {},
         helpers: handlebars.helpers

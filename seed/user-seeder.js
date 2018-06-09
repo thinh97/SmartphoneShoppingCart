@@ -13,8 +13,11 @@ var Users = [
 	Birthday: '1997/02/16',
 	Address: 'Hồ Chí Minh',
 	Password: '123456',
+	Phone: '0123456789',
 	Role: 'admin',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Charles M. Johnson',
@@ -24,8 +27,11 @@ var Users = [
 	Birthday: '1949/08/27',
 	Address: '3726 Fire Access Road West Jefferson, NC 28694',
 	Password: 'Aej5eephah',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Edward L. Williams',
@@ -35,8 +41,11 @@ var Users = [
 	Birthday: '195011/11',
 	Address: '3692 Colonial Drive Houston, TX 77036',
 	Password: 'Ri6eeleeNae',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Alan M. Molino',
@@ -46,8 +55,11 @@ var Users = [
 	Birthday: '1950/08/27',
 	Address: '3035 Buffalo Creek Road Nashville, TN 37209',
 	Password: 'ohm1Iewah',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Jane K. Rutland',
@@ -57,8 +69,11 @@ var Users = [
 	Birthday: '1965/04/25',
 	Address: '1473 Abia Martin Drive Farmingdale, NY 11735',
 	Password: 'mee7iiShe0ai',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Brian D. Marcus',
@@ -68,8 +83,11 @@ var Users = [
 	Birthday: '1941/05/14',
 	Address: '3780 Kyle Street Wallace, NE 69169',
 	Password: 'Phiu8eepaix',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Frank C. Vaccaro',
@@ -79,8 +97,11 @@ var Users = [
 	Birthday: '1986/03/13',
 	Address: '3486 Duck Creek Road Redwood City, CA 94063',
 	Password: 'feevae5Ah',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Melany D. Lopez',
@@ -90,8 +111,11 @@ var Users = [
 	Birthday: '1934/10/07',
 	Address: '1954 Oliver Street Fort Worth, TX 76102',
 	Password: 'reing1thoSh',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Fred C. Maag',
@@ -101,8 +125,11 @@ var Users = [
 	Birthday: '1984/10/05',
 	Address: '2905 East Avenue Phoenix, AZ 85003',
 	Password: 'chaeK4LieJie',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   }),
   new User({
     Name: 'Vivian G. Clark',
@@ -112,8 +139,11 @@ var Users = [
 	Birthday: '1953/08/27',
 	Address: '3702 Rosebud Avenue Marshall, AR 72650',
 	Password: 'thuChoov5',
+    Phone: '0123456789',
 	Role: 'user',
-	Cart: null
+	Cart: null,
+	AccessToken: null,
+	TokenExpires: null
   })
 ];
 db.on('error', console.error.bind(console, 'connection error:'));

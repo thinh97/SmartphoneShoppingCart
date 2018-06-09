@@ -52,7 +52,13 @@ var userSchema = new Schema({
 	Cart: {
 		type: Schema.Types.ObjectId,
 		ref: 'Cart'
-	}
+	},
+    AccessToken: {
+		type: String
+    },
+    TokenExpires: {
+		type: Date
+    }
 });
 
 userSchema.pre('save', function(next) {

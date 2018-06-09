@@ -1,0 +1,30 @@
+{{#if success}}
+    {{#if active}}
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h1 class="message-success">{{message}}</h1>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <div class="col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6" style="padding-top: 50px" >
+            <div class="thumbnail col-md-offset-3 col-lg-offset-3" style="width: 40%;min-height: 0px">
+                <img src="/images/success.jpg">
+            </div>
+            <h2 class="form-signin-heading text-center">Một email kích hoạt tài khoản đã được gửi đến bạn. Vui lòng kiểm tra hộp thư (cả spam) và làm theo hướng dẫn</h2>
+        </div>
+    {{/if}}
+{{else}}
+    <div class="col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4" style="padding-top: 50px" >
+        <form class="form-horizontal"  method="post" role="form" data-toggle="validator">
+            <h2 class="form-heading text-center">Kích hoạt tài khoản</h2>
+            <div class="message-error">{{errormessage}}</div>
+            <div class="message-success">{{rmessage}}</div>
+            <div class="form-group">
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Gửi lại email kích hoạt</button>
+        </form>
+    </div>
+{{/if}}
