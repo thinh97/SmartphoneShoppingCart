@@ -60,13 +60,13 @@ var app = express();
 
 mailer.extend(app, {
     from: 'no-reply@smartphoneshoppingcart.herokuapp.com',
-    host:  'smtp.sendgrid.net',
+    host:  'smtp.gmail.com',
     secureConnection: true,
     port: 465,
     transportMethod: 'SMTP',
     auth: {
-        user: 'app96035332@heroku.com',
-        pass: 'jofvsxwt2545'
+        user: 'smartphoneshoppingcart@gmail.com',
+        pass: '123456789@a'
     }
 });
 

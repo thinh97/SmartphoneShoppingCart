@@ -467,6 +467,7 @@ exports.active_account_get = function(req, res, next) {
                         res.render('account/active_account', {
                             success: true,
                             active: true,
+                            message: 'Kích hoạt tài khoản thành công',
                             helpers: req.handlebars.helpers
                         });
                     }
