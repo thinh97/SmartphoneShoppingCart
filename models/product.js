@@ -2,10 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var productSchema = new Schema({
-	_id: {
-		type: String,
-		required: [true,'Vui lòng điền id']
-	},
     ImagePath: [{
 		type: String, 
 		required: [true,'Vui lòng thêm hình ảnh']
@@ -64,12 +60,12 @@ var productSchema = new Schema({
 });
 productSchema.pre('save', function(next) {
     var product = this;
-	mongoose.models['Product'].findOne({_id : product._id},function(err, result) {
+	mongoose.models['Product'].findOne({Title : product.Title},function(err, result) {
 		if(err) {
             next(err);
         } else if(result) {
-			if (result._id === product._id)
-            	next(new Error('ID đã được sử dụng'));
+			if (result.Title === product.Title)
+            	next(new Error('Tên đã được sử dụng'));
 			else
 				next();
         } else {

@@ -13,7 +13,7 @@ var brandSchema = new Schema({
 	},
 	Products: [{
 		ref: 'Product',
-		type: String
+		type: Schema.ObjectId
 	}]
 });
 brandSchema.pre('save', function(next) {

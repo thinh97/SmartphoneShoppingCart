@@ -1,17 +1,17 @@
-<div class="col-lg-9">
+<div class="col-lg-9 top-margin-35">
 	<div class="row">
 		<div class="col-md-12">
-			<h2 class="text-center">Chỉnh sửa nhãn hiệu</h2>
-			<form method="post" id="edit_form" action="/admin/brand/edit/{{brand._id}}" data-toggle="validator">
+            <h2 class="text-center"><b>Chỉnh sửa nhãn hiệu</b></h2>
+			<form method="post" class="form-horizontal" action="/admin/brand/edit/{{brand._id}}" data-toggle="validator">
 			<input type="hidden" name="id" value="{{brand._id}}" />
                 {{#if message}}
                     <div class="message-success">{{message}}</div>
                 {{/if}}
                 {{#if errormessage}}
-                    <li class="list-group-item">
-                        <h1 class="message-error">Đã có lỗi xảy ra!</h1>
+                    <div class="text-center">
+                        <h3 class="message-error">Đã có lỗi xảy ra!</h3>
                         <div class="message-error">{{errormessage}}</div>
-                    </li>
+                    </div>
                 {{/if}}
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Tên nhãn hiệu</label>
@@ -20,7 +20,7 @@
                 </div>
 		  	</div>
 		  	<div class="form-group">
-                <div class="col-sm-10 col-sm-offset-5 top-margin-35">
+                <div class="text-center">
                     <button type="submit" class="btn btn-success">Cập nhật</button>
                 </div>
   			</div>

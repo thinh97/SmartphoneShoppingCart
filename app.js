@@ -71,6 +71,7 @@ mailer.extend(app, {
 });
 
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.engine('hbs', handlebars({
     extname: 'hbs',
     layoutsDir: path.join(__dirname, 'views', 'layouts'),
@@ -83,6 +84,8 @@ app.set('view engine', 'hbs');
 handlebars = handlebars.create({
     helpers: {
         formatAmount: function(amount){
+            if (amount === null || amount === undefined)
+                return '';
 			var amountString = amount.toString();
 			var i = amountString.length - 3;
             while (i > 0){
@@ -151,6 +154,9 @@ handlebars = handlebars.create({
                 case'<':
                     return a / b;
             }
+        },
+        replaceString: function (src, str, newStr) {
+            return src.replace(/str/g,newStr);
         }
     }
 });
@@ -250,9 +256,14 @@ app.use((req, res, next) => {
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
+    var user = null;
+    if (req.session.passport)
+        user = req.session.passport.user;
     res.status(err.status || 500);
+    console.log(err);
     res.render('error', {
-        message: err.message,
+        user: user,
+        message: 'Đã xảy ra lỗi. Nếu bạn thấy lỗi này vẫn tiếp tục hãy liên hệ admin',
         error: {},
         helpers: handlebars.helpers
     });

@@ -45,6 +45,7 @@ $('.qty-btn-minus').on('click', function(){
 $('.qty-btn-plus').on('click', function(){
     $('#product_quantity').val(parseInt($('#product_quantity').val()) + 1);
 });
+
 $('input[type=date]').on('change', function() {
     if (this.value !== '') {
         this.setAttribute(
@@ -54,3 +55,29 @@ $('input[type=date]').on('change', function() {
         )
     }
 }).trigger('change');
+
+$('#imagesUpload').on('change', function () {
+    var listName = '';
+    var i = 0;
+    for (i ; i < this.files.length; i++) {
+        listName += '<p>' + this.files.item(i).name + '</p>';
+    }
+    $('#filesResult').html(listName);
+});
+
+$('#uploadForm').submit(function() {
+    $("#status").empty().text("Đang tải ảnh lên ...");
+    $(this).ajaxSubmit({
+        error: function(err, res) {
+            $("#status").empty().text(err.responseText);
+        },
+        success: function(response) {
+            $("#status").empty();
+            $("#filesResult").empty();
+            $("#imagesUpload").val(null);
+            $("#product-images").html(response);
+            $('#cancelButton').trigger('click')
+        }
+    });
+    return false;
+});

@@ -4,11 +4,12 @@
     </div>
 	<div class="col-lg-12">
         <ul class="list-group">
+            <div class="message-error">{{message}}</div>
             {{#if errormessage}}
-                <li class="list-group-item">
-                    <h1 class="message">Đã có lỗi xảy ra! Không lấy được danh sách tài khoản</h1>
-                    <div>{{errormessage}}</div>
-                </li>
+                <div class="text-center">
+                    <h1 class="message-error">Đã có lỗi xảy ra!</h1>
+                    <div class="message-error">{{errormessage}}</div>
+                </div>
             {{else}}
                 {{#ifCond users.length '==' 0}}
                     <div class="col-md-12">
@@ -20,7 +21,9 @@
                         <strong>Tên tài khoản:</strong> <a href="/admin/user/edit/{{this._id}}">{{this.UserName}}</a> - <b>Email:</b> {{this.Email}}
                         <span class="pull-right">
                             <b>Quyền: </b>{{this.Role}}
+                            {{#ifCond this._id '!=' ../user._id}}
                                 <a href="/admin/user/delete/{{this._id}}" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')"><span class="glyphicon glyphicon-trash" aria-hidden="true"/></a>
+                            {{/ifCond}}
                         </span>
                     </li>
 				 {{/each}}

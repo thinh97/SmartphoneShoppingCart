@@ -1,14 +1,14 @@
 <div class="col-lg-9 top-margin-35">
     <div class="col-lg-12">
-        <h2 class="text-center">Danh sách sản phẩm</h2>
+        <h2 class="text-center"><b>Danh sách sản phẩm</b></h2>
     </div>
     <div class="col-lg-12">
         <ul class="list-group">
             {{#if errormessage}}
-                <li class="list-group-item">
-                    <h1 class="message-error">Đã có lỗi xảy ra! Không lấy được danh sách sản phẩm</h1>
+                <div class="text-center">
+                    <h1 class="message-error">Đã có lỗi xảy ra!</h1>
                     <div class="message-error">{{errormessage}}</div>
-                </li>
+                </div>
             {{else}}
                 {{#ifCond results.length '==' 0}}
                     <div class="col-md-12">

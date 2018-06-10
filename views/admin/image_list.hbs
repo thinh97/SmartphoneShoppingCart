@@ -1,0 +1,17 @@
+<h2>Hình ảnh sản phẩm</h2>
+{{#if imagePath}}
+    <div class="row">
+        <div class="col-md-12">
+            {{#each imagePath}}
+                <div class="col-md-4 col-xl-4 col m4 xl4 product-item">
+                    <div class="vertical-center thumbnail-image-container-small thumbnail-small">
+                        <img class="img-responsive" src="{{this}}">
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{else}}
+    <h4 class="text-warning">Chưa có hình ảnh nào cho sản phẩm này</h4>
+{{/if}}
+<input type="hidden" name="imagePath" value="{{imagePath}}" />

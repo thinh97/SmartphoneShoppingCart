@@ -6,7 +6,6 @@ mongoose.connect('mongodb://shoppingcart:0123456789xxx@ds217970.mlab.com:17970/s
 var db = mongoose.connection;
 var products = [
   new Product({
-	_id: '001',
     ImagePath: ['/images/htc-u-ultra-1.jpg','/images/htc-u-ultra-2.jpg','/images/htc-u-ultra-3.jpg','/images/htc-u-ultra-4.jpg'],
     Title: 'Điện thoại HTC U Ultra',
 	Details: {
@@ -27,7 +26,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '002',
     ImagePath: ['/images/iphone-8-plus-hh-1.jpg','/images/iphone-8-plus-hh-2.jpg','/images/iphone-8-plus-hh-3.jpg','/images/iphone-8-plus-hh-4.jpg'],
     Title: 'Điện thoại iPhone 8 Plus 64GB',
 	Details: {
@@ -48,7 +46,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '003',
     ImagePath: ['/images/iphone-6s-32gb-vang-dong-1.jpg','/images/iphone-6s-32gb-vang-dong-2.jpg','/images/iphone-6s-32gb-vang-dong-3.jpg','/images/iphone-6s-32gb-vang-dong-4.jpg'],
     Title: 'Điện thoại iPhone 6s 32GB',
 	Details: {
@@ -69,7 +66,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '004',
     ImagePath: ['/images/iphone-x-256gb-a1-1.jpg','/images/iphone-x-256gb-a1-2.jpg','/images/iphone-x-256gb-a1-3.jpg','/images/iphone-x-256gb-a1-4.jpg'],
     Title: 'Điện thoại iPhone X 256GB',
 	Details: {
@@ -90,7 +86,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '005',
     ImagePath: ['/images/motorola-moto-g5s-plus-hh-1.jpg','/images/motorola-moto-g5s-plus-hh-2.jpg','/images/motorola-moto-g5s-plus-hh-3.jpg','/images/motorola-moto-g5s-plus-hh-4.jpg'],
     Title: 'Điện thoại Motorola Moto G5S Plus',
 	Details: {
@@ -111,7 +106,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '006',
     ImagePath: ['/images/oppo-f5-6gb-anhava-1.jpg','/images/oppo-f5-6gb-anhava-2.jpg','/images/oppo-f5-6gb-anhava-3.jpg','/images/oppo-f5-6gb-anhava-4.jpg'],
     Title: 'Điện thoại OPPO F5 6GB',
 	Details: {
@@ -132,7 +126,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '007',
     ImagePath: ['/images/oppo-f7-128gb-den-1.jpg','/images/oppo-f7-128gb-den-2.jpg','/images/oppo-f7-128gb-den-3.jpg','/images/oppo-f7-128gb-den-4.jpg'],
     Title: 'Điện thoại OPPO F7 128GB',
 	Details: {
@@ -153,7 +146,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '008',
     ImagePath: ['/images/samsung-galaxy-a8-plus-2018-hh-1.jpg','/images/samsung-galaxy-a8-plus-2018-hh-2.jpg','/images/samsung-galaxy-a8-plus-2018-hh-3.jpg','/images/samsung-galaxy-a8-plus-2018-hh-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy A8+ (2018)',
 	Details: {
@@ -174,7 +166,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '009',
     ImagePath: ['/images/samsung-galaxy-j2-pro-2018-1.jpg','/images/samsung-galaxy-j2-pro-2018-2.jpg','/images/samsung-galaxy-j2-pro-2018-3.jpg','/images/samsung-galaxy-j2-pro-2018-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy J2 Pro (2018)',
 	Details: {
@@ -195,7 +186,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '010',
     ImagePath: ['/images/samsung-galaxy-j7-prime-1.jpg','/images/samsung-galaxy-j7-prime-2.jpg','/images/samsung-galaxy-j7-prime-3.jpg','/images/samsung-galaxy-j7-prime-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy J7 Prime',
 	Details: {
@@ -216,7 +206,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '011',
     ImagePath: ['/images/samsung-galaxy-j7-plus-1.jpg','/images/samsung-galaxy-j7-plus-2.jpg','/images/samsung-galaxy-j7-plus-3.jpg','/images/samsung-galaxy-j7-plus-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy J7 Plus',
 	Details: {
@@ -237,7 +226,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '012',
     ImagePath: ['/images/samsung-galaxy-j7-pro-hh-1.jpg','/images/samsung-galaxy-j7-pro-hh-2.jpg','/images/samsung-galaxy-j7-pro-hh-3.jpg','/images/samsung-galaxy-j7-pro-hh-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy J7 Pro',
 	Details: {
@@ -258,7 +246,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '013',
     ImagePath: ['/images/samsung-galaxy-note8-hh-1.jpg','/images/samsung-galaxy-note8-hh-2.jpg','/images/samsung-galaxy-note8-hh-3.jpg','/images/samsung-galaxy-note8-hh-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy Note 8',
 	Details: {
@@ -279,7 +266,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '014',
     ImagePath: ['/images/samsung-galaxy-s8-plus-hh-1.jpg','/images/samsung-galaxy-s8-plus-hh-2.jpg','/images/samsung-galaxy-s8-plus-hh-3.jpg','/images/samsung-galaxy-s8-plus-hh-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy S8 Plus',
 	Details: {
@@ -300,7 +286,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '015',
     ImagePath: ['/images/samsung-galaxy-s9-plus-64gb-1.jpg','/images/samsung-galaxy-s9-plus-64gb-2.jpg','/images/samsung-galaxy-s9-plus-64gb-3.jpg','/images/samsung-galaxy-s9-plus-64gb-4.jpg'],
     Title: 'Điện thoại Samsung Galaxy S9+ 64GB',
 	Details: {
@@ -321,7 +306,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '016',
     ImagePath: ['/images/sony-xperia-xa1-ultra-pink-hh-1.jpg','/images/sony-xperia-xa1-ultra-pink-hh-2.jpg','/images/sony-xperia-xa1-ultra-pink-hh-3.jpg','/images/sony-xperia-xa1-ultra-pink-hh-4.jpg'],
     Title: 'Điện thoại Sony Xperia XA1 Ultra Pink',
 	Details: {
@@ -342,7 +326,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '017',
     ImagePath: ['/images/sony-xperia-xz2-1.jpg','/images/sony-xperia-xz2-2.jpg','/images/sony-xperia-xz2-3.jpg','/images/sony-xperia-xz2-4.jpg'],
     Title: 'Điện thoại Sony Xperia XZ2',
 	Details: {
@@ -363,7 +346,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '018',
     ImagePath: ['/images/vivo-v9-1.jpg','/images/vivo-v9-2.jpg','/images/vivo-v9-3.jpg','/images/vivo-v9-4.jpg'],
     Title: 'Điện thoại Vivo V9',
 	Details: {
@@ -384,7 +366,6 @@ var products = [
 	Comments:[]
   }),
   new Product({
-	_id: '019',
     ImagePath: ['/images/bkav-bphone-2-1.jpg','/images/bkav-bphone-2-2.jpg','/images/bkav-bphone-2-3.jpg','/images/bkav-bphone-2-4.jpg','/images/bkav-bphone-2-5.jpg','/images/bkav-bphone-2-6.jpg'],
     Title: 'Điện thoại Bphone 2017',
 	Details: {

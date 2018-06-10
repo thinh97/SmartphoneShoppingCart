@@ -1,81 +1,80 @@
 <div class="col-lg-9">
 	<div class="row">
 		<div class="col-md-12">
-			<h2 class="text-center">Chỉnh sửa quyền truy cập</h2>
+			<h2 class="text-center">Chỉnh sửa thông tin tài khoản</h2>
             {{#ifCond result._id '!=' user._id}}
-			<form method="post" id="edit_form" action="/admin/user/edit/{{result._id}}" data-toggle="validator">
+			<form method="post" class="form-horizontal" action="/admin/user/edit/{{result._id}}" data-toggle="validator">
 			<input type="hidden" name="id" value="{{result._id}}" />
                 {{#if message}}
                     <div class="message-success">{{message}}</div>
                 {{/if}}
                 {{#if errormessage}}
-                    <li class="list-group-item">
+                    <div class="text-center">
                         <h1 class="message-error">Đã có lỗi xảy ra!</h1>
                         <div class="message-error">{{errormessage}}</div>
-                    </li>
+                    </div>
                 {{/if}}
             <div class="form-group">
-		    	<label>Quyền truy cập</label>
-                <div class="form-group">
+		    	<label for="role" class="col-sm-2 control-label">Quyền truy cập</label>
+                <div class="col-sm-10 top-margin-12">
                     <input type="radio" name="role" value="admin" {{#ifCond result.Role '==' 'admin'}}checked{{/ifCond}}> Admin &nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" name="role" value="user" {{#ifCond result.Role '==' 'user'}}checked{{/ifCond}}> User
                 </div>
 		  	</div>
-		  	<div class="form-group">
-    			<div class="pull-right">
-      				<button type="submit" class="btn btn-success">Cập nhật</button>
-    			</div>
-  			</div>
-            </form>
             {{else}}
                 <div class="message-error">Bạn không thể chỉnh sửa quyền truy cập của chính bạn</div>
             {{/ifCond}}
-            <table class="table">
-                <tbody>
-                {{#if result.UserName}}
-                    <tr class="border-bottom">
-                        <td>Tên tài khoản:</td>
-                        <td>{{result.UserName}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Name}}
-                    <tr class="border-bottom">
-                        <td>Họ tên:</td>
-                        <td>{{result.Name}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Email}}
-                    <tr class="border-bottom">
-                        <td>Email:</td>
-                        <td>{{result.Email}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Gender}}
-                    <tr class="border-bottom">
-                        <td>Giới tính:</td>
-                        <td>{{result.Gender}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Birthday}}
-                    <tr class="border-bottom">
-                        <td>Ngày sinh:</td>
-                        <td>{{formatDate result.Birthday "DD/MM/YYYY"}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Address}}
-                    <tr class="border-bottom">
-                        <td>Địa chỉ:</td>
-                        <td>{{result.Address}}</td>
-                    </tr>
-                {{/if}}
-                {{#if result.Phone}}
-                    <tr class="border-bottom">
-                        <td>SĐT:</td>
-                        <td>{{result.Phone}}</td>
-                    </tr>
-                {{/if}}
-                </tbody>
-            </table>
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Tên đăng nhập</label>
+                <div class="col-sm-10">
+                    <input type="text" name="username" class="form-control" maxlength="50" value="{{result.UserName}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Họ và tên</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" class="form-control" maxlength="200" value="{{result.Name}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" name="email" class="form-control" value="{{result.Email}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gender" class="col-sm-2 control-label">Giới tính</label>
+                <div class="col-sm-10 top-margin-12">
+                    <input type="radio" name="gender" value="Male" {{#ifCond result.Gender '==' 'Male'}}checked{{/ifCond}}> Nam &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="gender" value="Female" {{#ifCond result.Gender '==' 'Female'}}checked{{/ifCond}}> Nữ
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dob" class="col-sm-2 control-label">Ngày sinh</label>
+                <div class="col-sm-10">
+                    <input type="date" id="dob" name="dob" data-date="DD/MM/YYYY" data-date-format="DD/MM/YYYY" value="{{formatDate result.Birthday "YYYY-MM-DD"}}" class="form-control" min="1900-01-01" max="{{curentDate}}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address" class="col-sm-2 control-label">Địa chỉ</label>
+                <div class="col-sm-10">
+                    <input type="text" name="address" value="{{result.Address}}" class="form-control" placeholder="Địa chỉ" required data-error="Địa chỉ không được để trống">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">Số điện thoại</label>
+                <div class="col-sm-10">
+                    <input type="number" name="phone" value="{{result.Phone}}" class="form-control" placeholder="Điện thoại" required data-error="Số điện thoại không được để trống">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                </div>
+            </div>
+        </form>
 		</div>
 	</div>
 </div>

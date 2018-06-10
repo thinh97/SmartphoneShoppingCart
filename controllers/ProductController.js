@@ -5,18 +5,19 @@ exports.index = function(req, res, next) {
 		if (err) 
 			console.log(err);
 		else{
-			var arrayResult = [];
+            var arrayResult = [];
 			var threeItem = [];
 			var count = 0;
-			for (var i in results){
-				threeItem.push(results[i]);
-				count++;
-				if (count === 3){
-					arrayResult.push(threeItem);					
-					count = 0;
-					threeItem = [];
-				}
-			}
+			results.forEach(function (item) {
+                threeItem.push(item);
+                count++;
+                if (count === 3){
+                    arrayResult.push(threeItem);
+                    count = 0;
+                    threeItem = [];
+                }
+            });
+            arrayResult.push(threeItem);
 			var user = null;
 			if (req.session.passport)
 				user = req.session.passport.user;

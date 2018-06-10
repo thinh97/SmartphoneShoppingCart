@@ -1,21 +1,15 @@
 <div class="col-lg-9 top-margin-35">
-    <form method="post" class="form-horizontal" id="insert_form" action="/admin/product/edit/{{product._id}}" data-toggle="validator">
+    <form method="post" class="form-horizontal" action="/admin/product/edit/{{product._id}}" data-toggle="validator">
         <div class="col-lg-12">
-            <div class="page-header">
-                <div class="pull-right">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Upload image</button>
-                    <button id="frm_edit_product_save" class="btn btn-success">Lưu sản phẩm <i class="fa fa-floppy-o"></i></button>
-                </div>
-                <h2>Chỉnh sửa thông tin sản phẩm</h2>
-            </div>
+            <h2 class="text-center"><b>Chỉnh sửa thông tin sản phẩm</b></h2>
             {{#if message}}
                 <div class="message-success">{{message}}</div>
             {{/if}}
             {{#if errormessage}}
-                <li class="list-group-item">
-                    <h1 class="message-error">Đã có lỗi xảy ra!</h1>
+                <div class="text-center">
+                    <h3 class="message-error">Đã có lỗi xảy ra!</h3>
                     <div class="message-error">{{errormessage}}</div>
-                </li>
+                </div>
             {{/if}}
             <div class="form-group">
                 <label for="title" class="col-sm-2 control-label">Tên sản phẩm *</label>
@@ -39,8 +33,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="title" class="col-sm-2 control-label">Thương hiệu *</label>
+                <label for="brand" class="col-sm-2 control-label">Thương hiệu *</label>
                 <div class="col-sm-10">
+                    <input type="hidden" name="oldBrand" value="{{product.Brand}}" />
                     <select class="form-control" name="brand">
                     {{#each brands}}
                         <option value="{{this._id}}" {{#ifCond ../product.Brand '==' this._id}}selected{{/ifCond}}>{{this.Name}}</option>
@@ -48,7 +43,7 @@
                     </select>
                 </div>
             </div>
-            <h4>Cấu hình chi tiết</h4>
+            <h4><b><i>Cấu hình chi tiết</i></b></h4>
             <div class="form-group">
                 <label for="title" class="col-sm-2 control-label"> Màn hình *</label>
                 <div class="col-sm-10">
@@ -120,23 +115,29 @@
             </div>
             <div id="product-images">
                 <h2>Hình ảnh sản phẩm</h2>
-                {{#if product.ImagePath}}
+                {{#if imagePath}}
                 <div class="row">
-                    <div class="col-md-10 col-md-offset-2">
-                    {{#each product.ImagePath}}
-                        <div class="col-md-3">
-                            <img src="{{this}}" class="product-main-image img-responsive">
+                    <div class="col-md-12">
+                    {{#each imagePath}}
+                        <div class="col-md-4 col-xl-4 col m4 xl4 product-item">
+                            <div class="vertical-center thumbnail-image-container-small thumbnail-small">
+                                <img class="img-responsive" src="{{this}}">
+                            </div>
                         </div>
                     {{/each}}
                     </div>
                 </div>
                 {{else}}
-                    <h4 class="text-warning">Chưa có hình ảnh</h4>
+                    <h4 class="text-warning">Chưa có hình ảnh nào cho sản phẩm này</h4>
                 {{/if}}
+                <input type="hidden" name="imagePath" value="{{imagePath}}" />
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Tải lên hình ảnh  <i class="glyphicon glyphicon glyphicon-upload"></i></button>
+                <button id="frm_edit_product_save" class="btn btn-success">Lưu sản phẩm  <i class="fa fa-floppy-o"></i></button>
             </div>
         </div>
         <input type="hidden" name="id" value="{{product._id}}" />
-        <input type="hidden" name="imagepath" value="{{product.ImagePath}}" />
     </form>
 </div>
 
@@ -144,20 +145,22 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" id="upload_form" name="upload_form" action="/admin/file/upload" enctype="multipart/form-data">
+            <form method="post" id="uploadForm" name="uploadForm" action="/admin/file/upload" enctype="multipart/form-data">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Product image upload</h4>
+                    <h4 class="modal-title" id="myModalLabel">Thêm hình cho sản phẩm</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
+                    <div type="text" id="filesResult"></div>
                     <span class="btn btn-info btn-file">
-                        Select file<input type="file" name="upload_file" id="upload_file">
+                        Chọn ảnh<input type="file" id="imagesUpload" accept="image/*" name="imagesUpload" multiple required oninvalid="this.setCustomValidity('Vui lòng chọn ảnh trước khi tải lên')" oninput="this.setCustomValidity('')">
                     </span>
-                    <input type="hidden" id="productId" name="productId" value="{{product._id}}"/>
+                    <input type="hidden" name="id" value="{{product._id}}"/>
                 </div>
+                <div class="text-center" id="status"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" id="saveButton" name="saveButton" class="btn btn-primary">Upload</button>
+                    <button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" id="saveButton" class="btn btn-primary">Tải lên</button>
                 </div>
             </form>
         </div>
