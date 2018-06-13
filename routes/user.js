@@ -34,4 +34,8 @@ router.post('/users/active', user_controller.active_post);
 
 router.get('/users/active/:token', user_controller.active_account_get);
 
+router.get('/user/add-to-cart/:id',user_controller.add_to_cart);
+
+router.get('/user/shopping-cart/',user_controller.get_shopping_cart);
+
 module.exports = router;

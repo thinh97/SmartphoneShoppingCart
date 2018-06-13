@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="/stylesheets/codemirror-style.min.css">
         <link rel="stylesheet" href="/stylesheets/style.css">
 	</head>
-    <body>
+    <body> 
 		<!-- Static navbar -->
 	    <nav class="navbar navbar-default navbar-static-top">
 			<div class="container-fluid mainNavBar">
@@ -33,9 +33,9 @@
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<a href="/shopping-cart/">
+							<a href="/user/shopping-cart/">
 								<i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng
-								<span class="badge">{{session.cart.total}}</span>
+								<span class="badge">{{session.cart.totalQty}}</span>
 							</a>
 						</li>
 						<li class="dropdown">
@@ -44,9 +44,9 @@
 								{{#if user}}
                                     {{#ifCond user.Role '==' 'admin'}}
                                         <li><a href="/admin">Bảng điều khiển</a></li>
-                                        <li role="separator" class="divider"></li>
+                                    {{else}}
+									    <li><a href="/users/profile">Thông tin tài khoản</a></li>
                                     {{/ifCond}}
-                                    <li><a href="/users/profile">Thông tin tài khoản</a></li>
 									<li role="separator" class="divider"></li>
 									<li><a href="/users/signout">Đăng xuất</a></li>
 								{{else}}
@@ -101,8 +101,6 @@
         <script src="/javascripts/jquery.dotdotdot.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
         <script src="/javascripts/pushy.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 		<script src="/javascripts/SmartPhoneShoppingCart.js"></script>
 	</body>
 </html>

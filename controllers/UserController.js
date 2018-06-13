@@ -1,7 +1,8 @@
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
 var passport = require('passport');
-
+var Product = require('../models/product');
+var Cart = require('../models/cart');
 exports.index = function(req, res, next) {
     res.redirect('/users/profile');
 }
@@ -483,6 +484,36 @@ exports.active_account_get = function(req, res, next) {
     });
 }
 
+exports.add_to_cart = function(req, res , next){
+    var productId = req.params.id;
+    var cart = new Cart(req.session.cart ? req.session.cart: {});
+
+    Product.findById(productId, function(err, product){
+        if(err ){
+            return  res.redirect('/');
+        }
+        cart.add(product, product.id);
+        req.session.cart = cart;
+        res.redirect('/');
+    });
+    
+}
+
+exports.get_shopping_cart = function(req, res , next){
+    if(!req.session.cart){
+        return res.render('shopping-cart', {
+            products: null,
+            helpers: req.handlebars.helpers
+        });
+    }
+    var cart = new Cart(req.session.cart);
+   res.render('shopping-cart', {products: cart.generateArray(), 
+    totalPrice: cart.totalPrice,
+    helpers: req.handlebars.helpers
+})
+
+   
+}
 
 function pad2(number) {
     return (number < 10 ? '0' : '') + number
