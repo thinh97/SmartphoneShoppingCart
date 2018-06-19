@@ -19,10 +19,14 @@ exports.index = function(req, res, next) {
             });
             arrayResult.push(threeItem);
 			var user = null;
+			var cart = null;
 			if (req.session.passport)
 				user = req.session.passport.user;
+			if (req.session.cart)
+				cart= req.session.cart;
 			res.render('index', { 
 				user: user,
+				cart: cart,
 				results: arrayResult,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,

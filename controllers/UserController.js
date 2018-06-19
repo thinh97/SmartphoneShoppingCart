@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var passport = require('passport');
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var Order = require('../models/order');
 exports.index = function(req, res, next) {
     res.redirect('/users/profile');
 }
@@ -39,6 +40,7 @@ exports.signin_post = function(req, res, next){
                     helpers: req.handlebars.helpers
                 });
             }
+            
             return res.redirect(req.session.cookie.path);
         });
     })(req, res, next);
@@ -500,21 +502,68 @@ exports.add_to_cart = function(req, res , next){
 }
 
 exports.get_shopping_cart = function(req, res , next){
+    var user = null;
+    if (req.session.passport)
+		user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
+            user: user,
             helpers: req.handlebars.helpers
         });
     }
     var cart = new Cart(req.session.cart);
-   res.render('shopping-cart', {products: cart.generateArray(), 
+    res.render('shopping-cart', {products: cart.generateArray(), 
     totalPrice: cart.totalPrice,
+    cart: req.session.cart,
+    user:user,
     helpers: req.handlebars.helpers
-})
-
-   
+}) 
 }
 
+exports.get_check_out = function(req, res, next){
+    var user= null;
+    if (req.session.passport)
+    user = req.session.passport.user;
+    if (req.isAuthenticated()){
+        if(!req.session.cart){
+            return res.redirect('shopping-cart');
+        }
+        var cart = new Cart(req.session.cart);
+
+        res.render('checkout',{
+            products: cart.generateArray(),
+            cart: req.session.cart,
+            user: user,
+            totalPrice: cart.totalPrice,
+            helpers: req.handlebars.helpers
+        });
+    }
+    else{
+        res.redirect('/users/signin');
+    }
+}
+
+exports.post_check_out = function(req, res , next){ 
+   if(req.isAuthenticated()){
+    if(!req.session.cart){
+        return res.redirect('shopping-cart');
+    }
+    var cart = new Cart(req.session.cart);
+    var order = new Order({
+        user: req.user,
+        cart: cart,
+        address: req.body.address,
+        name: req.body.name,
+        email: req.body.email_address,
+        phonenumber: req.body.phone_number
+    });
+    order.save(function(err, result){
+        req.session.cart= null;
+        res.redirect('/');
+    })
+   }
+}
 function pad2(number) {
     return (number < 10 ? '0' : '') + number
 }

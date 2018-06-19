@@ -27,7 +27,7 @@
 <hr>
 <div class="row">
     <div class="col-sm-6 col-md-4 col-md-offset-3 col-sm-offset-3">
-        <button type="button" class="btn btn-success">Check out</button>
+        <a href="/user/checkout" type="button" class="btn btn-success">Check out</a>
     </div>
 </div>
 {{else}}
@@ -39,3 +39,68 @@
 {{/if}}
 
 
+
+{{!-- {{#if products}}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     {{#each products}}
+                    <tr>
+                        <td class="col-md-6">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{this.item.ImagePath.[0]}}" style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="#">{{this.item.Title}}</a></h4>
+                                <h5 class="media-heading"> by <a href="#">{{this.item.Brand}}</a></h5>
+                            </div>
+                        </div></td>
+                        <td class="col-sm-1 col-md-1" style="text-align: center">
+                        <input type="number" class="form-control"  value="3" readonly>
+                        </td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>{{this.item.Price}}</strong></td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>{{this.Price}}</strong></td>
+                        <td class="col-sm-1 col-md-1">
+                        <button type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Remove
+                        </button></td>
+                        
+                    </tr>
+                {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h5>Subtotal<br>Estimated shipping</h5><h3>Total</h3></td>
+                        <td class="text-right"><h5><strong>$24.59<br>$6.94</strong></h5><h3>$31.53</h3></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
+                        </button></td>
+                        <td>
+                        <button type="button" class="btn btn-success">
+                            Checkout <span class="glyphicon glyphicon-play"></span>
+                        </button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{{/if}} --}}
