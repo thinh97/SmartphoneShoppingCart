@@ -4,6 +4,7 @@
             <div class="row">
 				<h1 class="col-md-12 product-title">{{result.Title}}</h1>
 				<h4 class="col-md-12 product-price">{{formatAmount result.Price}} VNĐ</h4>
+                <h5 class="col-md-12 no-margin-top">{{result.Views}} lượt xem</h5>
 			</div>
 			<table class="table">
 				<tbody>
@@ -79,7 +80,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12 btnAddToCart">
-					<button class="btn btn-primary btn-block product-add-to-cart" type="button">Add to cart</button>
+                    <a href="/user/add-to-cart/{{result._id}}" class="btn btn-primary btn-block product-add-to-cart" data-id="{{this._id}}" role="button">Thêm vào giỏ hàng</a>
 				</div>
 				<div class="col-md-12 body_text">
 					{{{result.Description}}}

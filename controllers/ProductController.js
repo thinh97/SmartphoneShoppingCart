@@ -19,14 +19,14 @@ exports.index = function(req, res, next) {
             });
             arrayResult.push(threeItem);
 			var user = null;
-			var cart = null;
+            var cart = null;
+            if (req.session.cart)
+                cart= req.session.cart;
 			if (req.session.passport)
 				user = req.session.passport.user;
-			if (req.session.cart)
-				cart= req.session.cart;
 			res.render('index', { 
 				user: user,
-				cart: cart,
+                cart: cart,
 				results: arrayResult,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -64,8 +64,12 @@ exports.list_price = function(req, res, next) {
             var user = null;
             if (req.session.passport)
                 user = req.session.passport.user;
+            var cart = null;
+            if (req.session.cart)
+                cart= req.session.cart;
 			res.render('index', {
                 user: user,
+                cart: cart,
 				results: arrayResult,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -85,8 +89,16 @@ exports.product_detail = function(req, res) {
             var user = null;
             if (req.session.passport)
                 user = req.session.passport.user;
+        	Product.update({ _id: productId }, { Views: product.Views + 1 }, function (err) {
+				if (err)
+					console.log(err);
+            });
+            var cart = null;
+            if (req.session.cart)
+                cart= req.session.cart;
 			res.render('product', {
                 user: user,
+                cart: cart,
 				result: product,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -94,4 +106,37 @@ exports.product_detail = function(req, res) {
 			});
 		}
   });
+};
+
+exports.search_post = function(req, res, next) {
+	var regex = req.body.searchKey;
+    Product.find({Title: {$regex: regex, $options: 'ig'}}, function(err, results){
+        if (err)
+            console.log(err);
+        else{
+            var arrayResult = [];
+            var threeItem = [];
+            var count = 0;
+            results.forEach(function (item) {
+                threeItem.push(item);
+                count++;
+                if (count === 3){
+                    arrayResult.push(threeItem);
+                    count = 0;
+                    threeItem = [];
+                }
+            });
+            arrayResult.push(threeItem);
+            var user = null;
+            if (req.session.passport)
+                user = req.session.passport.user;
+            res.render('search_advance', {
+                user: user,
+                results: arrayResult,
+                menuBrand: req.menuBrand,
+                priceRange: req.priceRange,
+                helpers: req.handlebars.helpers
+            });
+        }
+    });
 };

@@ -20,6 +20,8 @@ var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 
+mongoose.Promise = global.Promise;
+
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
@@ -249,6 +251,7 @@ app.use('/', adminRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Không tìm thấy URL');
+    console.log(req.originalUrl);
     err.status = 404;
     next(err);
 });

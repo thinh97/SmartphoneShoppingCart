@@ -35,9 +35,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>{{#if user.UserName}}Xin chào <b>{{user.UserName}}</b>{{else}}Tài khoản{{/if}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/users/profile">Thông tin tài khoản</a></li>
+                        <li><a href="/user/profile">Thông tin tài khoản</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/users/signout">Đăng xuất</a></li>
+                        <li><a href="/user/signout">Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>
@@ -59,6 +59,9 @@
                     <li class="list-group-item"><i class="fa fa-list fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/products">Danh sách sản phẩm</a></li>
                     <li class="list-group-item"><strong>Đơn hàng</strong></li>
                     <li class="list-group-item"><i class="fa fa-list fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/orders">Danh sách đơn hàng</a></li>
+                    <li class="list-group-item"><strong>Thống kê</strong></li>
+                    <li class="list-group-item"><i class="fa fa-bar-chart" aria-hidden="true"></i> &nbsp; <a href="/admin/statistics">Thống kê doanh số</a></li>
+                    <li class="list-group-item"><i class="glyphicon glyphicon-flash" aria-hidden="true"></i> &nbsp; <a href="/admin/top">Top bán chạy</a></li>
                     <li class="list-group-item"><strong>Tài khoản</strong></li>
                     <li class="list-group-item"><i class="fa fa-user fa-icon" aria-hidden="true"></i> &nbsp; <a href="/admin/users">Danh sách tài khoản</a></li>
                 </ul>
@@ -82,6 +85,7 @@
 <script src="/javascripts/pushy.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script src="/javascripts/Chart.bundle.js"></script>
 <script src="/javascripts/SmartPhoneShoppingCart.js"></script>
 </body>
 </html>

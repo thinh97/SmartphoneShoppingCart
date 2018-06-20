@@ -22,7 +22,7 @@ var products = [
     Description: 'HTC U Ultra đánh dấu sự trở lại của HTC với triết lý thiết kế mới, đẹp hơn - sang trọng - bóng bẩy hơn và đặc biệt gắn bó với người dùng hơn thông qua trợ lý ảo HTC Sense Companion.',
     Price: 9890000,
 	Brand: 'htc',
-	Views: 0,
+	Views: 1645,
 	Comments:[]
   }),
   new Product({
@@ -42,7 +42,7 @@ var products = [
     Description: 'Thừa hưởng thiết kế đã đạt đến độ chuẩn mực, thế hệ iPhone 8 Plus thay đổi phong cách bóng bẩy hơn và bổ sung hàng loạt tính năng cao cấp cho trải nghiệm sử dụng vô cùng tuyệt vời.',
     Brand: 'apple',
 	Price: 23990000,
-	Views: 0,
+	Views: 6452,
 	Comments:[]
   }),
   new Product({
@@ -62,7 +62,7 @@ var products = [
     Description: 'iPhone 6s 32 GB xứng đáng là phiên bản nâng cấp hoàn hảo từ iPhone 6 với nhiều tính năng mới hấp dẫn.',
 	Brand: 'apple',
     Price: 12490000,
-	Views: 0,
+	Views: 4561,
 	Comments:[]
   }),
   new Product({
@@ -82,7 +82,7 @@ var products = [
     Description: 'iPhone X được Apple ra mắt ngày 12/9 vừa rồi đánh dấu chặng đường 10 năm lần đầu tiên iPhone ra đời. Sau một thời gian, giá iPhone X cũng được công bố. iPhone X mang trên mình thiết kế hoàn toàn mới với màn hình Super Retina viền cực mỏng và trang bị nhiều công nghệ hiện đại như nhận diện khuôn mặt Face ID, sạc pin nhanh và sạc không dây cùng khả năng chống nước bụi cao cấp.',
     Brand: 'apple',
 	Price: 34790000,
-	Views: 0,
+	Views: 6542,
 	Comments:[]
   }),
   new Product({
@@ -102,7 +102,7 @@ var products = [
     Description: 'Moto G5S Plus là smartphone kế thừa mẫu tiền nhiệm Moto G5 với nhiều nâng cấp đáng giá như camera kép và vẫn sở hữu cho mình mức giá hấp dẫn.',
     Brand: 'motorola',
 	Price: 6990000,
-	Views: 0,
+	Views: 7644,
 	Comments:[]
   }),
   new Product({
@@ -122,7 +122,7 @@ var products = [
     Description: 'OPPO F5 6GB là phiên bản nâng cấp cấu hình của chiếc OPPO F5, chuyên gia selfie làm đẹp thông minh và màn hình tràn viền tuyệt đẹp.',
     Brand: 'oppo',
 	Price: 8990000,
-	Views: 0,
+	Views: 1234,
 	Comments:[]
   }),
   new Product({
@@ -142,7 +142,7 @@ var products = [
     Description: 'Tiếp nối sự thành công của OPPO F5 thì OPPO tiếp tục giới thiệu OPPO F7 128GB với mức giá tương đương nhưng mang trong mình thiết kế hoàn toàn mới cũng nhiều cải tiến đáng giá.',
     Brand: 'oppo',
 	Price: 9990000,
-	Views: 0,
+	Views: 7951,
 	Comments:[]
   }),
   new Product({
@@ -162,7 +162,7 @@ var products = [
     Description: 'Samsung Galaxy A8+ (2018) là phiên bản lớn hơn của chiếc Samsung Galaxy A8 (2018) phù hợp với những bạn yêu thích một thiết bị có màn hình lớn và thời lượng pin bền bỉ.',
     Brand: 'samsung',
 	Price: 13490000,
-	Views: 0,
+	Views: 7643,
 	Comments:[]
   }),
   new Product({
@@ -182,7 +182,7 @@ var products = [
     Description: 'Đem đến nhiều lựa chọn cho người tiêu dùng hơn, dòng sản phẩm chuẩn bị ra mắt của Samsung là Samsung J2 Pro 2018 sở hữu thiết kế ánh kim thời thượng, đường nét thanh lịch, dù chỉ ở phân khúc giá rẻ.',
     Brand: 'samsung',
 	Price: 8990000,
-	Views: 0,
+	Views: 4315,
 	Comments:[]
   }),
   new Product({
@@ -202,7 +202,7 @@ var products = [
     Description: 'Galaxy J7 Prime xứng đáng là cái tên hàng đầu trong danh sách chọn smartphone phổ thông của giới trẻ khi nhận được nhiều đánh giá tích cực về thiết kế, thời lượng pin lâu dài và camera chụp hình chất lượng tốt.',
     Brand: 'samsung',
 	Price: 4990000,
-	Views: 0,
+	Views: 4695,
 	Comments:[]
   }),
   new Product({
@@ -222,7 +222,7 @@ var products = [
     Description: 'Samsung Galaxy J7+ là dòng smartphone tầm trung nhưng được trang bị camera kép có khả năng chụp ảnh xóa phông chân dung cùng thiết kế đẹp và hiệu năng mạnh mẽ.',
     Brand: 'samsung',
 	Price: 7290000,
-	Views: 0,
+	Views: 3215,
 	Comments:[]
   }),
   new Product({
@@ -242,7 +242,7 @@ var products = [
     Description: 'Samsung Galaxy J7 Pro là một chiếc smartphone phù hợp với những người yêu thích một sản phẩm pin tốt, thích hệ điều hành mới cùng những tính năng đi kèm độc quyền của Samsung.',
     Brand: 'samsung',
 	Price: 6090000,
-	Views: 0,
+	Views: 7563,
 	Comments:[]
   }),
   new Product({
@@ -262,7 +262,7 @@ var products = [
     Description: 'Galaxy Note 8 là niềm hy vọng vực lại dòng Note danh tiếng của Samsung với diện mạo nam tính, sang trọng. Trang bị camera kép xóa phông thời thượng, màn hình vô cực như trên S8 Plus, bút Spen với nhiều tính năng mới và nhiều công nghệ được Samsung ưu ái đem lên Note 8.',
     Brand: 'samsung',
 	Price: 22490000,
-	Views: 0,
+	Views: 7845,
 	Comments:[]
   }),
   new Product({
@@ -282,7 +282,7 @@ var products = [
     Description: 'Galaxy S8 và S8 Plus hiện đang là chuẩn mực smartphone về thiết kế trong tương lai. Sau nhiều ngày được sử dụng, mình xin chia sẻ những cảm nhận chi tiết nhất về chiếc Galaxy S8 Plus - thiết bị đang có doanh số đặt hàng khủng nhất hiện tại.',
     Brand: 'samsung',
 	Price: 17990000,
-	Views: 0,
+	Views: 6541,
 	Comments:[]
   }),
   new Product({
@@ -302,7 +302,7 @@ var products = [
     Description: 'Samsung Galaxy S9 Plus, siêu phẩm smartphone hàng đầu trong thế giới Android đã ra mắt với màn hình vô cực, camera chuyên nghiệp như máy ảnh và hàng loạt những tính năng cao cấp đầy hấp dẫn.',
     Brand: 'samsung',
 	Price: 23490000,
-	Views: 0,
+	Views: 6421,
 	Comments:[]
   }),
   new Product({
@@ -322,7 +322,7 @@ var products = [
     Description: 'Sau một thời gian xuất hiện tại Việt Nam và nhận được nhiều sự quan tâm từ người dùng thì mới đây Sony đã tung ra phiên bản màu hồng cho chiếc Sony Xperia XA1 Ultra để phục vụ riêng cho "phái đẹp".',
     Brand: 'sony',
 	Price: 6990000,
-	Views: 0,
+	Views: 9456,
 	Comments:[]
   }),
   new Product({
@@ -342,7 +342,7 @@ var products = [
     Description: 'Xperia XZ2 là chiếc flagship mới được Sony giới thiệu tại MWC 2018 với sự thay đổi lớn về thiết kế so với những người tiền nhiệm.',
     Brand: 'sony',
 	Price: 19990000,
-	Views: 0,
+	Views: 1643,
 	Comments:[]
   }),
   new Product({
@@ -362,7 +362,7 @@ var products = [
     Description: 'Vivo V9 là chiếc smartphone tầm trung cận cao cấp với điểm nhấn là máy có camera kép phía sau và camera selfie độ phân giải cao 24 MP.',
     Brand: 'vivo',
 	Price: 7990000,
-	Views: 0,
+	Views: 5254,
 	Comments:[]
   }),
   new Product({
@@ -382,7 +382,7 @@ var products = [
     Description: 'Bphone 2017 là chiếc smartphone thế hệ thứ 2 được nhà sản xuất Việt Nam Bkav trình làng với hàng loạt cải tiến vượt trội, tối ưu tốt nhất cho người Việt và giá bán rất tốt.',
     Brand: 'bkav',
 	Price: 9790000,
-	Views: 0,
+	Views: 2314,
 	Comments:[]
   })
 ];

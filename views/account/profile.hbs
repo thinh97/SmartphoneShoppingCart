@@ -1,5 +1,5 @@
 <div class="col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
-    <form class="form-horizontal" action="/users/profile" method="post" role="form" data-toggle="validator">
+    <form class="form-horizontal" action="/user/profile" method="post" role="form" data-toggle="validator">
         <h2 class="form-heading text-center">Thông tin tài khoản</h2>
         <div class="message-success">{{message}}</div>
         <div class="message-error">{{errormessage}}</div>
@@ -57,7 +57,7 @@
         </div>
     </form>
     <h4><b><i>Thay đổi mật khẩu</i></b></h4>
-    <form class="form-horizontal" action="/users/profile/changepassword" method="post" role="form" data-toggle="validator">
+    <form class="form-horizontal" action="/user/profile/change-password" method="post" role="form" data-toggle="validator">
         <div class="form-group">
             <label for="oldPassword" class="col-sm-3 control-label">Mật khẩu cũ</label>
             <div class="col-sm-9">

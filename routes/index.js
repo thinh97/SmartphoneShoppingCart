@@ -7,6 +7,8 @@ var brand_controller = require('../controllers/BrandController');
 /* GET home page. */
 router.get('/', product_controller.index);
 
+router.post('/search', product_controller.search_post);
+
 router.get('/filter/brand/:id', brand_controller.list_brand);
 
 router.get('/filter/price/:start/:end',product_controller.list_price);	

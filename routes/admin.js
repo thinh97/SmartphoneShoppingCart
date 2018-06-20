@@ -56,6 +56,14 @@ router.post('/admin/user/edit/:id', admin_controller.edit_user_post);
 
 router.get('/admin/user/delete/:id', admin_controller.delete_user_get);
 
-router.post('/admin/file/upload', upload.array('imagesUpload', 10), admin_controller.file_upload_post);
+router.post('/admin/file/upload', upload.array('imagesUpload'), admin_controller.file_upload_post);
+
+router.get('/admin/statistics', admin_controller.statistics_get);
+
+router.post('/admin/statistics', admin_controller.statistics_post);
+
+router.get('/admin/top', admin_controller.top_get);
+
+router.post('/admin/top', admin_controller.top_post);
 
 module.exports = router;

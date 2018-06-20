@@ -1,0 +1,35 @@
+<div class="col-md-8 col-xl-8 col-md-offset-1">
+    {{#ifCond results.length '==' 0}}
+        <div class="col-md-12">
+            <p class="text-danger">Không có sản phẩm nào</p>
+        </div>
+    {{/ifCond}}
+    {{#each results}}
+        <div class="row product-layout">
+            {{#each this}}
+                <div class="col-md-4 col-xl-4 col m4 xl4 product-item">
+                    <div class="thumbnail">
+                        <a href="/product/{{this._id}}">
+                            <div class="vertical-center thumbnail-image-container">
+                                {{#if this.ImagePath.[0]}}
+                                    <img class="img-responsive" src="{{this.ImagePath.[0]}}">
+                                {{else}}
+                                    <img class="img-responsive" src="/images/placeholder.png">
+                                {{/if}}
+                            </div>
+                            <h3 class="product-title product-title-home top-pad-10">
+                                {{this.Title}}
+                            </h3>
+                        </a>
+                        <h3 class="product-price text-center">
+                            {{formatAmount this.Price}} VNĐ
+                        </h3>
+                        <p class="text-center">
+                            <a class="btn btn-primary add-to-cart" data-id="{{this._id}}" role="button">Add to cart</a>
+                        </p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{/each}}
+</div>

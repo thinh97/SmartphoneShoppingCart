@@ -4,7 +4,7 @@
         <h2 class="form-heading text-center">Vui lòng đăng nhập</h2>
         <div class="message-error">{{message}}</div>
         {{#if active}}
-            <div class="text-center">Nếu bạn chưa nhận được email kích hoạt hãy nhấn vào <a href="/users/active"><b>đây</b></a> để gửi lại email kích hoạt</div>
+            <div class="text-center">Nếu bạn chưa nhận được email kích hoạt hãy nhấn vào <a href="/user/active"><b>đây</b></a> để gửi lại email kích hoạt</div>
         {{/if}}
         <div class="form-group">
             <input type="text" id="username" name="username" class="form-control" placeholder="Tên tài khoản" required autofocus>
@@ -13,7 +13,7 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
         </div>
         <button class="btn btn-lg btn-primary btn-block" id="loginForm" type="submit">Đăng nhập</button>
-        <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/users/forgotpassword">Quên mật khẩu?</a>
-        <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/users/signup">Bạn chưa có tài khoản? Click vào đây để đăng ký</a>
+        <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/user/forgot-password">Quên mật khẩu?</a>
+        <a class="col-md-12" style="padding-top: 20px;text-align: center" href="/user/signup">Bạn chưa có tài khoản? Click vào đây để đăng ký</a>
     </form>
 </div>

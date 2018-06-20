@@ -1,11 +1,12 @@
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
 var passport = require('passport');
+var Order = require('../models/order');
 var Product = require('../models/product');
 var Cart = require('../models/cart');
-var Order = require('../models/order');
+
 exports.index = function(req, res, next) {
-    res.redirect('/users/profile');
+    res.redirect('/user/profile');
 }
 
 exports.signin_get = function(req, res, next) {
@@ -15,7 +16,7 @@ exports.signin_get = function(req, res, next) {
         });
     }
     else
-        res.redirect('/users/profile');
+        res.redirect('/user/profile');
 }
 
 exports.signin_post = function(req, res, next){
@@ -40,7 +41,6 @@ exports.signin_post = function(req, res, next){
                     helpers: req.handlebars.helpers
                 });
             }
-            
             return res.redirect(req.session.cookie.path);
         });
     })(req, res, next);
@@ -120,11 +120,8 @@ exports.signup_post = function(req, res, next) {
 exports.signout_get = function(req, res, next) {
     if (req.isAuthenticated()){
         req.logOut();
-        res.redirect(req.session.cookie.path);
     }
-    else{
-        res.redirect('/users/signin');
-    }
+    res.redirect('/user/signin');
 }
 
 exports.profile_get = function(req, res, next) {
@@ -138,7 +135,7 @@ exports.profile_get = function(req, res, next) {
         });
     }
     else
-        res.redirect('/users/signin');
+        res.redirect('/user/signin');
 }
 
 exports.profile_changeinfo_post = function(req, res, next) {
@@ -170,7 +167,7 @@ exports.profile_changeinfo_post = function(req, res, next) {
         });
     }
     else
-        res.redirect('/users/signin');
+        res.redirect('/user/signin');
 }
 
 exports.profile_change_password_post = function(req, res, next) {
@@ -206,7 +203,7 @@ exports.profile_change_password_post = function(req, res, next) {
         }
     }
     else
-        res.redirect('/users/signin');
+        res.redirect('/user/signin');
 }
 
 exports.forgot_password_get = function(req, res, next) {
@@ -498,13 +495,13 @@ exports.add_to_cart = function(req, res , next){
         req.session.cart = cart;
         res.redirect('/');
     });
-    
+
 }
 
 exports.get_shopping_cart = function(req, res , next){
     var user = null;
     if (req.session.passport)
-		user = req.session.passport.user;
+        user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
@@ -513,18 +510,18 @@ exports.get_shopping_cart = function(req, res , next){
         });
     }
     var cart = new Cart(req.session.cart);
-    res.render('shopping-cart', {products: cart.generateArray(), 
-    totalPrice: cart.totalPrice,
-    cart: req.session.cart,
-    user:user,
-    helpers: req.handlebars.helpers
-}) 
+    res.render('shopping-cart', {products: cart.generateArray(),
+        totalPrice: cart.totalPrice,
+        cart: req.session.cart,
+        user:user,
+        helpers: req.handlebars.helpers
+    })
 }
 
 exports.get_check_out = function(req, res, next){
     var user= null;
     if (req.session.passport)
-    user = req.session.passport.user;
+        user = req.session.passport.user;
     if (req.isAuthenticated()){
         if(!req.session.cart){
             return res.redirect('shopping-cart');
@@ -540,34 +537,134 @@ exports.get_check_out = function(req, res, next){
         });
     }
     else{
-        res.redirect('/users/signin');
+        res.redirect('/user/signin');
     }
 }
 
-exports.post_check_out = function(req, res , next){ 
-   if(req.isAuthenticated()){
-    if(!req.session.cart){
-        return res.redirect('shopping-cart');
+exports.post_check_out = function(req, res , next){
+    if(req.isAuthenticated()){
+        if(!req.session.cart){
+            return res.redirect('shopping-cart');
+        }
+        var cart = new Cart(req.session.cart);
+        var orders = cart.generateArray();
+        for (var item in orders) {
+            var order = new Order({
+                ProductId: item.item._id,
+                DeliveryDate: new Date(),
+                UserId: req.session.passport.user._id,
+                BillAddress: req.body.address,
+                Name: req.body.name,
+                email: req.body.email_address,
+                MobilePhone: req.body.phone_number,
+                PaymentMethod: 'Thanh toán khi nhận hàng',
+                Amount: item.qty,
+                Status: 'Đang xử lý',
+            });
+            order.save(function(err, result){
+                req.session.cart= null;
+                res.redirect('/');
+            })
+        }
+
     }
-    var cart = new Cart(req.session.cart);
-    var order = new Order({
-        user: req.user,
-        cart: cart,
-        address: req.body.address,
-        name: req.body.name,
-        email: req.body.email_address,
-        phonenumber: req.body.phone_number
-    });
-    order.save(function(err, result){
-        req.session.cart= null;
-        res.redirect('/');
-    })
-   }
 }
+
+exports.order_history_get = function(req, res, next) {
+    if (req.isAuthenticated()){
+        var user = req.session.passport.user;
+        Order.find({UserId: user._id}).
+        populate('ProductId','Title Price _id').
+        exec(function (err, result) {
+            if (err){
+                console.log(err);
+                res.render('account/order_history',{
+                    errormessage: 'Vui lòng thử lại sau',
+                    user: user,
+                    helpers: req.handlebars.helpers
+                });
+            }
+            else{
+                if (result != null){
+                    var orders = {};
+                    var pending = result.filter(filterStatusPending);
+                    if (pending.length > 0){
+                        orders.pending = mapData(pending);
+                    }
+                    var fail = result.filter(filterStatusFail);
+                    if (fail.length > 0){
+                        orders.fail = mapData(fail);
+                    }
+                    var complete = result.filter(filterStatusCompltete);
+                    if (complete.length > 0){
+                        orders.complete = mapData(complete);
+                    }
+                    var abort = result.filter(filterStatusAbort);
+                    if (abort.length > 0){
+                        orders.abort = mapData(abort);
+                    }
+                    res.render('account/order_history',{
+                        orders: orders,
+                        user: user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+                else{
+                    res.render('account/order_history',{
+                        user: user,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            }
+        });
+    }
+    else
+        res.redirect('/user/signin');
+
+}
+
 function pad2(number) {
     return (number < 10 ? '0' : '') + number
 }
 
 function generateString() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+function filterStatusCompltete(item) {
+    return item.Status === 'Hoàn thành';
+}
+
+function filterStatusPending(item) {
+    return item.Status === 'Đang xử lý';
+}
+
+function filterStatusFail(item) {
+    return item.Status === 'Thất bại';
+}
+
+function filterStatusAbort(item) {
+    return item.Status === 'Đã hủy';
+}
+
+function mapData(array) {
+    var arrayMap = [];
+    array.forEach(function (item) {
+        var product = {
+            id: item.ProductId._id,
+            name: item.ProductId.Title,
+            price: item.ProductId.Price,
+        };
+        var order = {
+            createDate: item.CreateDate,
+            deliveryDate: item.DeliveryDate,
+            address: item.BillAddress,
+            paymentMethod: item.PaymentMethod,
+            product: product,
+            amount: item.Amount,
+            total: item.Amount * product.price,
+        };
+        arrayMap.push(order);
+    });
+    return arrayMap;
 }

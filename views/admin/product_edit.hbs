@@ -117,10 +117,11 @@
                 <h2>Hình ảnh sản phẩm</h2>
                 {{#if imagePath}}
                 <div class="row">
-                    <div class="col-md-12">
+                    <div id="product-images-list" class="col-md-12">
                     {{#each imagePath}}
                         <div class="col-md-4 col-xl-4 col m4 xl4 product-item">
                             <div class="vertical-center thumbnail-image-container-small thumbnail-small">
+                                <span class="glyphicon glyphicon-remove"></span>
                                 <img class="img-responsive" src="{{this}}">
                             </div>
                         </div>
@@ -128,9 +129,8 @@
                     </div>
                 </div>
                 {{else}}
-                    <h4 class="text-warning">Chưa có hình ảnh nào cho sản phẩm này</h4>
+                    <h4 id="noImageText" class="text-warning">Chưa có hình ảnh nào cho sản phẩm này</h4>
                 {{/if}}
-                <input type="hidden" name="imagePath" value="{{imagePath}}" />
             </div>
             <div class="text-center">
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Tải lên hình ảnh  <i class="glyphicon glyphicon glyphicon-upload"></i></button>
@@ -138,6 +138,7 @@
             </div>
         </div>
         <input type="hidden" name="id" value="{{product._id}}" />
+        <input type="hidden" id="imagePath" name="imagePath" value="{{imagePath}}" />
     </form>
 </div>
 

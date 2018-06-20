@@ -218,7 +218,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .search-bar{
-    margin-top: 10px;
+    position: absolute;
+    left: 20%;
+    top: 15%;
+    width: 100%;
+}
+
+.form-search{
+    width: 50%;
+    height: 44px;
 }
 
 .searchMenuLocation-side{
@@ -665,4 +673,16 @@ input::-webkit-calendar-picker-indicator {
 }
 .modal-footer{
     text-align: center;
+}
+.glyphicon-remove{
+    position: absolute;
+    right: 6px;
+    top: -1px;
+}
+.center-cell{
+    position: absolute;
+    top: 40%;
+}
+.no-margin-top{
+    margin-top: 0px;
 }
