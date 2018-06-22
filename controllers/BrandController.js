@@ -21,8 +21,12 @@ exports.list_brand = function(req, res, next) {
             var user = null;
             if (req.session.passport)
                 user = req.session.passport.user;
+            var cart = null;
+            if (req.session.cart)
+                cart = req.session.cart;
 			res.render('index', {
 				user: user,
+				cart: cart,
 				results: arrayResult,
 				menuBrand: req.menuBrand,
 				priceRange: req.priceRange,

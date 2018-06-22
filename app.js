@@ -189,6 +189,10 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     req.handlebars = handlebars;
+    var cart = null;
+    if (req.session.cart)
+        cart= req.session.cart;
+    req.cart = cart;
     Brand.find(function (err, results) {
         if (err)
             return null;

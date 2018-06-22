@@ -38,10 +38,14 @@ router.get('/user/add-to-cart/:id',user_controller.add_to_cart);
 
 router.get('/user/shopping-cart/',user_controller.get_shopping_cart);
 
+router.get('/user/shopping-cart/delete/:id',user_controller.get_delete_shopping_cart);
+
 router.get('/user/checkout',user_controller.get_check_out);
 
 router.post('/user/checkout', user_controller.post_check_out);
 
 router.get('/user/history', user_controller.order_history_get);
+
+router.get('/user/cancel-order/:id', user_controller.cancel_order_get);
 
 module.exports = router;

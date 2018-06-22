@@ -29,5 +29,11 @@ module.exports = function Cart(oldCart){
         }
         return arr;
     }
-}
+
+    this.delete = function (id) {
+        this.totalQty--;
+        this.totalPrice -= this.items[id].Price;
+        delete this.items[id];
+    }
+};
 // module.exports = mongoose.model('Cart', Cart);

@@ -23,6 +23,7 @@
                             <th>Đơn giá</th>
                             <th>Số lượng</th>
                             <th>Tổng tiền</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,7 @@
                                 <td>{{formatAmount this.product.price}} VNĐ</td>
                                 <td>{{this.amount}}</td>
                                 <td>{{formatAmount this.total}} VNĐ</td>
+                                <td><a class="text-danger" href="/user/cancel-order/{{this.id}}"><i class="fa fa-close"></i></a></td>
                             </tr>
                         {{/each}}
                         </tbody>

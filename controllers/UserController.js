@@ -12,6 +12,7 @@ exports.index = function(req, res, next) {
 exports.signin_get = function(req, res, next) {
     if (req.isUnauthenticated()){
         res.render('account/signin', {
+            cart: req.cart,
             helpers: req.handlebars.helpers
         });
     }
@@ -25,6 +26,7 @@ exports.signin_post = function(req, res, next){
         if (!user) {
             return res.render('account/signin', {
                 message: info.message,
+                cart: req.cart,
                 helpers: req.handlebars.helpers
             });
         }
@@ -37,6 +39,7 @@ exports.signin_post = function(req, res, next){
             if (user.AccessToken != null && user.TokenExpires == null){
                 return res.render('account/signin', {
                     active: true,
+                    cart: req.cart,
                     message: 'Vui lòng kích hoạt tài khoản trước khi sử dụng',
                     helpers: req.handlebars.helpers
                 });
@@ -50,6 +53,7 @@ exports.signup_get = function(req, res, next) {
     var nowDate = new Date();
     var curentDate = (nowDate.getFullYear()-5) + '-' + (pad2(nowDate.getMonth()+1)) + '-' + pad2(nowDate.getDate());
     res.render('account/signup',{
+        cart: req.cart,
         CurentDate: curentDate,
         New: true,
         helpers: req.handlebars.helpers
@@ -77,6 +81,7 @@ exports.signup_post = function(req, res, next) {
                 console.log(err);
                 res.render('account/signup', {
                     success: null,
+                    cart: req.cart,
                     errormessage: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
                     helpers: req.handlebars.helpers
                 });
@@ -94,6 +99,7 @@ exports.signup_post = function(req, res, next) {
                     if (err) {
                         console.log(err);
                         res.render('error', {
+                            cart: req.cart,
                             message: 'Đăng ký thành công! Gửi yêu cầu kích hoạt thất bại. Vui lòng thử lại sau',
                             helpers: req.handlebars.helpers
                         });
@@ -101,6 +107,7 @@ exports.signup_post = function(req, res, next) {
                     else{
                         res.render('account/signup', {
                             success: true,
+                            cart: req.cart,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -111,6 +118,7 @@ exports.signup_post = function(req, res, next) {
     else{
         res.render('account/signup', {
             success: null,
+            cart: req.cart,
             errormessage: "Mật khẩu không khớp",
             helpers: req.handlebars.helpers
         });
@@ -130,6 +138,7 @@ exports.profile_get = function(req, res, next) {
         var curentDate = (nowDate.getFullYear()-5) + '-' + (pad2(nowDate.getMonth()+1)) + '-' + pad2(nowDate.getDate());
         res.render('account/profile',{
             CurentDate: curentDate,
+            cart: req.cart,
             user: req.session.passport.user,
             helpers: req.handlebars.helpers
         });
@@ -153,6 +162,7 @@ exports.profile_changeinfo_post = function(req, res, next) {
                 console.log(err);
                 res.render('account/profile', {
                     errormessage: err.message,
+                    cart: req.cart,
                     user: req.session.passport.user,
                     helpers: req.handlebars.helpers
                 });
@@ -160,6 +170,7 @@ exports.profile_changeinfo_post = function(req, res, next) {
             else {
                 res.render('account/profile', {
                     message: 'Đã lưu',
+                    cart: req.cart,
                     user: updatedUser,
                     helpers: req.handlebars.helpers
                 });
@@ -180,6 +191,7 @@ exports.profile_change_password_post = function(req, res, next) {
                         console.log(err);
                         res.render('account/profile', {
                             errormessage: err.message,
+                            cart: req.cart,
                             user: req.session.passport.user,
                             helpers: req.handlebars.helpers
                         });
@@ -187,6 +199,7 @@ exports.profile_change_password_post = function(req, res, next) {
                     else {
                         res.render('account/profile', {
                             message: 'Thay đổi mật khẩu thành công',
+                            cart: req.cart,
                             user: updatedUser,
                             helpers: req.handlebars.helpers
                         });
@@ -196,6 +209,7 @@ exports.profile_change_password_post = function(req, res, next) {
             else{
                 res.render('account/profile', {
                     errormessage: 'Mật khẩu không khớp',
+                    cart: req.cart,
                     user: updatedUser,
                     helpers: req.handlebars.helpers
                 });
@@ -209,6 +223,7 @@ exports.profile_change_password_post = function(req, res, next) {
 exports.forgot_password_get = function(req, res, next) {
     res.render('account/forgot_password',{
         New: true,
+        cart: req.cart,
         helpers: req.handlebars.helpers
     });
 }
@@ -221,6 +236,7 @@ exports.forgot_password_post = function(req, res, next) {
            console.log(err);
            res.render('account/forgot_password',{
                success: null,
+               cart: req.cart,
                errormessage: 'Yêu cầu thất bại. Vui lòng thử lại sau',
                helpers: req.handlebars.helpers
            });
@@ -228,6 +244,7 @@ exports.forgot_password_post = function(req, res, next) {
        if (result == null){
            res.render('account/forgot_password',{
                success: null,
+               cart: req.cart,
                errormessage: 'Không tìm thấy tên đăng nhập hoặc email',
                helpers: req.handlebars.helpers
            });
@@ -236,6 +253,7 @@ exports.forgot_password_post = function(req, res, next) {
            if (result.AccessToken != null && result.TokenExpires == null){
                res.render('account/forgot_password',{
                    success: null,
+                   cart: req.cart,
                    errormessage: 'Tài khoản chưa được kích hoạt. Vui lòng kích hoạt tài khoản trước khi sử dụng',
                    helpers: req.handlebars.helpers
                });
@@ -249,6 +267,7 @@ exports.forgot_password_post = function(req, res, next) {
                        res.render('account/forgot_password', {
                            errormessage: 'Yêu cầu thất bại. Vui lòng thử lại sau',
                            success: null,
+                           cart: req.cart,
                            helpers: req.handlebars.helpers
                        });
                    }
@@ -266,6 +285,7 @@ exports.forgot_password_post = function(req, res, next) {
                                console.log(err);
                                res.render('account/forgot_password', {
                                    success: null,
+                                   cart: req.cart,
                                    errormessage: 'Yêu cầu thất bại. Vui lòng thử lại sau',
                                    helpers: req.handlebars.helpers
                                });
@@ -273,6 +293,7 @@ exports.forgot_password_post = function(req, res, next) {
                            else{
                                res.render('account/forgot_password', {
                                    success: true,
+                                   cart: req.cart,
                                    helpers: req.handlebars.helpers
                                });
                            }
@@ -291,6 +312,7 @@ exports.reset_password_get = function(req, res, next) {
            console.log(err);
            res.render('error',{
                message: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
+               cart: req.cart,
                helpers: req.handlebars.helpers
            });
        }
@@ -301,6 +323,7 @@ exports.reset_password_get = function(req, res, next) {
                    res.render('account/reset_password', {
                        success: null,
                        expire: null,
+                       cart: req.cart,
                        helpers: req.handlebars.helpers
                    });
                }
@@ -308,6 +331,7 @@ exports.reset_password_get = function(req, res, next) {
                    res.render('account/reset_password', {
                        success: null,
                        expire: true,
+                       cart: req.cart,
                        helpers: req.handlebars.helpers
                    });
                }
@@ -316,6 +340,7 @@ exports.reset_password_get = function(req, res, next) {
                res.render('account/reset_password', {
                    success: null,
                    expire: true,
+                   cart: req.cart,
                    helpers: req.handlebars.helpers
                });
            }
@@ -330,12 +355,13 @@ exports.reset_password_post = function(req, res, next) {
             console.log(err);
             res.render('error',{
                 message: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
+                cart: req.cart,
                 helpers: req.handlebars.helpers
             });
         }
         else {
             if (result != null) {
-                var hour = (Date.now() - result.TokenExpires.getTime()) / 3600000
+                var hour = (Date.now() - result.TokenExpires.getTime()) / 3600000;
                 if (hour <= 1) {
                     if (req.body.password === req.body.passwordConfirm) {
                         User.findByIdAndUpdate(result._id, {Password: bcrypt.hashSync(req.body.password), TokenExpires: null, AccessToken: null}, {
@@ -347,6 +373,7 @@ exports.reset_password_post = function(req, res, next) {
                                 res.render('account/reset_password', {
                                     success: null,
                                     expire: null,
+                                    cart: req.cart,
                                     errormessage: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
                                     helpers: req.handlebars.helpers
                                 });
@@ -354,6 +381,7 @@ exports.reset_password_post = function(req, res, next) {
                             else {
                                 res.render('account/reset_password', {
                                     success: true,
+                                    cart: req.cart,
                                     helpers: req.handlebars.helpers
                                 });
                             }
@@ -364,6 +392,7 @@ exports.reset_password_post = function(req, res, next) {
                     res.render('account/reset_password', {
                         success: null,
                         expire: true,
+                        cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -372,6 +401,7 @@ exports.reset_password_post = function(req, res, next) {
                 res.render('account/reset_password', {
                     success: null,
                     expire: true,
+                    cart: req.cart,
                     helpers: req.handlebars.helpers
                 });
             }
@@ -381,6 +411,7 @@ exports.reset_password_post = function(req, res, next) {
 
 exports.active_get = function(req, res, next) {
     res.render('account/active_account',{
+        cart: req.cart,
         helpers: req.handlebars.helpers
     });
 }
@@ -391,6 +422,7 @@ exports.active_post = function(req, res, next) {
        if (err){
            console.log(err);
            res.render('account/active_account',{
+               cart: req.cart,
                errormessage: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
                helpers: req.handlebars.helpers
            });
@@ -411,6 +443,7 @@ exports.active_post = function(req, res, next) {
                             console.log(err);
                             res.render('account/active_account', {
                                 success: null,
+                                cart: req.cart,
                                 errormessage: 'Yêu cầu thất bại. Vui lòng thử lại sau',
                                 helpers: req.handlebars.helpers
                             });
@@ -418,6 +451,7 @@ exports.active_post = function(req, res, next) {
                         else{
                             res.render('account/active_account', {
                                 success: true,
+                                cart: req.cart,
                                 helpers: req.handlebars.helpers
                             });
                         }
@@ -426,6 +460,7 @@ exports.active_post = function(req, res, next) {
                 else{
                     res.render('account/active_account',{
                         errormessage: 'Tài khoản đã kích hoạt rồi',
+                        cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -433,6 +468,7 @@ exports.active_post = function(req, res, next) {
             else{
                 res.render('account/active_account',{
                     errormessage: 'Không tìm thấy email',
+                    cart: req.cart,
                     helpers: req.handlebars.helpers
                 });
             }
@@ -447,6 +483,7 @@ exports.active_account_get = function(req, res, next) {
             console.log(err);
             res.render('error',{
                 message: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
+                cart: req.cart,
                 helpers: req.handlebars.helpers
             });
         }
@@ -460,6 +497,7 @@ exports.active_account_get = function(req, res, next) {
                         console.log(err);
                         res.render('account/active_account', {
                             errormessage: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
+                            cart: req.cart,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -468,6 +506,7 @@ exports.active_account_get = function(req, res, next) {
                             success: true,
                             active: true,
                             message: 'Kích hoạt tài khoản thành công',
+                            cart: req.cart,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -476,6 +515,7 @@ exports.active_account_get = function(req, res, next) {
             else {
                 res.render('account/active_account', {
                     errormessage: 'Tài khoản đã kích hoạt',
+                    cart: req.cart,
                     helpers: req.handlebars.helpers
                 });
             }
@@ -518,8 +558,32 @@ exports.get_shopping_cart = function(req, res , next){
     })
 }
 
+exports.get_delete_shopping_cart = function(req, res , next){
+    var user = null;
+    if (req.session.passport)
+        user = req.session.passport.user;
+    if(!req.session.cart){
+        return res.render('shopping-cart', {
+            products: null,
+            user: user,
+            helpers: req.handlebars.helpers
+        });
+    }
+    var cart = new Cart(req.session.cart);
+    console.log(req.params.id);
+    cart.delete(req.params.id);
+    req.session.cart = cart;
+    res.render('shopping-cart', {
+        products: cart.generateArray(),
+        totalPrice: cart.totalPrice,
+        cart: cart,
+        user: user,
+        helpers: req.handlebars.helpers
+    })
+}
+
 exports.get_check_out = function(req, res, next){
-    var user= null;
+    var user = null;
     if (req.session.passport)
         user = req.session.passport.user;
     if (req.isAuthenticated()){
@@ -547,11 +611,11 @@ exports.post_check_out = function(req, res , next){
             return res.redirect('shopping-cart');
         }
         var cart = new Cart(req.session.cart);
-        var orders = cart.generateArray();
-        for (var item in orders) {
+        var itemArray = cart.generateArray();
+        itemArray.forEach(function (item) {
             var order = new Order({
                 ProductId: item.item._id,
-                DeliveryDate: new Date(),
+                DeliveryDate: new Date().addDays(7),
                 UserId: req.session.passport.user._id,
                 BillAddress: req.body.address,
                 Name: req.body.name,
@@ -562,11 +626,14 @@ exports.post_check_out = function(req, res , next){
                 Status: 'Đang xử lý',
             });
             order.save(function(err, result){
-                req.session.cart= null;
-                res.redirect('/');
-            })
-        }
-
+                if (err)
+                    console.log(err);
+                else
+                    console.log('save!')
+            });
+        });
+        req.session.cart = null;
+        res.redirect('/user/history');
     }
 }
 
@@ -581,6 +648,7 @@ exports.order_history_get = function(req, res, next) {
                 res.render('account/order_history',{
                     errormessage: 'Vui lòng thử lại sau',
                     user: user,
+                    cart: req.cart,
                     helpers: req.handlebars.helpers
                 });
             }
@@ -606,12 +674,14 @@ exports.order_history_get = function(req, res, next) {
                     res.render('account/order_history',{
                         orders: orders,
                         user: user,
+                        cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
                 }
                 else{
                     res.render('account/order_history',{
                         user: user,
+                        cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -621,6 +691,27 @@ exports.order_history_get = function(req, res, next) {
     else
         res.redirect('/user/signin');
 
+}
+
+exports.cancel_order_get = function(req, res, next) {
+    if (req.isAuthenticated()){
+        Order.findByIdAndUpdate(req.params.id, {Status: 'Đã hủy'}, {}, function (err) {
+            if (err) {
+                console.log(err);
+                res.render('account/order_history', {
+                    errormessage: 'Vui lòng thử lại sau',
+                    cart: req.cart,
+                    user: req.session.passport.user,
+                    helpers: req.handlebars.helpers
+                });
+            }
+            else {
+                res.redirect('/user/history');
+            }
+        });
+    }
+    else
+        res.redirect('/user/signin');
 }
 
 function pad2(number) {
@@ -656,6 +747,7 @@ function mapData(array) {
             price: item.ProductId.Price,
         };
         var order = {
+            id: item._id,
             createDate: item.CreateDate,
             deliveryDate: item.DeliveryDate,
             address: item.BillAddress,
