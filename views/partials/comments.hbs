@@ -1,0 +1,28 @@
+{{#each comments}}
+    <div class="media">
+        <div class="media-body">
+            <p class="pull-right"><small>{{formatDate this.CreateOn 'DD/MM/YYYY'}}</small></p>
+            <h4 class="user-name">{{this.Name}}</h4>
+            <pre>{{this.Comment}}</pre>
+        </div>
+    </div>
+{{/each}}
+<div class="text-center">
+    <ul class="pagination pagination-centered">
+        {{#paginate pagination type="first"}}
+            <li {{#if disabled}}class="disabled"{{/if}}><a href="{{n}}">Trang đầu</a></li>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+            <li {{#if disabled}}class="disabled"{{/if}}><a href="{{n}}">Trang trước</a></li>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="7"}}
+            <li {{#if active}}class="active"{{/if}}><a href="{{n}}">{{n}}</a></li>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+            <li {{#if disabled}}class="disabled"{{/if}}><a href="{{n}}">Trang kế</a></li>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+            <li {{#if disabled}}class="disabled"{{/if}}><a href="{{n}}">Trang cuối</a></li>
+        {{/paginate}}
+    </ul>
+</div>

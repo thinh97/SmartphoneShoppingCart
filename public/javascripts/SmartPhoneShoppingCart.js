@@ -151,7 +151,7 @@ $('input[name=endMonth]').on('change',function () {
 });
 
 $(document).ready(function() {
-    if (window.location.pathname == '/admin/statistics') {
+    if (window.location.pathname === '/admin/statistics') {
         $('#quarter').hide();
         $('input[type=week]').hide().prop('required',false);
         $('input[type=month]').hide().prop('required', false);
@@ -215,7 +215,7 @@ var chartColors = {
     grey: 'rgb(201, 203, 207)'
 };
 
-window.onload = function() {
+function loadChart(){
     var chartArea = document.getElementById('chart');
     if (chartArea != null && chartArea != undefined){
         chartArea = chartArea.getContext('2d');
@@ -248,4 +248,48 @@ window.onload = function() {
             }
         });
     }
+}
+
+function loadComment(page){
+    $('.comments-list').html('<div class="col-md-offset-5 loader"></div>');
+    var id = $('input[name=productId]').val();
+    $.ajax({
+        url: '/product/' + id + '/' + page,
+        success: function(result){
+            $('.comments-list').html(result);
+            $('input[name=name]').val('');
+            $('textArea[name=comment]').val('');
+            $('.pagination li a').on('click', function (e) {
+                if ($(this).attr('class') !== 'disabled'){
+                    var page = $(this).attr('href');
+                    loadComment(page);
+                }
+                return false;
+            });
+        },
+        error: function (err) {
+            console.log(err);
+            $('.comments-list').html('<p class="message-error">Đã xảy ra lỗi khi tải bình luận</p>');
+        }
+    });
+}
+
+window.onload = function() {
+    loadChart();
+    loadComment(1);
 };
+
+
+$('#comment-post').submit(function() {
+    $(this).ajaxSubmit({
+        error: function(err) {
+            console.log(err);
+            alert('Đã xảy ra lỗi. Không đăng được bình luận. Vui lòng thử lại sau');
+        },
+        success: function(response) {
+            console.log(response);
+            loadComment(1);
+        }
+    });
+    return false;
+});

@@ -108,4 +108,28 @@
             {{/ifCond}}
         </div>
     </div>
+    <div class="row top-margin-35">
+        <h3 class="text-center">Bình luận sản phẩm</h3>
+        <form class="form-horizontal" id="comment-post" method="post" action="/product/add-comment" data-toggle="validator">
+            <input type="hidden" name="productId" value="{{result._id}}">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Tên</label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" class="form-control" minlength="1" maxlength="200" value="{{user.Name}}" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nội dung</label>
+                <div class="col-sm-9">
+                    <textarea name="comment" class="form-control" minlength="1" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Đăng bình luận</button>
+                </div>
+            </div>
+        </form>
+        <div class="comments-list"></div>
+    </div>
 </div>

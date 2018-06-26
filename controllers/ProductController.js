@@ -1,4 +1,5 @@
 var Product = require('../models/product');
+var Comment = require('../models/comment');
 
 exports.index = function(req, res, next) {	
 	Product.find(function(err,results){
@@ -89,13 +90,13 @@ exports.product_detail = function(req, res) {
             var user = null;
             if (req.session.passport)
                 user = req.session.passport.user;
+            var cart = null;
+            if (req.session.cart)
+                cart= req.session.cart;
         	Product.update({ _id: productId }, { Views: product.Views + 1 }, function (err) {
 				if (err)
 					console.log(err);
             });
-            var cart = null;
-            if (req.session.cart)
-                cart= req.session.cart;
 			res.render('product', {
                 user: user,
                 cart: cart,
@@ -105,7 +106,7 @@ exports.product_detail = function(req, res) {
 				helpers: req.handlebars.helpers
 			});
 		}
-  });
+    });
 };
 
 exports.search_post = function(req, res, next) {
@@ -138,5 +139,68 @@ exports.search_post = function(req, res, next) {
                 helpers: req.handlebars.helpers
             });
         }
+    });
+};
+
+exports.comment_post = function(req, res, next) {
+    Product.findById(req.body.productId, function(err, result){
+        if (err) {
+            console.log(err);
+            res.status(404).send('Không tìm thấy sản phẩm');
+        }
+        else{
+            if (result != null){
+                var comment = new Comment({
+                    Name: req.body.name,
+                    Comment: req.body.comment,
+                    Product: result._id,
+                    CreateOn: new Date()
+                });
+                comment.save(function (err) {
+                    if (err)
+                        console.log(err);
+                });
+                result.Comments.push(comment);
+                Product.findByIdAndUpdate(result._id, {Comments: result.Comments}, {}, function (err) {
+                    if (err){
+                        console.log(err);
+                        res.status(500).send('Không cập nhật được comment');
+                    }
+                    else
+                        res.status(200).send('Thành công');
+                });
+            }
+            else
+                res.status(404).send('Không tìm thấy sản phẩm');
+        }
+    });
+};
+
+exports.comments_get = function(req, res, next) {
+    var perPage = 10;
+    var page = req.params.page || 1;
+    Comment.find({Product: req.params.productId}).
+    sort({CreateOn: -1}).
+    skip((perPage * page) - perPage).
+    limit(perPage).
+    exec(function(err, comments) {
+        Comment.count().exec(function(err, count) {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Không lấy được comment');
+            }
+            else{
+                var pagination = {
+                    page: page,
+                    pageCount: Math.ceil(count / perPage)
+                };
+                res.render('partials/comments', {
+                    comments : comments,
+                    pagination: pagination,
+                    layout: '',
+                    helpers: req.handlebars.helpers
+                });
+            }
+        });
     });
 };

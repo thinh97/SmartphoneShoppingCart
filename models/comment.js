@@ -13,7 +13,10 @@ var commentSchema = new Schema({
 	},
 	Product: {
 		ref: 'Product',
-		type: String
+		type: Schema.Types.ObjectId
+	},
+	CreateOn: {
+    	type: Date
 	}
 });
 

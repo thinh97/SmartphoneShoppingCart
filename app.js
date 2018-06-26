@@ -11,6 +11,7 @@ var session = require('express-session');
 let moment = require('moment');
 var LocalStrategy = require('passport-local').Strategy;
 var mailer = require('express-mailer');
+var paginate = require('handlebars-paginate');
 
 var Brand = require('./models/brand');
 var Product = require('./models/product');
@@ -146,6 +147,8 @@ handlebars = handlebars.create({
             }
         },
         calculate: function (a, operator, b){
+            a = Number(a);
+            b = Number(b);
             switch(operator){
                 case'+':
                     return a + b;
@@ -159,7 +162,8 @@ handlebars = handlebars.create({
         },
         replaceString: function (src, str, newStr) {
             return src.replace(/str/g,newStr);
-        }
+        },
+        paginate: paginate
     }
 });
 
