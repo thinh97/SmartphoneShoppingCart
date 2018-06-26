@@ -713,3 +713,14 @@ input::-webkit-calendar-picker-indicator {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
+
+.slider{
+    border:0;
+    color:#f6931f;
+    font-weight:bold;
+    width: 90%;
+}

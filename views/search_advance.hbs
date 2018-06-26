@@ -1,8 +1,53 @@
-<div class="col-md-8 col-xl-8 col-md-offset-1">
+<div class="col-md-9 search-form">
+    <h2 class="text-center"><b>Tìm kiếm nâng cao</b></h2>
+    <div class="top-pad-20 row">
+        <form action="/search" method="get">
+            <div class="form-group col-sm-6 col-xs-6">
+                <label for="name" class="col-sm-3 control-label">Tên sản phẩm</label>
+                <input type="text" name="productName" class="col-sm-9 form-control" placeholder="Tên sản phẩm" value="{{productName}}"/>
+            </div>
+            <div class="form-group col-sm-6 col-xs-6">
+                <label for="name" class="col-sm-3 control-label">Tên nhãn hiệu</label>
+                <input type="text" name="brandName" class="form-control" placeholder="Tên nhãn hiệu" value="{{brandName}}"/>
+            </div>
+            <div class="form-group col-sm-4 col-xs-4">
+                <input type="hidden" id="priceStart" name="priceStart" value="{{priceStart}}">
+                <input type="hidden" id="priceEnd" name="priceEnd" value="{{priceEnd}}">
+                <p>
+                    <label for="amount">Giá tiền:</label>
+                    <input type="text" id="amountPrice" class="slider" readonly>
+                </p>
+                <div id="slider-range-price"></div>
+            </div>
+            <div class="form-group col-sm-4 col-xs-4">
+                <input type="hidden" id="detailRamStart" name="detailRamStart" value="{{detailRamStart}}">
+                <input type="hidden" id="detailRamEnd" name="detailRamEnd" value="{{detailRamEnd}}">
+                <p>
+                    <label for="amountRam">RAM:</label>
+                    <input type="text" id="amountRam" class="slider" readonly>
+                </p>
+                <div id="slider-range-ram"></div>
+            </div>
+            <div class="form-group col-sm-4 col-xs-4">
+                <input type="hidden" id="detailMemoryStart" name="detailMemoryStart" value="{{detailMemoryStart}}">
+                <input type="hidden" id="detailMemoryEnd" name="detailMemoryEnd" value="{{detailMemoryEnd}}">
+                <p>
+                    <label for="amountMemory">Bộ nhớ trong:</label>
+                    <input type="text" id="amountMemory" class="slider" readonly>
+                </p>
+                <div id="slider-range-memory"></div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-md-9 col-xl-9">
     {{#ifCond results.length '==' 0}}
-        <div class="col-md-12">
-            <p class="text-danger">Không có sản phẩm nào</p>
-        </div>
+        <h3 class="text-danger text-center">Không có sản phẩm nào phù hợp với yêu cầu tìm kiếm</h3>
     {{/ifCond}}
     {{#each results}}
         <div class="row product-layout">

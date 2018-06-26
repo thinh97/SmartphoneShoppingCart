@@ -109,8 +109,86 @@ exports.product_detail = function(req, res) {
     });
 };
 
-exports.search_post = function(req, res, next) {
-	var regex = req.body.searchKey;
+exports.search_get = function(req, res, next) {
+    var query = {};
+    if (req.query.productName)
+        query['Title'] = {$regex: req.query.productName, $options: 'ig'};
+    if (req.query.brandName)
+        query['Brand'] = {$regex: req.query.brandName, $options: 'ig'};
+    if (req.query.priceStart){
+        if (query['Price'] === undefined)
+            query['Price'] = {};
+        query['Price']['$gte'] = req.query.priceStart;
+    }
+    if (req.query.priceEnd){
+        if (query['Price'] === undefined)
+            query['Price'] = {};
+        query['Price']['$lte'] = req.query.priceEnd;
+    }
+    if (req.query.detailRamStart){
+        if (query['Details.RAM'] === undefined)
+            query['Details.RAM'] = {};
+        query['Details.RAM']['$gte'] = req.query.detailRamStart;
+    }
+    if (req.query.detailRamEnd){
+        if (query['Details.RAM'] === undefined)
+            query['Details.RAM'] = {};
+        query['Details.RAM']['$lte'] = req.query.detailRamEnd;
+    }
+    if (req.query.detailMemoryStart){
+        if (query['Details.Memory'] === undefined)
+            query['Details.Memory'] = {};
+        query['Details.Memory']['$gte'] = req.query.detailMemoryStart;
+    }
+    if (req.query.detailMemoryEnd){
+        if (query['Details.Memory'] === undefined)
+            query['Details.Memory'] = {};
+        query['Details.Memory']['$lte'] = req.query.detailMemoryEnd;
+    }
+    Product.find(query, function(err, results){
+        if (err)
+            console.log(err);
+        else{
+            var arrayResult = [];
+            var threeItem = [];
+            var count = 0;
+            results.forEach(function (item) {
+                threeItem.push(item);
+                count++;
+                if (count === 3){
+                    arrayResult.push(threeItem);
+                    count = 0;
+                    threeItem = [];
+                }
+            });
+            if (threeItem.length > 0)
+                arrayResult.push(threeItem);
+            var user = null;
+            if (req.session.passport)
+                user = req.session.passport.user;
+            console.log(req.query.productName || '');
+            console.log(req.query.brandName || '');
+            res.render('search_advance', {
+                productName: req.query.productName || '',
+                brandName: req.query.brandName || '',
+                priceStart: req.query.priceStart || 1000000,
+                priceEnd: req.query.priceEnd || 50000000,
+                detailRamStart: req.query.detailRamStart || 1,
+                detailRamEnd: req.query.detailRamEnd || 16,
+                detailMemoryStart: req.query.detailMemoryStart || 1,
+                detailMemoryEnd: req.query.detailMemoryEnd || 256,
+                user: user,
+                results: arrayResult,
+                menuBrand: req.menuBrand,
+                priceRange: req.priceRange,
+                helpers: req.handlebars.helpers
+            });
+        }
+    });
+};
+
+exports.search_advance_get = function(req, res, next) {
+    var regex = req.query.searchKey;
     Product.find({Title: {$regex: regex, $options: 'ig'}}, function(err, results){
         if (err)
             console.log(err);

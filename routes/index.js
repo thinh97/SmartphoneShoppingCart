@@ -6,7 +6,9 @@ var brand_controller = require('../controllers/BrandController');
 
 router.get('/', product_controller.index);
 
-router.post('/search', product_controller.search_post);
+router.get('/search', product_controller.search_get);
+
+router.post('/search-advance', product_controller.search_advance_get);
 
 router.get('/filter/brand/:id', brand_controller.list_brand);
 

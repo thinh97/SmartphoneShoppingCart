@@ -251,34 +251,36 @@ function loadChart(){
 }
 
 function loadComment(page){
-    $('.comments-list').html('<div class="col-md-offset-5 loader"></div>');
-    var id = $('input[name=productId]').val();
-    $.ajax({
-        url: '/product/' + id + '/' + page,
-        success: function(result){
-            $('.comments-list').html(result);
-            $('input[name=name]').val('');
-            $('textArea[name=comment]').val('');
-            $('.pagination li a').on('click', function (e) {
-                if ($(this).attr('class') !== 'disabled'){
-                    var page = $(this).attr('href');
-                    loadComment(page);
-                }
-                return false;
-            });
-        },
-        error: function (err) {
-            console.log(err);
-            $('.comments-list').html('<p class="message-error">Đã xảy ra lỗi khi tải bình luận</p>');
-        }
-    });
+    if ($('.comments-list').html() !== undefined){
+        $('.comments-list').html('<div class="col-md-offset-5 loader"></div>');
+        var id = $('input[name=productId]').val();
+        $.ajax({
+            url: '/product/' + id + '/' + page,
+            success: function(result){
+                $('.comments-list').html(result);
+                $('input[name=name]').val('');
+                $('textArea[name=comment]').val('');
+                $('.pagination li a').on('click', function (e) {
+                    if ($(this).attr('class') !== 'disabled'){
+                        var page = $(this).attr('href');
+                        loadComment(page);
+                    }
+                    return false;
+                });
+            },
+            error: function (err) {
+                console.log(err);
+                $('.comments-list').html('<p class="message-error">Đã xảy ra lỗi khi tải bình luận</p>');
+            }
+        });
+    }
 }
 
 window.onload = function() {
     loadChart();
     loadComment(1);
+    loadSearchForm();
 };
-
 
 $('#comment-post').submit(function() {
     $(this).ajaxSubmit({
@@ -293,3 +295,49 @@ $('#comment-post').submit(function() {
     });
     return false;
 });
+
+function loadSearchForm() {
+    if ($('.search-form').html() !== undefined){
+        $('#slider-range-price').slider({
+            range: true,
+            min: 1000000,
+            max: 50000000,
+            values: [ $('#priceStart').val(), $('#priceEnd').val() ],
+            slide: function( event, ui ) {
+                $('#amountPrice').val(ui.values[0] + ' VNĐ - ' + ui.values[1] + ' VNĐ' );
+                $('#priceStart').val(ui.values[0]);
+                $('#priceEnd').val(ui.values[1]);
+            }
+        });
+        $('#amountPrice').val($('#slider-range-price').slider( "values", 0) + ' VNĐ' +
+            ' - ' + $('#slider-range-price').slider('values', 1 ) + ' VNĐ');
+
+        $('#slider-range-ram').slider({
+            range: true,
+            min: 1,
+            max: 16,
+            values: [ $('#detailRamStart').val(), $('#detailRamEnd').val() ],
+            slide: function( event, ui ) {
+                $('#amountRam').val(ui.values[0] + ' GB - ' + ui.values[1] + ' GB');
+                $('#detailRamStart').val(ui.values[0]);
+                $('#detailRamEnd').val(ui.values[1]);
+            }
+        });
+        $('#amountRam').val($('#slider-range-ram').slider('values', 0) + ' GB' +
+            ' - ' + $('#slider-range-ram').slider( 'values', 1) + ' GB' );
+
+        $( "#slider-range-memory" ).slider({
+            range: true,
+            min: 1,
+            max: 256,
+            values: [ $('#detailMemoryStart').val(), $('#detailMemoryEnd').val() ],
+            slide: function( event, ui ) {
+                $('#amountMemory').val(ui.values[0] + ' GB - ' + ui.values[1] + ' GB');
+                $('#detailMemoryStart').val(ui.values[0]);
+                $('#detailMemoryEnd').val(ui.values[1]);
+            }
+        });
+        $('#amountMemory').val($('#slider-range-memory').slider('values', 0) + ' GB' +
+            ' - ' + $('#slider-range-memory').slider('values', 1 ) + ' GB' );
+    }
+}
