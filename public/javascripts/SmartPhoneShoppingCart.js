@@ -258,7 +258,6 @@ function loadComment(page){
             url: '/product/' + id + '/' + page,
             success: function(result){
                 $('.comments-list').html(result);
-                $('input[name=name]').val('');
                 $('textArea[name=comment]').val('');
                 $('.pagination li a').on('click', function (e) {
                     if ($(this).parent().attr('class') !== 'disabled'){

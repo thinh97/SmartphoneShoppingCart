@@ -113,14 +113,29 @@ exports.product_detail = function(req, res) {
 				if (err)
 					console.log(err);
             });
-			res.render('product', {
-                user: req.user,
-                cart: req.cart,
-				result: product,
-                menuBrand: req.menuBrand,
-                priceRange: req.priceRange,
-				helpers: req.handlebars.helpers
-			});
+        	Product.find({
+                _id: {$ne: product._id},
+                'Details.PrimaryCamera': {$gte: product.Details.PrimaryCamera - 5, $lte: product.Details.PrimaryCamera + 5},
+                'Details.SecondaryCamera': {$gte: product.Details.SecondaryCamera - 5, $lte: product.Details.SecondaryCamera + 5},
+                'Details.RAM': {$gte: product.Details.RAM - 1, $lte: product.Details.RAM + 1},
+                'Details.Memory': {$gte: product.Details.Memory - 2, $lte: product.Details.Memory + 2},
+                'Details.Battery': {$gte: product.Details.Battery - 1000, $lte: product.Details.Battery + 1000},
+            }).
+            sort({Price: 1}).
+            limit(4).
+            exec(function (err, relatedProduct) {
+                if (err)
+                    console.log(err);
+                res.render('product', {
+                    user: req.user,
+                    cart: req.cart,
+                    result: product,
+                    relatedProduct: relatedProduct,
+                    menuBrand: req.menuBrand,
+                    priceRange: req.priceRange,
+                    helpers: req.handlebars.helpers
+                });
+            });
 		}
     });
 };

@@ -128,6 +128,7 @@ exports.signup_post = function(req, res, next) {
 exports.signout_get = function(req, res, next) {
     if (req.isAuthenticated()){
         req.logOut();
+        req.session.cart = null;
     }
     res.redirect('/user/signin');
 }
