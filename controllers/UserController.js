@@ -679,7 +679,7 @@ exports.post_check_out = function(req, res , next){
 
 exports.order_history_get = function(req, res, next) {
     if (req.isAuthenticated()){
-        Order.find({UserId: user._id}).
+        Order.find({UserId: req.user._id}).
         populate('ProductId','Title Price _id').
         exec(function (err, result) {
             if (err){
