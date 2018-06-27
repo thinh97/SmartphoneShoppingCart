@@ -25,6 +25,7 @@
 
 /* The company logo */
 footer{
+	bottom: 0px;
 	position: absolute;
 	bottom: 0px;
 }

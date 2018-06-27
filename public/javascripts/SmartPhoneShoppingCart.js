@@ -150,16 +150,6 @@ $('input[name=endMonth]').on('change',function () {
     $('input[name=startMonth]').attr('max', this.value);
 });
 
-$(document).ready(function() {
-    if (window.location.pathname === '/admin/statistics') {
-        $('#quarter').hide();
-        $('input[type=week]').hide().prop('required',false);
-        $('input[type=month]').hide().prop('required', false);
-        $('input[type=number]').hide().prop('required', false);
-    }
-});
-
-
 $('#statisticGroupBy').on('change', function () {
     switch (this.value){
         case '1':
@@ -282,6 +272,7 @@ window.onload = function() {
 };
 
 $('#comment-post').submit(function() {
+    $('.comments-list').html('<div class="col-md-offset-5 loader"></div>');
     $(this).ajaxSubmit({
         error: function(err) {
             console.log(err);
