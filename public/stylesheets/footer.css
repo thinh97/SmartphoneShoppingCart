@@ -26,6 +26,7 @@
 /* The company logo */
 footer{
 	position: absolute;
+	bottom: 0px;
 }
 .footer-distributed h3{
 	color:  #ffffff;

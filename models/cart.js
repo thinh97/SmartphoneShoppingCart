@@ -30,8 +30,19 @@ module.exports = function Cart(oldCart){
         return arr;
     }
 
-    this.delete = function (id) {
+    this.reduceByOne = function(id){
+        this.items[id].qty--;
+        this.items[id].Price -= this.items[id].item.Price;
         this.totalQty--;
+        this.totalPrice -=this.items[id].item.Price;
+        
+        if(this.items[id].qty <=0){
+            delete this.items[id];
+        }
+    };
+
+    this.delete = function (id) {
+        this.totalQty -= this.items[id].qty;
         this.totalPrice -= this.items[id].Price;
         delete this.items[id];
     }

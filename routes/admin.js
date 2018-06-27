@@ -48,6 +48,10 @@ router.post('/admin/order/edit/:id', admin_controller.edit_order_post);
 
 router.get('/admin/order/delete/:id', admin_controller.delete_order_get);
 
+router.get('/admin/user/new', admin_controller.new_user_get);
+
+router.post('/admin/user/new', admin_controller.new_user_post);
+
 router.get('/admin/users', admin_controller.list_users_get);
 
 router.get('/admin/user/edit/:id', admin_controller.edit_user_get);

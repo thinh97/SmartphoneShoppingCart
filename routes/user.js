@@ -40,6 +40,10 @@ router.get('/user/shopping-cart/',user_controller.get_shopping_cart);
 
 router.get('/user/shopping-cart/delete/:id',user_controller.get_delete_shopping_cart);
 
+router.get('/user/shopping-cart/add-one-item/:id',user_controller.add_one_item);
+
+router.get('/user/reduce/:id',user_controller.reduce_one_item);
+
 router.get('/user/checkout',user_controller.get_check_out);
 
 router.post('/user/checkout', user_controller.post_check_out);

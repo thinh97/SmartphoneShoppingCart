@@ -10,6 +10,8 @@
                 <strong>{{this.item.Title}}<span class="badge">{{this.qty}}</span></strong>
                <div class="pull-right" style="font-size: 20px">
                    <span class="label label-success">{{formatAmount this.Price}} VNĐ</span>
+                   <a href="/user/shopping-cart/add-one-item/{{this.item._id}}"><i class="fa fa-plus"></i></a>
+                   <a href="/user/reduce/{{this.item._id}}"><i class="fa fa-minus"></i></a>
                    <a class="text-danger" href="/user/shopping-cart/delete/{{this.item._id}}"><i class="fa fa-trash-o"></i></a>
                </div>
             </li>

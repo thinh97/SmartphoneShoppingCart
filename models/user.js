@@ -81,15 +81,6 @@ userSchema.pre('save', function(next) {
         }
         user.Password = bcrypt.hashSync(user.Password);
         user._id = user.UserName.toLowerCase();
-        var cart = new Cart({
-			UserId: user._id,
-			Total : 0
-		});
-        cart.save(function (err) {
-           if (err)
-               console.log(err);
-        });
-        user.Cart = cart._id;
         next();
 	});
 });

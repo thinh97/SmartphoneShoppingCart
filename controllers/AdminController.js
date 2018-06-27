@@ -607,6 +607,107 @@ exports.delete_order_get = function(req, res, next) {
     }
 }
 
+exports.new_user_get = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.user.Role === 'admin') {
+            var nowDate = new Date();
+            var curentDate = (nowDate.getFullYear()-5) + '-' + (pad2(nowDate.getMonth()+1)) + '-' + pad2(nowDate.getDate());
+            res.render('admin/user_new',{
+                cart: req.cart,
+                CurentDate: curentDate,
+                New: true,
+                layout: 'layout_admin.hbs',
+                helpers: req.handlebars.helpers
+            });
+        }
+        else {
+            res.redirect('/user/signin');
+        }
+    }
+    else{
+        res.redirect('/user/signin');
+    }
+}
+
+exports.new_user_post = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.user.Role === 'admin') {
+            if (req.body.password === req.body.passwordConfirm) {
+                var newUser = new User({
+                    Name: req.body.name,
+                    UserName: req.body.username,
+                    Email: req.body.email,
+                    Gender: req.body.gender,
+                    Birthday: req.body.dob,
+                    Address: req.body.address,
+                    Password: req.body.password,
+                    Phone: req.body.phone,
+                    Role: "user",
+                    Cart: null,
+                    AccessToken: generateString(),
+                    TokenExpires: null
+                });
+                newUser.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.render('admin/user_new', {
+                            success: null,
+                            cart: req.cart,
+                            errormessage: 'Đã xảy ra lỗi. Vui lòng thử lại sau',
+                            layout: 'layout_admin.hbs',
+                            helpers: req.handlebars.helpers
+                        });
+                    }
+                    else{
+                        res.mailer.send('account/email_active_account', {
+                            to: newUser.Email,
+                            subject: 'Kích hoạt tài khoản Smartphone Shopping Cart',
+                            username: newUser.UserName,
+                            hostname: req.hostname,
+                            activeToken: newUser.AccessToken,
+                            layout: '',
+                            helpers: req.handlebars.helpers
+                        }, function (err) {
+                            if (err) {
+                                console.log(err);
+                                res.render('error', {
+                                    cart: req.cart,
+                                    message: 'Đăng ký thành công! Gửi yêu cầu kích hoạt thất bại. Vui lòng thử lại sau',
+                                    layout: 'layout_admin.hbs',
+                                    helpers: req.handlebars.helpers
+                                });
+                            }
+                            else{
+                                res.render('admin/user_new', {
+                                    success: true,
+                                    cart: req.cart,
+                                    layout: 'layout_admin.hbs',
+                                    helpers: req.handlebars.helpers
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else{
+                res.render('admin/user_new', {
+                    success: null,
+                    cart: req.cart,
+                    errormessage: "Mật khẩu không khớp",
+                    layout: 'layout_admin.hbs',
+                    helpers: req.handlebars.helpers
+                });
+            }
+        }
+        else {
+            res.redirect('/user/signin');
+        }
+    }
+    else{
+        res.redirect('/user/signin');
+    }
+}
+
 exports.list_users_get = function(req, res, next) {
     if (req.isAuthenticated()) {
         if (req.user.Role === 'admin') {
@@ -1312,4 +1413,8 @@ function differentDays(d1, d2) {
     var timeDiff = Math.abs(date2.getTime() - date1.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
+}
+
+function generateString() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
