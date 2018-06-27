@@ -1,8 +1,13 @@
 var Product = require('../models/product');
 var Comment = require('../models/comment');
 
-exports.index = function(req, res, next) {	
-	Product.find(function(err,results){
+exports.index = function(req, res, next) {
+    var perPage = 9;
+    var page = req.query.p || 1;
+	Product.find({}).
+    skip((perPage * page) - perPage).
+    limit(perPage).
+    exec(function(err,results){
 		if (err) 
 			console.log(err);
 		else{
@@ -18,21 +23,27 @@ exports.index = function(req, res, next) {
                     threeItem = [];
                 }
             });
-            arrayResult.push(threeItem);
-			var user = null;
-            var cart = null;
-            if (req.session.cart)
-                cart= req.session.cart;
-			if (req.session.passport)
-				user = req.session.passport.user;
-			res.render('index', { 
-				user: user,
-                cart: cart,
-				results: arrayResult,
-                menuBrand: req.menuBrand,
-                priceRange: req.priceRange,
-				helpers: req.handlebars.helpers
-			});
+            if (threeItem.length > 0)
+                arrayResult.push(threeItem);
+            Product.count().exec(function (err, count) {
+                if (err)
+                    console.log(err);
+                else{
+                    var pagination = {
+                        page: page,
+                        pageCount: Math.ceil(count / perPage)
+                    };
+                    res.render('index', {
+                        pagination: pagination,
+                        user: req.user,
+                        cart: req.cart,
+                        results: arrayResult,
+                        menuBrand: req.menuBrand,
+                        priceRange: req.priceRange,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
 		}
 	});
 };
@@ -41,43 +52,54 @@ exports.list_price = function(req, res, next) {
 	var start = req.params.start;
 	var end = req.params.end;
 	var query = {};
-	if (end != 0)
+	if (end !== 0)
 		query = { $gt: start, $lt: end };
 	else
 		query = { $gt: start };
-	Product.find({Price: query},function (err, results){
+    var perPage = 9;
+    var page = req.query.p || 1;
+	Product.find({Price: query}).
+    skip((perPage * page) - perPage).
+    limit(perPage).
+    exec(function (err, results){
 		if (err) 
 			res.redirect('/');
 		else{
 			var arrayResult = [];
 			var threeItem = [];
 			var count = 0;
-			for (var i=0;i<results.length;i++){
-				threeItem.push(results[i]);
-				count++;
-				if (count === 3){
-					arrayResult.push(threeItem);					
-					count = 0;					
-					threeItem = [];
-				}
-			}
-			arrayResult.push(threeItem);
-            var user = null;
-            if (req.session.passport)
-                user = req.session.passport.user;
-            var cart = null;
-            if (req.session.cart)
-                cart= req.session.cart;
-			res.render('index', {
-                user: user,
-                cart: cart,
-				results: arrayResult,
-                menuBrand: req.menuBrand,
-                priceRange: req.priceRange,
-				helpers: req.handlebars.helpers
-			});
+            results.forEach(function (item) {
+                threeItem.push(item);
+                count++;
+                if (count === 3){
+                    arrayResult.push(threeItem);
+                    count = 0;
+                    threeItem = [];
+                }
+            });
+            if (threeItem.length > 0)
+                arrayResult.push(threeItem);
+            Product.count({Price: query}).exec(function (err, count) {
+                if (err)
+                    console.log(err);
+                else {
+                    var pagination = {
+                        page: page,
+                        pageCount: Math.ceil(count / perPage)
+                    };
+                    res.render('index', {
+                        pagination: pagination,
+                        user: req.user,
+                        cart: req.cart,
+                        results: arrayResult,
+                        menuBrand: req.menuBrand,
+                        priceRange: req.priceRange,
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
 		}
-	}).sort({Price: 1});
+	});
 };
  
 exports.product_detail = function(req, res) {
@@ -87,19 +109,13 @@ exports.product_detail = function(req, res) {
 			return res.redirect('/');
 		}
 		else{
-            var user = null;
-            if (req.session.passport)
-                user = req.session.passport.user;
-            var cart = null;
-            if (req.session.cart)
-                cart= req.session.cart;
         	Product.update({ _id: productId }, { Views: product.Views + 1 }, function (err) {
 				if (err)
 					console.log(err);
             });
 			res.render('product', {
-                user: user,
-                cart: cart,
+                user: req.user,
+                cart: req.cart,
 				result: product,
                 menuBrand: req.menuBrand,
                 priceRange: req.priceRange,
@@ -145,7 +161,12 @@ exports.search_get = function(req, res, next) {
             query['Details.Memory'] = {};
         query['Details.Memory']['$lte'] = req.query.detailMemoryEnd;
     }
-    Product.find(query, function(err, results){
+    var perPage = 9;
+    var page = req.query.p || 1;
+    Product.find(query).
+    skip((perPage * page) - perPage).
+    limit(perPage).
+    exec(function(err, results){
         if (err)
             console.log(err);
         else{
@@ -163,58 +184,32 @@ exports.search_get = function(req, res, next) {
             });
             if (threeItem.length > 0)
                 arrayResult.push(threeItem);
-            var user = null;
-            if (req.session.passport)
-                user = req.session.passport.user;
-            console.log(req.query.productName || '');
-            console.log(req.query.brandName || '');
-            res.render('search_advance', {
-                productName: req.query.productName || '',
-                brandName: req.query.brandName || '',
-                priceStart: req.query.priceStart || 1000000,
-                priceEnd: req.query.priceEnd || 50000000,
-                detailRamStart: req.query.detailRamStart || 1,
-                detailRamEnd: req.query.detailRamEnd || 16,
-                detailMemoryStart: req.query.detailMemoryStart || 1,
-                detailMemoryEnd: req.query.detailMemoryEnd || 256,
-                user: user,
-                results: arrayResult,
-                menuBrand: req.menuBrand,
-                priceRange: req.priceRange,
-                helpers: req.handlebars.helpers
-            });
-        }
-    });
-};
-
-exports.search_advance_get = function(req, res, next) {
-    var regex = req.query.searchKey;
-    Product.find({Title: {$regex: regex, $options: 'ig'}}, function(err, results){
-        if (err)
-            console.log(err);
-        else{
-            var arrayResult = [];
-            var threeItem = [];
-            var count = 0;
-            results.forEach(function (item) {
-                threeItem.push(item);
-                count++;
-                if (count === 3){
-                    arrayResult.push(threeItem);
-                    count = 0;
-                    threeItem = [];
+            Product.count(query).exec(function (err, count) {
+                if (err)
+                    console.log(err);
+                else{
+                    var pagination = {
+                        page: page,
+                        pageCount: Math.ceil(count / perPage)
+                    };
+                    res.render('search_advance', {
+                        pagination: pagination,
+                        productName: req.query.productName || '',
+                        brandName: req.query.brandName || '',
+                        priceStart: req.query.priceStart || 1000000,
+                        priceEnd: req.query.priceEnd || 50000000,
+                        detailRamStart: req.query.detailRamStart || 1,
+                        detailRamEnd: req.query.detailRamEnd || 16,
+                        detailMemoryStart: req.query.detailMemoryStart || 1,
+                        detailMemoryEnd: req.query.detailMemoryEnd || 256,
+                        user: req.user,
+                        cart: req.cart,
+                        results: arrayResult,
+                        menuBrand: req.menuBrand,
+                        priceRange: req.priceRange,
+                        helpers: req.handlebars.helpers
+                    });
                 }
-            });
-            arrayResult.push(threeItem);
-            var user = null;
-            if (req.session.passport)
-                user = req.session.passport.user;
-            res.render('search_advance', {
-                user: user,
-                results: arrayResult,
-                menuBrand: req.menuBrand,
-                priceRange: req.priceRange,
-                helpers: req.handlebars.helpers
             });
         }
     });
@@ -262,23 +257,25 @@ exports.comments_get = function(req, res, next) {
     skip((perPage * page) - perPage).
     limit(perPage).
     exec(function(err, comments) {
-        Comment.count().exec(function(err, count) {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Không lấy được comment');
-            }
-            else{
-                var pagination = {
-                    page: page,
-                    pageCount: Math.ceil(count / perPage)
-                };
-                res.render('partials/comments', {
-                    comments : comments,
-                    pagination: pagination,
-                    layout: '',
-                    helpers: req.handlebars.helpers
-                });
-            }
-        });
+        if (err)
+            console.log(err);
+        else{
+            Comment.count({Product: req.params.productId}).exec(function (err, count) {
+                if (err)
+                    console.log(err);
+                else{
+                    var pagination = {
+                        page: page,
+                        pageCount: Math.ceil(count / perPage)
+                    };
+                    res.render('partials/comments', {
+                        comments : comments,
+                        pagination: pagination,
+                        layout: '',
+                        helpers: req.handlebars.helpers
+                    });
+                }
+            });
+        }
     });
 };

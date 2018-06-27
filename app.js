@@ -195,8 +195,12 @@ app.use((req, res, next) => {
     req.handlebars = handlebars;
     var cart = null;
     if (req.session.cart)
-        cart= req.session.cart;
+        cart = req.session.cart;
     req.cart = cart;
+    var user = null;
+    if (req.session.passport)
+        user = req.session.passport.user;
+    req.user = user;
     Brand.find(function (err, results) {
         if (err)
             return null;

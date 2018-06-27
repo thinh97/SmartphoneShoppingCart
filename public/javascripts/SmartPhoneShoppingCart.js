@@ -261,7 +261,7 @@ function loadComment(page){
                 $('input[name=name]').val('');
                 $('textArea[name=comment]').val('');
                 $('.pagination li a').on('click', function (e) {
-                    if ($(this).attr('class') !== 'disabled'){
+                    if ($(this).parent().attr('class') !== 'disabled'){
                         var page = $(this).attr('href');
                         loadComment(page);
                     }
@@ -340,4 +340,8 @@ function loadSearchForm() {
         $('#amountMemory').val($('#slider-range-memory').slider('values', 0) + ' GB' +
             ' - ' + $('#slider-range-memory').slider('values', 1 ) + ' GB' );
     }
+}
+
+function addParam(v) {
+    window.location.search += '&' + v;
 }

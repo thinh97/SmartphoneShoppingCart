@@ -5,10 +5,10 @@ var Brand = require('../models/brand');
 
 exports.index = function(req, res, next) {
     if (req.isAuthenticated()){
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             res.render('admin/admin', {
                 layout: 'layout_admin.hbs',
-                user: req.session.passport.user,
+                user: req.user,
                 helpers: req.handlebars.helpers
             });
         }
@@ -20,10 +20,10 @@ exports.index = function(req, res, next) {
 
 exports.create_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             res.render('admin/brand_new', {
                 layout: 'layout_admin.hbs',
-                user: req.session.passport.user,
+                user: req.user,
                 helpers: req.handlebars.helpers
             });
         }
@@ -38,7 +38,7 @@ exports.create_brand_get = function(req, res, next) {
 
 exports.create_brand_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var brand= new Brand({
                 Name: req.body.nameBr ,
                 _id: req.body.nameBr.toLowerCase()
@@ -49,7 +49,7 @@ exports.create_brand_post = function(req, res, next) {
                     res.render('admin/brand_new', {
                         errormessage: 'Lỗi khi tạo nhãn hiệu. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -57,7 +57,7 @@ exports.create_brand_post = function(req, res, next) {
                     res.render('admin/brand_new', {
                         message: 'Đã lưu',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -74,13 +74,13 @@ exports.create_brand_post = function(req, res, next) {
 
 exports.list_brands_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Brand.find(function (err, brands) {
                 if (err) {
                     res.render('admin/brands', {
                         errormessage: 'Lỗi khi lấy danh sách nhãn hiệu. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -88,7 +88,7 @@ exports.list_brands_get = function(req, res, next) {
                     res.render('admin/brands', {
                         brands: brands,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -105,13 +105,13 @@ exports.list_brands_get = function(req, res, next) {
 
 exports.edit_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Brand.findOne({_id: req.params.id},function (err, brand) {
                 if (err) {
                     res.render('admin/brand_edit', {
                         errormessage: 'Đã xảy ra lỗi khi tìm nhãn hiệu. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -119,7 +119,7 @@ exports.edit_brand_get = function(req, res, next) {
                     res.render('admin/brand_edit', {
                         brand: brand,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -136,7 +136,7 @@ exports.edit_brand_get = function(req, res, next) {
 
 exports.edit_brand_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var updateBrand = {
                 Name: req.body.nameBr
             };
@@ -146,7 +146,7 @@ exports.edit_brand_post = function(req, res, next) {
                     res.render('admin/brand_edit', {
                         errormessage: 'Lỗi khi tìm nhãn hiệu. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -158,7 +158,7 @@ exports.edit_brand_post = function(req, res, next) {
                                 res.render('admin/brand_edit', {
                                     errormessage: 'Lỗi khi cập nhật nhãn hiệu. Vui lòng thử lại sau',
                                     layout: 'layout_admin.hbs',
-                                    user: req.session.passport.user,
+                                    user: req.user,
                                     helpers: req.handlebars.helpers
                                 });
                             }
@@ -167,7 +167,7 @@ exports.edit_brand_post = function(req, res, next) {
                                     brand: updatedBrand,
                                     message: 'Đã lưu',
                                     layout: 'layout_admin.hbs',
-                                    user: req.session.passport.user,
+                                    user: req.user,
                                     helpers: req.handlebars.helpers
                                 });
                             }
@@ -179,7 +179,7 @@ exports.edit_brand_post = function(req, res, next) {
                                 res.render('admin/brand_edit', {
                                     errormessage: 'Lỗi khi tìm nhãn hiệu. Vui lòng thử lại sau',
                                     layout: 'layout_admin.hbs',
-                                    user: req.session.passport.user,
+                                    user: req.user,
                                     helpers: req.handlebars.helpers
                                 });
                             }
@@ -188,7 +188,7 @@ exports.edit_brand_post = function(req, res, next) {
                                     brand: brand,
                                     errormessage: 'Tên nhãn hiệu đã được sử dụng',
                                     layout: 'layout_admin.hbs',
-                                    user: req.session.passport.user,
+                                    user: req.user,
                                     helpers: req.handlebars.helpers
                                 });
                             }
@@ -208,7 +208,7 @@ exports.edit_brand_post = function(req, res, next) {
 
 exports.delete_brand_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Brand.deleteOne({_id: req.params.id}, function (err) {
                 if (err){
                     console.log(err);
@@ -230,11 +230,11 @@ exports.delete_brand_get = function(req, res, next) {
 
 exports.create_new_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             res.render('admin/product_new', {
                 brands: req.menuBrand,
                 layout: 'layout_admin.hbs',
-                user: req.session.passport.user,
+                user: req.user,
                 helpers: req.handlebars.helpers
             });
         }
@@ -249,7 +249,7 @@ exports.create_new_product_get = function(req, res, next) {
 
 exports.create_new_product_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var product = new Product({
                 Title: req.body.title,
                 ImagePath: req.body.imagePath.split(','),
@@ -274,7 +274,7 @@ exports.create_new_product_post = function(req, res, next) {
                         errormessage: 'Lỗi khi tạo sản phẩm. Vui lòng thử lại sau',
                         brands: req.menuBrand,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -283,7 +283,7 @@ exports.create_new_product_post = function(req, res, next) {
                         brands: req.menuBrand,
                         message: 'Đã lưu sản phẩm',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -300,13 +300,13 @@ exports.create_new_product_post = function(req, res, next) {
 
 exports.list_products_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Product.find(function (err, results) {
                 if (err) {
                     res.render('admin/products', {
                         errormessage: 'Lỗi khi lấy danh sách sản phẩm. Vui lòng thử lại sau\'',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -314,7 +314,7 @@ exports.list_products_get = function(req, res, next) {
                     res.render('admin/products', {
                         results: results,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -331,13 +331,13 @@ exports.list_products_get = function(req, res, next) {
 
 exports.edit_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Product.findOne({_id: req.params.id},function (err, product) {
                 if (err) {
                     res.render('admin/product_edit', {
                         errormessage: 'Lỗi khi tìm sản phẩm. Vui lòng thử lại sau\'',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -347,7 +347,7 @@ exports.edit_product_get = function(req, res, next) {
                         imagePath: product.ImagePath,
                         brands: req.menuBrand,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -364,7 +364,7 @@ exports.edit_product_get = function(req, res, next) {
 
 exports.edit_product_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var updateProduct = {
                 Title: req.body.title,
                 ImagePath: req.body.imagePath.split(','),
@@ -389,7 +389,7 @@ exports.edit_product_post = function(req, res, next) {
                     res.render('admin/product_edit', {
                         errormessage: 'Lỗi khi cập nhật sản phẩm. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -426,7 +426,7 @@ exports.edit_product_post = function(req, res, next) {
                         brands: req.menuBrand,
                         message: 'Đã lưu',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -443,7 +443,7 @@ exports.edit_product_post = function(req, res, next) {
 
 exports.delete_product_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Product.deleteOne({_id: req.params.id}, function (err) {
                 if (err){
                     console.log(err);
@@ -465,13 +465,13 @@ exports.delete_product_get = function(req, res, next) {
 
 exports.list_orders_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Order.find(function (err, orders) {
                 if (err) {
                     res.render('admin/orders', {
                         errormessage: 'Lỗi khi lấy danh sách đơn hàng. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -479,7 +479,7 @@ exports.list_orders_get = function(req, res, next) {
                     res.render('admin/orders', {
                         orders: orders,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -496,7 +496,7 @@ exports.list_orders_get = function(req, res, next) {
 
 exports.edit_order_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Order.findById({_id: req.params.id}).
             populate('ProductId','Title Price _id').
             populate('UserId','UserName _id').
@@ -505,7 +505,7 @@ exports.edit_order_get = function(req, res, next) {
                     res.render('admin/order_edit', {
                         errormessage: 'Lỗi khi tìm đơn hàng. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -513,7 +513,7 @@ exports.edit_order_get = function(req, res, next) {
                     res.render('admin/order_edit', {
                         order: order,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -530,7 +530,7 @@ exports.edit_order_get = function(req, res, next) {
 
 exports.edit_order_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var updateOrder = {
                 Name: req.body.billerName,
                 Amount: req.body.amount,
@@ -546,7 +546,7 @@ exports.edit_order_post = function(req, res, next) {
                     res.render('admin/order_edit', {
                         errormessage: 'Lỗi khi cập nhật đơn hàng. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -559,7 +559,7 @@ exports.edit_order_post = function(req, res, next) {
                             res.render('admin/order_edit', {
                                 errormessage: 'Lỗi tìm đơn hàng. Vui lòng thử lại sau',
                                 layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
+                                user: req.user,
                                 helpers: req.handlebars.helpers
                             });
                         }
@@ -568,7 +568,7 @@ exports.edit_order_post = function(req, res, next) {
                                 order: order,
                                 message: 'Đã lưu',
                                 layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
+                                user: req.user,
                                 helpers: req.handlebars.helpers
                             });
                         }
@@ -587,7 +587,7 @@ exports.edit_order_post = function(req, res, next) {
 
 exports.delete_order_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Order.deleteOne({_id: req.params.id}, function (err) {
                 if (err){
                     console.log(err);
@@ -609,13 +609,13 @@ exports.delete_order_get = function(req, res, next) {
 
 exports.list_users_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             User.find(function (err, users) {
                 if (err) {
                     res.render('admin/users', {
                         errormessage: 'Lỗi khi lấy danh sách tài khoản. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -624,7 +624,7 @@ exports.list_users_get = function(req, res, next) {
                         users: users,
                         message: req.query.error,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -641,13 +641,13 @@ exports.list_users_get = function(req, res, next) {
 
 exports.edit_user_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             User.findById(req.params.id, function (err, result) {
                 if (err) {
                     res.render('admin/user_edit', {
                         errormessage: 'Lỗi khi tìm tài khoản. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -657,7 +657,7 @@ exports.edit_user_get = function(req, res, next) {
                         result: result,
                         currentDate: (nowDate.getFullYear()-5) + '-' + (pad2(nowDate.getMonth()+1)) + '-' + pad2(nowDate.getDate()),
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -674,7 +674,7 @@ exports.edit_user_get = function(req, res, next) {
 
 exports.edit_user_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var newUpdate = {
                 Name: req.body.name,
                 Email: req.body.email,
@@ -691,7 +691,7 @@ exports.edit_user_post = function(req, res, next) {
                     res.render('admin/user_edit', {
                         errormessage: 'Lỗi khi cập nhật tài khoản. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -700,7 +700,7 @@ exports.edit_user_post = function(req, res, next) {
                         result: updatedUser,
                         message: 'Đã lưu',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -717,7 +717,7 @@ exports.edit_user_post = function(req, res, next) {
 
 exports.delete_user_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             User.deleteOne({_id: req.params.id}, function (err) {
                 if (err){
                     console.log(err);
@@ -739,7 +739,7 @@ exports.delete_user_get = function(req, res, next) {
 
 exports.file_upload_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             var imagePath = [];
             req.files.forEach(function (file) {
                 imagePath.push('/images/' + file.filename);
@@ -756,14 +756,14 @@ exports.file_upload_post = function(req, res, next) {
 
 exports.statistics_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Order.findOne({},function (err, result) {
                 if (err){
                     console.log(err);
                     res.render('admin/statistics',{
                         errormessage: 'Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -798,7 +798,7 @@ exports.statistics_get = function(req, res, next) {
                         min: min,
                         max: max,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -815,7 +815,7 @@ exports.statistics_get = function(req, res, next) {
 
 exports.statistics_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin'){
+        if (req.user.Role === 'admin'){
             var minDate = new Date(req.body.minDate);
             var minYear = minDate.getFullYear();
             var nowDate = new Date();
@@ -890,7 +890,7 @@ exports.statistics_post = function(req, res, next) {
                         max: max,
                         errormessage: 'Lỗi khi tìm đơn hàng. Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -905,7 +905,7 @@ exports.statistics_post = function(req, res, next) {
                             end: selectEnd,
                             groupBy: req.body.groupBy,
                             layout: 'layout_admin.hbs',
-                            user: req.session.passport.user,
+                            user: req.user,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -1022,7 +1022,7 @@ exports.statistics_post = function(req, res, next) {
                             end: selectEnd,
                             groupBy: req.body.groupBy,
                             layout: 'layout_admin.hbs',
-                            user: req.session.passport.user,
+                            user: req.user,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -1040,14 +1040,14 @@ exports.statistics_post = function(req, res, next) {
 
 exports.top_get = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             Order.findOne({},function (err, result) {
                 if (err){
                     console.log(err);
                     res.render('admin/top',{
                         errormessage: 'Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -1082,7 +1082,7 @@ exports.top_get = function(req, res, next) {
                         min: min,
                         max: max,
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -1099,7 +1099,7 @@ exports.top_get = function(req, res, next) {
 
 exports.top_post = function(req, res, next) {
     if (req.isAuthenticated()) {
-        if (req.session.passport.user.Role === 'admin') {
+        if (req.user.Role === 'admin') {
             var minDate = new Date(req.body.minDate);
             var minYear = minDate.getFullYear();
             var nowDate = new Date();
@@ -1187,7 +1187,7 @@ exports.top_post = function(req, res, next) {
                     res.render('admin/top',{
                         errormessage: 'Vui lòng thử lại sau',
                         layout: 'layout_admin.hbs',
-                        user: req.session.passport.user,
+                        user: req.user,
                         helpers: req.handlebars.helpers
                     });
                 }
@@ -1202,7 +1202,7 @@ exports.top_post = function(req, res, next) {
                             end: selectEnd,
                             groupBy: req.body.groupBy,
                             layout: 'layout_admin.hbs',
-                            user: req.session.passport.user,
+                            user: req.user,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -1237,7 +1237,7 @@ exports.top_post = function(req, res, next) {
                                 end: selectEnd,
                                 groupBy: req.body.groupBy,
                                 layout: 'layout_admin.hbs',
-                                user: req.session.passport.user,
+                                user: req.user,
                                 helpers: req.handlebars.helpers
                             });
                         });

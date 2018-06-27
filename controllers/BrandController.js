@@ -1,6 +1,8 @@
 var Brand = require('../models/brand');
 exports.list_brand = function(req, res, next) {	
 	var brandId = req.params.id;
+    var perPage = 9;
+    var page = req.query.p || 1;
 	Brand.findOne({_id: brandId}).populate('Products').exec(function (err, result){
 		if (err) 
 			res.redirect('/');
@@ -17,21 +19,27 @@ exports.list_brand = function(req, res, next) {
 					threeItem = [];
 				}
 			}
-			arrayResult.push(threeItem);
-            var user = null;
-            if (req.session.passport)
-                user = req.session.passport.user;
-            var cart = null;
-            if (req.session.cart)
-                cart = req.session.cart;
-			res.render('index', {
-				user: user,
-				cart: cart,
-				results: arrayResult,
-				menuBrand: req.menuBrand,
-				priceRange: req.priceRange,
-				helpers: req.handlebars.helpers
-			});
+			if (threeItem.length > 0)
+				arrayResult.push(threeItem);
+            Brand.count({_id: brandId}).exec(function (err, count) {
+				if (err)
+					console.log(err);
+				else{
+                    var pagination = {
+                        page: page,
+                        pageCount: Math.ceil(count / perPage)
+                    };
+                    res.render('index', {
+                        pagination: pagination,
+                        user: req.user,
+                        cart: req.cart,
+                        results: arrayResult,
+                        menuBrand: req.menuBrand,
+                        priceRange: req.priceRange,
+                        helpers: req.handlebars.helpers
+                    });
+				}
+            });
 		}
 	});
 };
