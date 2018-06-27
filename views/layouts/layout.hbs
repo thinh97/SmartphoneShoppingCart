@@ -58,7 +58,7 @@
                     <li>
                     <a href="/user/shopping-cart/">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng
-                    <span class="badge">{{#ifCond cart.totalQty '>' 0}}{{cart.totalQty}}{{/ifCond}}</span>
+                    <span id="cartCount" class="badge">{{#ifCond cart.totalQty '>' 0}}{{cart.totalQty}}{{/ifCond}}</span>
                     </a>
                     </li>
                     <li class="dropdown">

@@ -957,7 +957,6 @@ exports.statistics_post = function(req, res, next) {
                     break;
                 case '7':
                     startDate = start = getDateFromWeek(req.body.startWeek.substring(6, 8), req.body.startWeek.substring(0, 4));
-                    console.log(start);
                     endDate = startDate.addDays(6);
                     end = getDateFromWeek(req.body.endWeek.substring(6, 8), req.body.endWeek.substring(0, 4)).addDays(6);
                     break;

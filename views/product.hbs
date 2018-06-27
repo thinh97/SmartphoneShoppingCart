@@ -71,7 +71,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-primary qty-btn-minus" type="button">-</button>
                     </span>
-                    <input type="text" class="form-control add-color text-center" id="product_quantity" maxlength="2" value="1">
+                    <input type="number" class="form-control add-color text-center" id="product_quantity" min="1" max="99" value="1">
                     <span class="input-group-btn">
                         <button class="btn btn-primary qty-btn-plus" type="button">+</button>
                     </span>
@@ -80,7 +80,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12 btnAddToCart">
-                    <a href="/user/add-to-cart/{{result._id}}" class="btn btn-primary btn-block product-add-to-cart" data-id="{{this._id}}" role="button">Thêm vào giỏ hàng</a>
+                    <a class="btn btn-primary btn-block add-to-cart" data-id="{{result._id}}" role="button">Thêm vào giỏ hàng</a>
 				</div>
 				<div class="col-md-12 body_text">
 					{{{result.Description}}}

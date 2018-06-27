@@ -139,7 +139,7 @@ exports.profile_get = function(req, res, next) {
         res.render('account/profile',{
             CurentDate: curentDate,
             cart: req.cart,
-            user: req.session.passport.user,
+            user: req.user,
             helpers: req.handlebars.helpers
         });
     }
@@ -149,7 +149,7 @@ exports.profile_get = function(req, res, next) {
 
 exports.profile_changeinfo_post = function(req, res, next) {
     if (req.isAuthenticated()){
-        var user = req.session.passport.user;
+        var user = req.user;
         user.Name = req.body.name;
         user.UserName = req.body.username;
         user.Email = req.body.email;
@@ -163,7 +163,7 @@ exports.profile_changeinfo_post = function(req, res, next) {
                 res.render('account/profile', {
                     errormessage: err.message,
                     cart: req.cart,
-                    user: req.session.passport.user,
+                    user: req.user,
                     helpers: req.handlebars.helpers
                 });
             }
@@ -183,7 +183,7 @@ exports.profile_changeinfo_post = function(req, res, next) {
 
 exports.profile_change_password_post = function(req, res, next) {
     if (req.isAuthenticated()){
-        var user = req.session.passport.user;
+        var user = req.user;
         if (bcrypt.compareSync(req.body.oldPassword, user.Password)){
             if (req.body.newPassword === req.body.newPasswordConfirm){
                 User.findByIdAndUpdate(user._id, {Password: bcrypt.hashSync(req.body.newPassword)}, {new: true, runValidators: true}, function (err,updatedUser) {
@@ -192,7 +192,7 @@ exports.profile_change_password_post = function(req, res, next) {
                         res.render('account/profile', {
                             errormessage: err.message,
                             cart: req.cart,
-                            user: req.session.passport.user,
+                            user: req.user,
                             helpers: req.handlebars.helpers
                         });
                     }
@@ -525,27 +525,26 @@ exports.active_account_get = function(req, res, next) {
 
 exports.add_to_cart = function(req, res , next){
     var productId = req.params.id;
+    var quantity = Number(req.query.quantity);
     var cart = new Cart(req.session.cart ? req.session.cart: {});
 
     Product.findById(productId, function(err, product){
         if(err ){
-            return  res.redirect('/');
+            res.status(404).send('Không tìm thấy sản phẩm');
         }
-        cart.add(product, product.id);
-        req.session.cart = cart;
-        res.redirect('/');
+        else{
+            cart.add(product, product.id, quantity);
+            req.session.cart = cart;
+            res.status(200).send(cart.totalQty.toString());
+        }
     });
-
 }
 
 exports.get_shopping_cart = function(req, res , next){
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
-            user: user,
+            user: req.user,
             helpers: req.handlebars.helpers
         });
     }
@@ -553,60 +552,52 @@ exports.get_shopping_cart = function(req, res , next){
     res.render('shopping-cart', {products: cart.generateArray(),
         totalPrice: cart.totalPrice,
         cart: req.session.cart,
-        user:user,
+        user: req.user,
         helpers: req.handlebars.helpers
     })
 }
 
 exports.reduce_one_item = function(req,res, next){
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
-            user: user,
+            user: req.user,
             helpers: req.handlebars.helpers
         });
     }
     var cart = new Cart(req.session.cart);
-    console.log(req.params.id);
     cart.reduceByOne(req.params.id);
     req.session.cart = cart;
     res.render('shopping-cart', {
         products: cart.generateArray(),
         totalPrice: cart.totalPrice,
         cart: cart,
-        user: user,
+        user: req.user,
         helpers: req.handlebars.helpers
     })
 }
 
 exports.add_one_item = function(req,res,next){
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
-            user: user,
+            user: req.user,
             helpers: req.handlebars.helpers
         });
     }
     var cart = new Cart(req.session.cart);
-    console.log(req.params.id);
     var productId = req.params.id;
     Product.findById(productId, function(err, product){
         if(err ){
             return  res.redirect('/');
         }
-        cart.add(product, product.id);
+        cart.add(product, product.id, 1);
         req.session.cart = cart;
         res.render('shopping-cart', {
             products: cart.generateArray(),
             totalPrice: cart.totalPrice,
             cart: cart,
-            user: user,
+            user: req.user,
             helpers: req.handlebars.helpers
         })
     });
@@ -614,13 +605,10 @@ exports.add_one_item = function(req,res,next){
 }
 
 exports.get_delete_shopping_cart = function(req, res , next){
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     if(!req.session.cart){
         return res.render('shopping-cart', {
             products: null,
-            user: user,
+            user: req.user,
             helpers: req.handlebars.helpers
         });
     }
@@ -632,15 +620,12 @@ exports.get_delete_shopping_cart = function(req, res , next){
         products: cart.generateArray(),
         totalPrice: cart.totalPrice,
         cart: cart,
-        user: user,
+        user: req.user,
         helpers: req.handlebars.helpers
     })
 }
 
 exports.get_check_out = function(req, res, next){
-    var user = null;
-    if (req.session.passport)
-        user = req.session.passport.user;
     if (req.isAuthenticated()){
         if(!req.session.cart){
             return res.redirect('shopping-cart');
@@ -649,8 +634,8 @@ exports.get_check_out = function(req, res, next){
 
         res.render('checkout',{
             products: cart.generateArray(),
-            cart: req.session.cart,
-            user: user,
+            cart: req.cart,
+            user: req.user,
             totalPrice: cart.totalPrice,
             helpers: req.handlebars.helpers
         });
@@ -671,7 +656,7 @@ exports.post_check_out = function(req, res , next){
             var order = new Order({
                 ProductId: item.item._id,
                 DeliveryDate: new Date().addDays(7),
-                UserId: req.session.passport.user._id,
+                UserId: req.user._id,
                 BillAddress: req.body.address,
                 Name: req.body.name,
                 email: req.body.email_address,
@@ -694,7 +679,6 @@ exports.post_check_out = function(req, res , next){
 
 exports.order_history_get = function(req, res, next) {
     if (req.isAuthenticated()){
-        var user = req.session.passport.user;
         Order.find({UserId: user._id}).
         populate('ProductId','Title Price _id').
         exec(function (err, result) {
@@ -702,7 +686,7 @@ exports.order_history_get = function(req, res, next) {
                 console.log(err);
                 res.render('account/order_history',{
                     errormessage: 'Vui lòng thử lại sau',
-                    user: user,
+                    user: req.user,
                     cart: req.cart,
                     helpers: req.handlebars.helpers
                 });
@@ -728,14 +712,14 @@ exports.order_history_get = function(req, res, next) {
                     }
                     res.render('account/order_history',{
                         orders: orders,
-                        user: user,
+                        user: req.user,
                         cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
                 }
                 else{
                     res.render('account/order_history',{
-                        user: user,
+                        user: req.user,
                         cart: req.cart,
                         helpers: req.handlebars.helpers
                     });
@@ -756,7 +740,7 @@ exports.cancel_order_get = function(req, res, next) {
                 res.render('account/order_history', {
                     errormessage: 'Vui lòng thử lại sau',
                     cart: req.cart,
-                    user: req.session.passport.user,
+                    user: req.user,
                     helpers: req.handlebars.helpers
                 });
             }

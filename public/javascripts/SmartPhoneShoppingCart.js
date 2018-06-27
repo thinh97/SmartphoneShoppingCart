@@ -335,3 +335,21 @@ function loadSearchForm() {
 function addParam(v) {
     window.location.search += '&' + v;
 }
+
+$('.add-to-cart').on('click', function (e) {
+    var quantity = $('#product_quantity').val() || 1;
+    $.ajax({
+        url: '/user/add-to-cart/' + $(this).data('id'),
+        type: "get",
+        data: {
+            'quantity':quantity
+        },
+        success: function(response) {
+            $('#cartCount').text(response);
+        },
+        error: function(err) {
+            console.log(err);
+            alert('Đã xảy ra lỗi. Vui lòng thử lại');
+        }
+    });
+});

@@ -1,3 +1,4 @@
+{{#ifCond comments.length '>' '0'}}
 {{#each comments}}
     <div class="media">
         <div class="media-body">
@@ -26,3 +27,6 @@
         {{/paginate}}
     </ul>
 </div>
+{{else}}
+    <div class="text-center text-warning">Chưa có bình luận nào</div>
+{{/ifCond}}
