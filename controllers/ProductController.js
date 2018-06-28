@@ -49,8 +49,8 @@ exports.index = function(req, res, next) {
 };
 
 exports.list_price = function(req, res, next) {	
-	var start = req.params.start;
-	var end = req.params.end;
+	var start = Number(req.params.start);
+	var end = Number(req.params.end);
 	var query = {};
 	if (end !== 0)
 		query = { $gt: start, $lt: end };
