@@ -167,7 +167,7 @@ handlebars = handlebars.create({
     }
 });
 
-mongoose.connect('mongodb://shoppingcart:0123456789xxx@ds217970.mlab.com:17970/smartphoneshoppingcart');
+mongoose.connect('mongodb://admin:123456789x@ds155192.mlab.com:55192/shopping');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
